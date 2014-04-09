@@ -1,5 +1,9 @@
 package eu.diversify.ffbpg;
 
+import eu.diversify.ffbpg.utils.FileUtils;
+import eu.diversify.ffbpg.collections.SortedIntegerCollection;
+import eu.diversify.ffbpg.random.IntegerSetGenerator;
+import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -55,9 +59,11 @@ public class BPGraph {
             a.createAllPlatformLinks(platforms);
         }
     }
+    
+    IntegerSetGenerator seq_generator = new UniformIntegerSetGenerator();
 
     public ExtinctionSequence performRandomExtinctionSequence() {
-        int[] rseq = randomGenerator.random_integer_seq_uniform(platforms.size(), platforms.size());
+        int[] rseq = seq_generator.getRandomIntegerSet(platforms.size(), platforms.size());
         ArrayList<Application> alive_applications = new ArrayList<Application>();
         for (Application a : applications) {
             a.startExtinctionSequence();

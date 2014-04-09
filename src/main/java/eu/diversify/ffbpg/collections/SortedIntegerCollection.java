@@ -1,4 +1,4 @@
-package eu.diversify.ffbpg;
+package eu.diversify.ffbpg.collections;
 
 import java.util.ArrayList;
 

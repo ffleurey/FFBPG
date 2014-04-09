@@ -2,7 +2,10 @@ package eu.diversify.ffbpg;
 
 import eu.diversify.ffbpg.Service;
 import eu.diversify.ffbpg.RandomGenerator;
-import eu.diversify.ffbpg.SortedIntegerCollection;
+import eu.diversify.ffbpg.collections.SortedIntegerCollection;
+import eu.diversify.ffbpg.random.GaussianIntegerGenerator;
+import eu.diversify.ffbpg.random.UniformIntegerGenerator;
+import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.util.ArrayList;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -32,6 +35,7 @@ public class RandomGeneratorTest
         return new TestSuite( RandomGeneratorTest.class );
     }
 
+     
     public void testCreateServices()
     {
         int nb_srv = 50;
@@ -49,7 +53,8 @@ public class RandomGeneratorTest
         RandomGenerator f = new RandomGenerator();
         ArrayList<Service> services = f.createServices(nb_srv);
         assertEquals(services.size(), nb_srv);
-        SortedIntegerCollection[] species = f.createRandomServiceSets(services, nb_pt);
+        SortedIntegerCollection[] species = f.createRandomServiceSets(services, nb_pt, new UniformIntegerGenerator(), new UniformIntegerSetGenerator());
+       
         assertEquals(species.length, nb_pt);
         
         // basic check for the uniform distribution of nb of srv
@@ -69,7 +74,8 @@ public class RandomGeneratorTest
         RandomGenerator f = new RandomGenerator();
         ArrayList<Service> services = f.createServices(nb_srv);
         assertEquals(services.size(), nb_srv);
-        SortedIntegerCollection[] species = f.createGaussianPlatformTypes(services, nb_pt, mean, variance);
+       // SortedIntegerCollection[] species = f.createGaussianServiceSet(services, nb_pt, mean, variance);
+        SortedIntegerCollection[] species = f.createRandomServiceSets(services, nb_pt, new GaussianIntegerGenerator(mean, variance), new UniformIntegerSetGenerator());
         assertEquals(species.length, nb_pt);
         
         // basic check for the uniform distribution of nb of srv

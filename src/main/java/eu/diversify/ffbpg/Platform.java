@@ -1,5 +1,7 @@
 package eu.diversify.ffbpg;
 
+import eu.diversify.ffbpg.collections.SortedIntegerCollection;
+
 /**
  *
  * @author ffl

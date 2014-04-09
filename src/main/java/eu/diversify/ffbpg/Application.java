@@ -1,5 +1,6 @@
 package eu.diversify.ffbpg;
 
+import eu.diversify.ffbpg.collections.SortedIntegerCollection;
 import java.util.ArrayList;
 
 /**

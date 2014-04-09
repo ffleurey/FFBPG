@@ -2,6 +2,14 @@ package eu.diversify.ffbpg;
 
 import eu.diversify.ffbpg.ExtinctionSequence;
 import eu.diversify.ffbpg.BPGraph;
+import eu.diversify.ffbpg.collections.SortedIntegerCollection;
+import eu.diversify.ffbpg.random.GaussianIntegerGenerator;
+import eu.diversify.ffbpg.random.IntegerGenerator;
+import eu.diversify.ffbpg.random.IntegerSetGenerator;
+import eu.diversify.ffbpg.random.NegExpIntegerSetGenerator;
+import eu.diversify.ffbpg.random.PoissonIntegerGenerator;
+import eu.diversify.ffbpg.random.UniformIntegerGenerator;
+import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.io.File;
 import java.util.ArrayList;
 import junit.framework.Test;
@@ -16,9 +24,12 @@ public class BPGraphTest
 {
     
     File out_dir;
-    int n_services = 10;
-    int n_applications = 25;
+    int n_services = 50;
+    int n_applications = 75;
     int n_run = 25;
+    
+    IntegerGenerator uniform_app_size_generator = new UniformIntegerGenerator();
+    IntegerSetGenerator uniform_service_sets_generator = new UniformIntegerSetGenerator();
     
     /**
      * Create the test case
@@ -41,109 +52,60 @@ public class BPGraphTest
         return new TestSuite( BPGraphTest.class );
     }
 
-    public void testBPGraphRandomSingleLinks()
+    public void run_experiment(String name, IntegerGenerator app_size_generator, IntegerSetGenerator service_sets_generator, boolean all_links)
     {
         BPGraph g = null;
         int[][] apps_srv = new int[n_run][];
         int[][] apps_link = new int[n_run][];
         int[][] srv_dist = new int[n_run][];
+        
         for(int i=0; i<n_run; i++) {
             g = new BPGraph(n_services);
-            g.createGraphWithOnePlatformPerApplicationAndSingleLink(g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_applications));
+            SortedIntegerCollection[] ssets = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_applications, app_size_generator, service_sets_generator);
+            g.createGraphWithOnePlatformPerApplicationAndSingleLink(ssets);
+            if (all_links) g.addAllPotentialLinks();
             apps_srv[i] = g.applicationsServicesCountsDistribution();
             apps_link[i] = g.applicationsLinksCountsDistribution();
             srv_dist[i] = g.servicesDistributionInApplications();
         }
         
-        BPGraph.writeGNUPlotScriptForData(srv_dist, out_dir, "RandomSingleLinks_srv_dist");
-        BPGraph.writeGNUPlotScriptForData(apps_link, out_dir, "RandomSingleLinks_apps_link");
-        BPGraph.writeGNUPlotScriptForData(apps_srv, out_dir, "RandomSingleLinks_apps_srv");
+        BPGraph.writeGNUPlotScriptForData(srv_dist, out_dir, name + "_srv_dist");
+        BPGraph.writeGNUPlotScriptForData(apps_link, out_dir, name + "_apps_link");
+        BPGraph.writeGNUPlotScriptForData(apps_srv, out_dir, name + "_apps_srv");
         
         ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run);
-        ExtinctionSequence.writeGNUPlotScriptForAll(seqs, out_dir, "RandomSingleLinks_extinctions");
+        ExtinctionSequence.writeGNUPlotScriptForAll(seqs, out_dir, name + "_extinctions");
         
     }
     
-    public void testBPGraphRandomAllLinks()
+    public void testUniformUniformSL()
     {
-        BPGraph g = null;
-        int[][] apps_srv = new int[n_run][];
-        int[][] apps_link = new int[n_run][];
-        int[][] srv_dist = new int[n_run][];
-        for(int i=0; i<n_run; i++) {
-            g = new BPGraph(n_services);
-            g.createGraphWithOnePlatformPerApplicationAndSingleLink(g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_applications));
-            g.addAllPotentialLinks();
-            apps_srv[i] = g.applicationsServicesCountsDistribution();
-            apps_link[i] = g.applicationsLinksCountsDistribution();
-            srv_dist[i] = g.servicesDistributionInApplications();
-        }
-        
-        BPGraph.writeGNUPlotScriptForData(srv_dist, out_dir, "RandomAllLinks_srv_dist");
-        BPGraph.writeGNUPlotScriptForData(apps_link, out_dir, "RandomAllLinks_apps_link");
-        BPGraph.writeGNUPlotScriptForData(apps_srv, out_dir, "RandomAllLinks_apps_srv");
-        
-        ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run);
-        ExtinctionSequence.writeGNUPlotScriptForAll(seqs, out_dir, "RandomAllLinks_extinctions");
-        
+        run_experiment("1_UniformUniformSL", uniform_app_size_generator, uniform_service_sets_generator, false);
     }
     
-    public void testBPGraphGaussianAllLinks()
+    public void testUniformUniformAL()
     {
-        BPGraph g = null;
-        int[][] apps_srv = new int[n_run][];
-        int[][] apps_link = new int[n_run][];
-        int[][] srv_dist = new int[n_run][];
-        for(int i=0; i<n_run; i++) {
-            g = new BPGraph(n_services);
-            g.createGraphWithOnePlatformPerApplicationAndSingleLink(g.getRandomGenerator().createGaussianPlatformTypes(g.getServices(), n_applications, 6.0, 3.0));
-            g.addAllPotentialLinks();
-            apps_srv[i] = g.applicationsServicesCountsDistribution();
-            apps_link[i] = g.applicationsLinksCountsDistribution();
-            srv_dist[i] = g.servicesDistributionInApplications();
-        }
-        
-        BPGraph.writeGNUPlotScriptForData(srv_dist, out_dir, "GaussianAllLinks_srv_dist");
-        BPGraph.writeGNUPlotScriptForData(apps_link, out_dir, "GaussianAllLinks_apps_link");
-        BPGraph.writeGNUPlotScriptForData(apps_srv, out_dir, "GaussianAllLinks_apps_srv");
-        
-        ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run);
-        ExtinctionSequence.writeGNUPlotScriptForAll(seqs, out_dir, "GaussianAllLinks_extinctions");
-        
+        run_experiment("2_UniformUniformAL", uniform_app_size_generator, uniform_service_sets_generator, true);
     }
     
-    public void testBPGraphRandomMultiLinks()
+    public void testUniformNExp_2_1_AL()
     {
-        BPGraph g = new BPGraph(100);
-        g.createGraphWithOnePlatformPerApplicationAndSingleLink(g.getRandomGenerator().createRandomServiceSets(g.getServices(), 50));
-        g.addAllPotentialLinks();
-        g.performRandomExtinctionSequence();
+        run_experiment("3_UniformNExp_2_1_AL", uniform_app_size_generator, new NegExpIntegerSetGenerator(2.0, 0.01), true);
     }
     
-    public void testBPGraphGaussianSingleLinks()
+    public void testGaussian_6_3_UniformAL()
     {
-        BPGraph g = new BPGraph(100);
-        g.createGraphWithOnePlatformPerApplicationAndSingleLink(g.getRandomGenerator().createGaussianPlatformTypes(g.getServices(), 50, 5.0, 2.0));
-        g.performRandomExtinctionSequence();
+        run_experiment("4_Gaussian_6_3_UniformAL", new  GaussianIntegerGenerator(6.0, 3.0), uniform_service_sets_generator, true);
     }
     
-    public void testBPGraphGaussianMultiLinks()
+    public void testGaussian_6_3_NExp_2_1_AL()
     {
-        BPGraph g = new BPGraph(100);
-        g.createGraphWithOnePlatformPerApplicationAndSingleLink(g.getRandomGenerator().createGaussianPlatformTypes(g.getServices(), 50, 5.0, 2.0));
-        g.addAllPotentialLinks();
-        g.performRandomExtinctionSequence();
+        run_experiment("5_Gaussian_6_3_NExp_2_1_AL", new  GaussianIntegerGenerator(6.0, 3.0), new NegExpIntegerSetGenerator(2.0, 0.01), true);
     }
     
-    public void testBPGraphGaussianMultiLinksAvg()
+    public void testPoisson_6_NExp_2_1_AL()
     {
-        BPGraph g = new BPGraph(100);
-        g.createGraphWithOnePlatformPerApplicationAndSingleLink(g.getRandomGenerator().createGaussianPlatformTypes(g.getServices(), 50, 6.0, 3.0));
-        g.addAllPotentialLinks();
-        ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(200);
-        ExtinctionSequence.writeGNUPlotScriptForAll(seqs, out_dir, "testBPGraphGaussianMultiLinksAvg");
-        
+        run_experiment("6_Poisson_6_NExp_2_1_AL", new  PoissonIntegerGenerator(6.0), new NegExpIntegerSetGenerator(2.0, 0.01), true);
     }
-    
    
 }

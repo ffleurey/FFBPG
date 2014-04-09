@@ -1,4 +1,4 @@
-package eu.diversify.ffbpg;
+package eu.diversify.ffbpg.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
