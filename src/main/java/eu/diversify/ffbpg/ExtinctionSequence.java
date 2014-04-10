@@ -58,19 +58,31 @@ public class ExtinctionSequence {
         }
         return result;
     }
-
-    public static String averageExtinctionSequencesToString(ExtinctionSequence[] sequences) {
-        double[] average = averageExtinctionSequences(sequences);
-        StringBuilder b = new StringBuilder();
-        b.append("# Extinction sequence for " + sequences[0].data[0] + " applications  and " + (sequences[0].data.length - 1) + " platforms.\n");
-        b.append("# This is an average for " + sequences.length + " different extinction sequences.\n");
-        for (int i = 0; i < average.length; i++) {
-            b.append(i);
-            b.append("\t");
-            b.append(average[i]);
-            b.append("\n");
+    
+    /**
+     * Computes a robustness index relative to the linear extinction sequence.
+     * A positive index means that the application extinction rate is lower than the platform 
+     * extinction rate: the system is robust to some platform failures.
+     * A negative index means that the application extinction rate is greater than the platform 
+     * extinction rate: The system is fragile.
+     * The robustness index is normalized minimal value is -1 and its maximum value is +1. 
+     * @param average_extinction
+     * @param n_apps
+     * @return 
+     */
+    public static double averageRobustnessIndex(double[] average_extinction) {
+        double np = average_extinction.length-1;
+        double na = average_extinction[0];
+        double delta = 0;
+        double total = 0;
+        double linear = 0;
+        for (int p=0; p<average_extinction.length; p++) {
+            linear = - na * p / np + na;
+            total += linear;
+            delta += average_extinction[p] - linear;
         }
-        return b.toString();
+        double result = delta / total;
+        return result;
     }
 
     public static String allExtinctionSequencesToString(ExtinctionSequence[] sequences) {
@@ -96,6 +108,13 @@ public class ExtinctionSequence {
     public static String gnuPlotScriptForAll(ExtinctionSequence[] sequences, String filename) {
         StringBuilder b = new StringBuilder();
         b.append("# Extinction sequence for " + sequences[0].data[0] + " applications  and " + (sequences[0].data.length - 1) + " platforms.\n");
+        
+        b.append("set title '"+filename+": Extinction sequences (avg robustness = <AVG>%)'\n");
+        b.append("set xlabel 'Platformed Killed'\n");
+        b.append("set ylabel 'Applications Alive'\n");
+        b.append("set xrange [0:"+(sequences[0].data.length - 1)+"]\n");
+        b.append("set yrange [0:"+sequences[0].data[0]+"]\n");
+        
         b.append("plot \\\n");
         for (int i = 0; i < sequences.length; i++) {
             b.append("\"" + filename + "\" using " + (i + 2) + " notitle with lines lc rgb 'grey', \\\n");
@@ -111,6 +130,32 @@ public class ExtinctionSequence {
         }
         FileUtils.writeTextFile(out_dir, filename + ".dat" , allExtinctionSequencesToString(sequences));
         FileUtils.writeTextFile(out_dir, filename + ".plt", gnuPlotScriptForAll(sequences, filename+ ".dat"));
+        
+    }
+    
+     public static void writeGNUPlotScriptForDouble(double[] data, File out_dir, String filename) {
+        if (!(out_dir != null && out_dir.exists() && out_dir.isDirectory())) {
+            out_dir = FileUtils.createTempDirectory();
+        }
+        double avg = 0;
+        // Write the data to a file
+        StringBuilder b = new StringBuilder();
+        for (double d : data) {
+            b.append(d); b.append("\n");
+            avg += d;
+        }
+        avg /= data.length;
+        FileUtils.writeTextFile(out_dir, filename + "_robustness.dat" , b.toString());
+        
+        // Write the gnuplot to a file
+        b = new StringBuilder();
+        b.append("set title '" + filename + ": Robustness index for " + data.length + " runs (avg = "+ avg + ")'\n");
+        b.append("set xlabel 'Run'\n");
+        b.append("set ylabel 'Robusness index (%)'\n");
+        b.append("set xrange [0:"+ (data.length-1) +"]\n");
+        b.append("set yrange [-100:100]\n");
+        b.append("plot " + "\"" + filename + "_robustness.dat\" using 1 notitle with line\n" );
+        FileUtils.writeTextFile(out_dir, filename + "_robustness.plt", b.toString());
         
     }
 
