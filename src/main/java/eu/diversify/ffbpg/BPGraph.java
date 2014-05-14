@@ -6,8 +6,6 @@ import eu.diversify.ffbpg.random.IntegerSetGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
 
 /**
  *
@@ -97,11 +95,50 @@ public class BPGraph {
             a.updateLinkforAddedPlatform(p);
         }
     }
-
-    public void addAllPotentialLinks() {
-        for (Application a : applications) {
-            a.createAllPlatformLinks(platforms);
+    
+    
+    public void addLinksFromApplicationsToPlatformsProvidingAtLeastOneSrv(int app_neighborhood_size) {
+        if (app_neighborhood_size >= platforms.size()) {
+            for (Application a : applications) {
+                a.addLinksToPlatformsProvidingAtLeastOneSrv(platforms);
+            }
         }
+        else {
+            // Compute a random neighborhood for each application
+            ArrayList<Platform> neighborhood = new ArrayList<Platform>();
+            UniformIntegerSetGenerator g = new UniformIntegerSetGenerator();
+            
+            for (Application a : applications) {
+                neighborhood.clear();
+                int[] indexes = g.getRandomIntegerSet(platforms.size()-1, app_neighborhood_size);
+                for(int i : indexes) neighborhood.add(platforms.get(i));
+                a.addLinksToPlatformsProvidingAtLeastOneSrv(neighborhood);
+            }
+        }
+    }
+
+    public void addLinksFromApplicationsToPlatformsProvidingAllSrv(int app_neighborhood_size) {
+        if (app_neighborhood_size >= platforms.size()) {
+            for (Application a : applications) {
+                a.addLinksToPlatformsProvidingAllSrv(platforms);
+            }
+        }
+        else {
+            // Compute a random neighborhood for each application
+            ArrayList<Platform> neighborhood = new ArrayList<Platform>();
+            UniformIntegerSetGenerator g = new UniformIntegerSetGenerator();
+            
+            for (Application a : applications) {
+                neighborhood.clear();
+                int[] indexes = g.getRandomIntegerSet(platforms.size()-1, app_neighborhood_size);
+                for(int i : indexes) neighborhood.add(platforms.get(i));
+                a.addLinksToPlatformsProvidingAllSrv(neighborhood);
+            }
+        }
+    }
+    
+    public void addLinksToAllPlatformsProvidingAtLeastOneSrv() {
+        addLinksFromApplicationsToPlatformsProvidingAtLeastOneSrv(platforms.size());
     }
     
     IntegerSetGenerator seq_generator = new UniformIntegerSetGenerator();

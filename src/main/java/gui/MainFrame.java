@@ -16,7 +16,7 @@ import eu.diversify.ffbpg.random.NegExpIntegerSetGenerator;
 import eu.diversify.ffbpg.random.PoissonIntegerGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
-import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
 
@@ -82,6 +82,8 @@ public class MainFrame extends javax.swing.JFrame {
         jRadioButtonLinkSL = new javax.swing.JRadioButton();
         jRadioButtonLinkAL = new javax.swing.JRadioButton();
         jRadioButtonLinkAAllL = new javax.swing.JRadioButton();
+        jCheckBoxNeighbourhood = new javax.swing.JCheckBox();
+        jTextFieldNeighbourhood = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jTextFieldNGraphs = new javax.swing.JTextField();
@@ -327,7 +329,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldSimNSrv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Initial bi-partite graph"));
@@ -350,7 +352,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jRadioButtonIniti1)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Applications \"linking startegy\""));
@@ -360,10 +362,19 @@ public class MainFrame extends javax.swing.JFrame {
 
         buttonGroupLinking.add(jRadioButtonLinkAL);
         jRadioButtonLinkAL.setSelected(true);
-        jRadioButtonLinkAL.setText("Link to all platforms offering at least one service");
+        jRadioButtonLinkAL.setText("Link to platforms offering at least one service");
+        jRadioButtonLinkAL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonLinkALActionPerformed(evt);
+            }
+        });
 
         buttonGroupLinking.add(jRadioButtonLinkAAllL);
-        jRadioButtonLinkAAllL.setText("Link to all platforms offering all services");
+        jRadioButtonLinkAAllL.setText("Link to platforms offering all services");
+
+        jCheckBoxNeighbourhood.setText("Restrict Neighbourhood to ");
+
+        jTextFieldNeighbourhood.setText("50");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -372,10 +383,17 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButtonLinkSL)
-                    .addComponent(jRadioButtonLinkAL)
-                    .addComponent(jRadioButtonLinkAAllL))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jCheckBoxNeighbourhood)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldNeighbourhood))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButtonLinkSL)
+                            .addComponent(jRadioButtonLinkAL)
+                            .addComponent(jRadioButtonLinkAAllL))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -386,7 +404,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jRadioButtonLinkAL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButtonLinkAAllL)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxNeighbourhood)
+                    .addComponent(jTextFieldNeighbourhood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Bipartite graph generator"));
@@ -441,7 +463,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButtonBPGView))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -467,10 +489,10 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -552,15 +574,15 @@ public class MainFrame extends javax.swing.JFrame {
             g = new BPGraph(n_srv);
             SortedIntegerCollection[] ssets = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_app, app_size_generator, service_sets_generator);
             g.createGraphWithOnePlatformPerApplicationAndSingleLink(ssets);
-            if (jRadioButtonLinkAL.isSelected()) g.addAllPotentialLinks();
+            
+            int neighbourhood = g.getPlatforms().size();
+            if (jCheckBoxNeighbourhood.isSelected())
+                neighbourhood = Integer.parseInt(jTextFieldNeighbourhood.getText());
+            if (jRadioButtonLinkAL.isSelected()) {
+                g.addLinksFromApplicationsToPlatformsProvidingAtLeastOneSrv(neighbourhood);
+            }
             else if (jRadioButtonLinkAAllL.isSelected()) {
-                java.awt.EventQueue.invokeLater(new Runnable() {
-                    public void run() {
-                        JOptionPane.showMessageDialog(MainFrame.this, "The selected linking strategy is not implemented.");
-                        
-                    }
-                });
-                break;
+               g.addLinksFromApplicationsToPlatformsProvidingAllSrv(neighbourhood);
             }
            // bpgraphlist.add(g);
             bpgraphtable.add(g);
@@ -585,7 +607,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (row < 0) row = 0;
         BPGraphFrame f = new BPGraphFrame();
         f.setVisible(true);
-        f.setBPGraphCollection(bpgraphtable.getData(), row);
+        f.setBPGraphCollection((List<BPGraph>)bpgraphtable.getData().clone(), row);
         
      
     }//GEN-LAST:event_jButtonBPGViewActionPerformed
@@ -593,6 +615,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void jTextFieldSrvLambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSrvLambdaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldSrvLambdaActionPerformed
+
+    private void jRadioButtonLinkALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonLinkALActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonLinkALActionPerformed
 
     /**
      * @param args the command line arguments
@@ -638,6 +664,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupSrvDist;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonBPGView;
+    private javax.swing.JCheckBox jCheckBoxNeighbourhood;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -675,6 +702,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldAppP;
     private javax.swing.JTextField jTextFieldAppVar;
     private javax.swing.JTextField jTextFieldNGraphs;
+    private javax.swing.JTextField jTextFieldNeighbourhood;
     private javax.swing.JTextField jTextFieldSimNApp;
     private javax.swing.JTextField jTextFieldSimNSrv;
     private javax.swing.JTextField jTextFieldSrvLambda;

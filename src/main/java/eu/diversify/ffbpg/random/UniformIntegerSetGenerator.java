@@ -21,7 +21,7 @@ public class UniformIntegerSetGenerator implements IntegerSetGenerator {
             dataList.add(i);
         }
         Collections.shuffle(dataList, rand);
-        int[] num = new int[dataList.size()];
+        int[] num = new int[size];
         for (int i = 0; i < size; i++) {
             num[i] = dataList.get(i);
         }

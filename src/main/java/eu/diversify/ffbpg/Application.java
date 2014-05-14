@@ -2,6 +2,7 @@ package eu.diversify.ffbpg;
 
 import eu.diversify.ffbpg.collections.SortedIntegerCollection;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  *
@@ -12,13 +13,13 @@ public class Application {
     protected String name;
     protected SortedIntegerCollection requiredServices;
     
-    protected ArrayList<Platform> platforms;
+    protected HashSet<Platform> platforms;
     
     public String getName() {
         return name;
     }
     
-    public ArrayList<Platform> getLinkedPlatforms() {
+    public HashSet<Platform> getLinkedPlatforms() {
         return platforms;
     }
     
@@ -26,7 +27,7 @@ public class Application {
         StringBuffer result = new StringBuffer("{");
         for(Platform p : platforms) {
             result.append(p.getName());
-            if (p != platforms.get(platforms.size()-1))result.append(", "); // Ugly :-)
+            result.append(" "); 
         }
         result.append("}");
         return result.toString();
@@ -40,13 +41,21 @@ public class Application {
     public Application(String name) {
         this.name = name;
         requiredServices = new SortedIntegerCollection();
-        platforms = new ArrayList<Platform>();
+        platforms = new HashSet<Platform>();
     }
     
-    public void createAllPlatformLinks(ArrayList<Platform> available_platforms) {
-        platforms = new ArrayList<Platform>();
+    public void addLinksToPlatformsProvidingAtLeastOneSrv(ArrayList<Platform> available_platforms) {
+        //platforms = new ArrayList<Platform>();
+        System.out.println("available_platforms.size() = " + available_platforms.size());
         for (Platform p : available_platforms) {
             if(p.getProvidedServices().containsSome(requiredServices)) platforms.add(p);
+        }
+    }
+    
+    public void addLinksToPlatformsProvidingAllSrv(ArrayList<Platform> available_platforms) {
+        //platforms = new ArrayList<Platform>();
+        for (Platform p : available_platforms) {
+            if(p.getProvidedServices().containsAll(requiredServices)) platforms.add(p);
         }
     }
     
