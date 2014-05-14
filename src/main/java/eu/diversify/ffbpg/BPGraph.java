@@ -6,6 +6,8 @@ import eu.diversify.ffbpg.random.IntegerSetGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
 
 /**
  *
@@ -37,6 +39,48 @@ public class BPGraph {
 
     public BPGraph(int n_services) {
         services = randomGenerator.createServices(n_services);
+    }
+    
+    public SortedIntegerCollection getAllRequiredServices() {
+        SortedIntegerCollection result = new SortedIntegerCollection();
+        for (Application a : applications) result.addAll(a.requiredServices);
+        return result;
+    }
+    
+    public SortedIntegerCollection getAllProvidedServices() {
+        SortedIntegerCollection result = new SortedIntegerCollection();
+        for (Platform p : platforms) result.addAll(p.providedServices);
+        return result;
+    }
+    
+    public SortedIntegerCollection getAllUsedServices() {
+        SortedIntegerCollection result = getAllRequiredServices();
+        result.addAll(getAllProvidedServices());
+        return result;
+    }
+    
+    public int getLinkCount() {
+        int result = 0;
+        for (Application a : applications) result += a.platforms.size();
+        return result;
+    }
+    
+    public double getAvgLinkCountPerApp() {
+        double result = 0;
+        for (Application a : applications) result += a.platforms.size();
+        return result/applications.size();
+    }
+    
+    public double getAvgSrvCountPerApp() {
+        double result = 0;
+        for (Application a : applications) result += a.getRequiredServices().size();
+        return result/applications.size();
+    }
+    
+    public double getAvgSrvCountPerPlatform() {
+        double result = 0;
+        for (Platform p : platforms) result += p.getProvidedServices().size();
+        return result/applications.size();
     }
 
     public void createGraphWithOnePlatformPerApplicationAndSingleLink(SortedIntegerCollection[] services_sets) {

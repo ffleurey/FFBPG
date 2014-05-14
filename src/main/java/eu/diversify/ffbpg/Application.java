@@ -17,6 +17,21 @@ public class Application {
     public String getName() {
         return name;
     }
+    
+    public ArrayList<Platform> getLinkedPlatforms() {
+        return platforms;
+    }
+    
+    public String getLinkedPlatformNames() {
+        StringBuffer result = new StringBuffer("{");
+        for(Platform p : platforms) {
+            result.append(p.getName());
+            if (p != platforms.get(platforms.size()-1))result.append(", "); // Ugly :-)
+        }
+        result.append("}");
+        return result.toString();
+    }
+    
 
     public SortedIntegerCollection getRequiredServices() {
         return requiredServices;
