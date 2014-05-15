@@ -25,8 +25,8 @@ public class BPGraphTest
     
     File out_dir;
     int n_services = 50;
-    int n_applications = 75;
-    int n_run = 25;
+    int n_applications = 30;
+    int n_run = 5;
     
     IntegerGenerator uniform_app_size_generator = new UniformIntegerGenerator();
     IntegerSetGenerator uniform_service_sets_generator = new UniformIntegerSetGenerator();

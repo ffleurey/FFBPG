@@ -46,7 +46,7 @@ public class Application {
     
     public void addLinksToPlatformsProvidingAtLeastOneSrv(ArrayList<Platform> available_platforms) {
         //platforms = new ArrayList<Platform>();
-        System.out.println("available_platforms.size() = " + available_platforms.size());
+        //System.out.println("available_platforms.size() = " + available_platforms.size());
         for (Platform p : available_platforms) {
             if(p.getProvidedServices().containsSome(requiredServices)) platforms.add(p);
         }

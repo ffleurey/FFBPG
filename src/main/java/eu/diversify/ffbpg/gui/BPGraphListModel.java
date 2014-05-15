@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gui;
+package eu.diversify.ffbpg.gui;
 
 import eu.diversify.ffbpg.BPGraph;
 import java.util.ArrayList;
