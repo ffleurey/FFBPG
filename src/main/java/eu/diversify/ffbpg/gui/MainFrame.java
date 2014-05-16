@@ -99,10 +99,10 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Services usage distribution"));
 
         buttonGroupSrvDist.add(jRadioButtonSrvUniform);
+        jRadioButtonSrvUniform.setSelected(true);
         jRadioButtonSrvUniform.setText("Uniform");
 
         buttonGroupSrvDist.add(jRadioButtonSrvExp);
-        jRadioButtonSrvExp.setSelected(true);
         jRadioButtonSrvExp.setText("Exponetial");
 
         jLabel1.setText("lambda=");
@@ -118,7 +118,7 @@ public class MainFrame extends javax.swing.JFrame {
         buttonGroupSrvDist.add(jRadioButtonSrvComb);
         jRadioButtonSrvComb.setText("Combined");
 
-        jTextFieldSrvURate.setText("1.0");
+        jTextFieldSrvURate.setText("0.1");
         jTextFieldSrvURate.setPreferredSize(new java.awt.Dimension(60, 20));
 
         jLabel4.setText("%");
@@ -173,6 +173,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Application size distribution"));
 
         buttonGroupAppSize.add(jRadioButtonAppUniform);
+        jRadioButtonAppUniform.setSelected(true);
         jRadioButtonAppUniform.setText("Uniform");
         jRadioButtonAppUniform.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,7 +182,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         buttonGroupAppSize.add(jRadioButtonAppPoisson);
-        jRadioButtonAppPoisson.setSelected(true);
         jRadioButtonAppPoisson.setText("Poisson");
 
         buttonGroupAppSize.add(jRadioButtonAppNormal);
@@ -296,8 +296,13 @@ public class MainFrame extends javax.swing.JFrame {
         jTextFieldSimNApp.setText("100");
         jTextFieldSimNApp.setPreferredSize(new java.awt.Dimension(60, 20));
 
-        jTextFieldSimNSrv.setText("200");
+        jTextFieldSimNSrv.setText("150");
         jTextFieldSimNSrv.setPreferredSize(new java.awt.Dimension(60, 20));
+        jTextFieldSimNSrv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldSimNSrvActionPerformed(evt);
+            }
+        });
 
         jLabel10.setText("Number of services");
 
@@ -358,10 +363,10 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Applications \"linking startegy\""));
 
         buttonGroupLinking.add(jRadioButtonLinkSL);
+        jRadioButtonLinkSL.setSelected(true);
         jRadioButtonLinkSL.setText("Link to a single platform");
 
         buttonGroupLinking.add(jRadioButtonLinkAL);
-        jRadioButtonLinkAL.setSelected(true);
         jRadioButtonLinkAL.setText("Link to platforms offering at least one service");
         jRadioButtonLinkAL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -619,6 +624,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void jRadioButtonLinkALActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonLinkALActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButtonLinkALActionPerformed
+
+    private void jTextFieldSimNSrvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSimNSrvActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldSimNSrvActionPerformed
 
     /**
      * @param args the command line arguments

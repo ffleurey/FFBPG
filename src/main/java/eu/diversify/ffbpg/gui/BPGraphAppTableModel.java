@@ -35,7 +35,7 @@ public class BPGraphAppTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 3;
+        return 4;
     }
 
     public Object getValueAt(int l, int c) {
@@ -47,6 +47,7 @@ public class BPGraphAppTableModel extends AbstractTableModel {
             case 0: return a.getName();
             case 1: return a.getRequiredServices().toString();
             case 2: return a.getLinkedPlatformNames();
+            case 3: return a.dependenciesSatisfied();
             default: return "???";
         }
         
@@ -71,6 +72,7 @@ public class BPGraphAppTableModel extends AbstractTableModel {
             case 0: return "Application";
             case 1: return "Req. Services";
             case 2: return "Linked Platforms";
+            case 3: return "Running";
             default: return "???";
         }
     }
