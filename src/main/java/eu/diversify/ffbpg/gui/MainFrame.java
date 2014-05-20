@@ -519,13 +519,18 @@ public class MainFrame extends javax.swing.JFrame {
 
   // protected BPGraphListModel bpgraphlist = new BPGraphListModel();
    protected BPGraphTableModel bpgraphtable = new BPGraphTableModel();
+   
+   protected String generator_parameters = "";
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
+        final StringBuffer cfg = new StringBuffer();
       //  bpgraphlist.clear();
         bpgraphtable.clear();
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(200);
         int n_run = Integer.parseInt(jTextFieldNGraphs.getText());
+        
+       
         
         final ProgressMonitor progressMonitor = new ProgressMonitor(this,
                                       "Generating Bi-Partite Graphs",
@@ -540,32 +545,50 @@ public class MainFrame extends javax.swing.JFrame {
         int n_app = Integer.parseInt(jTextFieldSimNApp.getText());
         int n_srv = Integer.parseInt(jTextFieldSimNSrv.getText());
         
+        cfg.append("# Number generated graphs\t"); cfg.append(n_run); cfg.append("\n");
+        
+        cfg.append("# Baseline Nodes\t"); cfg.append("One platform per application, exact service match"); cfg.append("\n");
+        cfg.append("# Baseline Links\t"); cfg.append("One link between each application and its matching platform"); cfg.append("\n");
+        
+        cfg.append("# Number of applications\t"); cfg.append(n_app); cfg.append("\n");
+        cfg.append("# Number of services\t"); cfg.append(n_srv); cfg.append("\n");
+        
+        cfg.append("# Dist. of application size\t");
         IntegerGenerator app_size_generator = null;
         if (jRadioButtonAppUniform.isSelected()) {
             app_size_generator = new UniformIntegerGenerator();
+            cfg.append("Uniform"); cfg.append("\n");
         }
         else if (jRadioButtonAppNormal.isSelected()) {
             app_size_generator = new GaussianIntegerGenerator(Double.parseDouble(jTextFieldAppMean.getText()), Double.parseDouble(jTextFieldAppVar.getText()));
+            cfg.append("Normal (mean="+jTextFieldAppMean.getText()+", var="+jTextFieldAppVar.getText()+")"); cfg.append("\n");
         }
         else if (jRadioButtonAppPoisson.isSelected()) {
             app_size_generator = new PoissonIntegerGenerator(Double.parseDouble(jTextFieldAppLambda.getText()));
+            cfg.append("Poisson (lambda="+jTextFieldAppLambda.getText()+")"); cfg.append("\n");
         }
         else if (jRadioButtonAppBinomial.isSelected()) {
             app_size_generator = new BinomialIntegerGenerator(Integer.parseInt(jTextFieldAppN.getText()), Double.parseDouble(jTextFieldAppP.getText()));
+            cfg.append("Binomial (N="+jTextFieldAppN.getText()+", P="+jTextFieldAppP.getText()+")"); cfg.append("\n");
         }
         
+        cfg.append("# Dist. of services usage\t");
         IntegerSetGenerator service_sets_generator = null;
         if (jRadioButtonSrvUniform.isSelected()) {
             service_sets_generator = new UniformIntegerSetGenerator();
+            cfg.append("Uniform"); cfg.append("\n");
         }
         else if (jRadioButtonSrvExp.isSelected()) {
             service_sets_generator = new NegExpIntegerSetGenerator(Double.parseDouble(jTextFieldSrvLambda.getText()), 0);
+            cfg.append("Exponetial (lambda="+jTextFieldSrvLambda.getText()+")"); cfg.append("\n");
         }
         else if (jRadioButtonSrvComb.isSelected()) {
             service_sets_generator = new NegExpIntegerSetGenerator(Double.parseDouble(jTextFieldSrvLambda.getText()), Double.parseDouble(jTextFieldSrvURate.getText()));
+            cfg.append("Combined (lambda="+jTextFieldSrvLambda.getText()+", uniform factor="+jTextFieldSrvURate.getText()+")"); cfg.append("\n");
         }
         
         BPGraph g;
+        boolean _cfg = true;
         
         for(int i=0; i<n_run; i++) {
             System.out.println("Run #" + i);
@@ -580,18 +603,25 @@ public class MainFrame extends javax.swing.JFrame {
             SortedIntegerCollection[] ssets = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_app, app_size_generator, service_sets_generator);
             g.createGraphWithOnePlatformPerApplicationAndSingleLink(ssets);
             
+            
+            
             int neighbourhood = g.getPlatforms().size();
             if (jCheckBoxNeighbourhood.isSelected())
                 neighbourhood = Integer.parseInt(jTextFieldNeighbourhood.getText());
             if (jRadioButtonLinkAL.isSelected()) {
                 g.addLinksFromApplicationsToPlatformsProvidingAtLeastOneSrv(neighbourhood);
+                if (_cfg) {cfg.append("# Additional links to neighbouring platform offering at least 1 required service"); cfg.append("\n");}
             }
             else if (jRadioButtonLinkAAllL.isSelected()) {
                g.addLinksFromApplicationsToPlatformsProvidingAllSrv(neighbourhood);
+               if (_cfg) {cfg.append("# Additional links to neighbouring platform all required service"); cfg.append("\n");}
             }
+            if (_cfg) {cfg.append("# Neighbourhood Size\t"); cfg.append(neighbourhood); cfg.append("\n");}
            // bpgraphlist.add(g);
             bpgraphtable.add(g);
+            _cfg = false;
         }
+        generator_parameters = cfg.toString();
       }
       
     };
@@ -612,7 +642,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (row < 0) row = 0;
         BPGraphFrame f = new BPGraphFrame();
         f.setVisible(true);
-        f.setBPGraphCollection((List<BPGraph>)bpgraphtable.getData().clone(), row);
+        f.setBPGraphCollection((List<BPGraph>)bpgraphtable.getData().clone(), row, generator_parameters);
         
      
     }//GEN-LAST:event_jButtonBPGViewActionPerformed

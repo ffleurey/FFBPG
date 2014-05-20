@@ -16,7 +16,19 @@ public class BPGraph {
     ArrayList<Service> services;
     ArrayList<Application> applications;
     ArrayList<Platform> platforms;
+    
+    private static long graph_counter = 0;
+    private long id;
+    
+    @Override
+    public String toString() {
+        return "Bi-Partite Graph #" + id;
+    }
 
+    public String getName() {
+        return "BiPartiteGraph_" + id;
+    }
+    
     public ArrayList<Service> getServices() {
         return services;
     }
@@ -37,6 +49,7 @@ public class BPGraph {
 
     public BPGraph(int n_services) {
         services = randomGenerator.createServices(n_services);
+        id = graph_counter++;
     }
     
     public SortedIntegerCollection getAllRequiredServices() {
@@ -249,6 +262,18 @@ public class BPGraph {
             b.append(average[l]);
             b.append("\n");
         }
+        return b.toString();
+    }
+    
+    public String exportToGraphViz() {
+        StringBuilder b = new StringBuilder();
+        b.append("digraph bipartite {\n");
+        for (Application a : applications) {
+            for (Platform p : a.platforms) {
+                 b.append("\t" + a.name + " -> " + p.name + "\n");
+            }
+        }
+        b.append("}\n");
         return b.toString();
     }
 
