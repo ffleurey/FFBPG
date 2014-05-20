@@ -269,8 +269,14 @@ public class BPGraph {
         StringBuilder b = new StringBuilder();
         b.append("digraph bipartite {\n");
         for (Application a : applications) {
+            b.append("\t" + a.name + "[label=\"" + a.getName() + "\\n" + a.getRequiredServices().toString() + "\"];\n");
+        }
+        for (Platform p : platforms) {
+            b.append("\t" + p.name + "[label=\"" + p.getName() + "\\n" + p.getProvidedServices().toString() + "\"];\n");
+        }
+        for (Application a : applications) {
             for (Platform p : a.platforms) {
-                 b.append("\t" + a.name + " -> " + p.name + "\n");
+                 b.append("\t" + a.name + " -> " + p.name + ";\n");
             }
         }
         b.append("}\n");
