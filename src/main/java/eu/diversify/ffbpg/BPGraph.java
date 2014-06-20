@@ -6,6 +6,7 @@ import eu.diversify.ffbpg.random.IntegerSetGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -94,14 +95,14 @@ public class BPGraph {
         return result/applications.size();
     }
 
-    public void createGraphWithOnePlatformPerApplicationAndSingleLink(SortedIntegerCollection[] services_sets) {
+    public void createGraphWithOnePlatformPerApplicationAndSingleLink(SortedIntegerCollection[] services_sets, int app_capacity, int srv_capacity) {
         applications = new ArrayList<Application>();
         platforms = new ArrayList<Platform>();
         for (int i = 0; i < services_sets.length; i++) {
-            Application a = new Application("A" + i);
+            Application a = new Application("A" + i, app_capacity);
             a.getRequiredServices().addAll(services_sets[i]);
             applications.add(a);
-            Platform p = new Platform("P" + i);
+            Platform p = new Platform("P" + i, srv_capacity);
             p.getProvidedServices().addAll(services_sets[i]);
             platforms.add(p);
             // Add a single ling between the application and the platform
@@ -111,9 +112,11 @@ public class BPGraph {
     
     
     public void addLinksFromApplicationsToPlatformsProvidingAtLeastOneSrv(int app_neighborhood_size) {
+        ArrayList<AddLinkIfPossible> commands = new ArrayList<AddLinkIfPossible>();
+                
         if (app_neighborhood_size >= platforms.size()) {
             for (Application a : applications) {
-                a.addLinksToPlatformsProvidingAtLeastOneSrv(platforms);
+                a.addLinksToPlatformsProvidingAtLeastOneSrv(platforms, commands);
             }
         }
         else {
@@ -125,15 +128,20 @@ public class BPGraph {
                 neighborhood.clear();
                 int[] indexes = g.getRandomIntegerSet(platforms.size()-1, app_neighborhood_size);
                 for(int i : indexes) neighborhood.add(platforms.get(i));
-                a.addLinksToPlatformsProvidingAtLeastOneSrv(neighborhood);
+                a.addLinksToPlatformsProvidingAtLeastOneSrv(neighborhood, commands);
             }
+        }
+        Collections.shuffle(commands); // Randomize the order of the commands (Important)
+        for (AddLinkIfPossible c : commands) {
+            c.execute();
         }
     }
 
     public void addLinksFromApplicationsToPlatformsProvidingAllSrv(int app_neighborhood_size) {
+        ArrayList<AddLinkIfPossible> commands = new ArrayList<AddLinkIfPossible>();
         if (app_neighborhood_size >= platforms.size()) {
             for (Application a : applications) {
-                a.addLinksToPlatformsProvidingAllSrv(platforms);
+                a.addLinksToPlatformsProvidingAllSrv(platforms, commands);
             }
         }
         else {
@@ -145,8 +153,12 @@ public class BPGraph {
                 neighborhood.clear();
                 int[] indexes = g.getRandomIntegerSet(platforms.size()-1, app_neighborhood_size);
                 for(int i : indexes) neighborhood.add(platforms.get(i));
-                a.addLinksToPlatformsProvidingAllSrv(neighborhood);
+                a.addLinksToPlatformsProvidingAllSrv(neighborhood, commands);
             }
+        }
+        Collections.shuffle(commands); // Randomize the order of the commands (Important)
+        for (AddLinkIfPossible c : commands) {
+            c.execute();
         }
     }
     

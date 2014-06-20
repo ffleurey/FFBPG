@@ -34,6 +34,8 @@ public class BPGraphFrame extends javax.swing.JFrame {
         graph = g;
         apptablemodel.setBPGraph(g);
         jTextFieldBPgraph.setText(g.toString());
+        
+        ((BPMatrixGraph)jPanelMatrix).setBPGraph(g);
 
         int max = 0;
         int[] l = g.applicationsServicesCountsDistribution();
@@ -194,6 +196,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaParams = new javax.swing.JTextArea();
+        jPanelMatrix = new BPMatrixGraph();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bipartite Graph Viewer");
@@ -434,12 +437,25 @@ public class BPGraphFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Parameters", jPanel9);
 
+        javax.swing.GroupLayout jPanelMatrixLayout = new javax.swing.GroupLayout(jPanelMatrix);
+        jPanelMatrix.setLayout(jPanelMatrixLayout);
+        jPanelMatrixLayout.setHorizontalGroup(
+            jPanelMatrixLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 707, Short.MAX_VALUE)
+        );
+        jPanelMatrixLayout.setVerticalGroup(
+            jPanelMatrixLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 403, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Matrix", jPanelMatrix);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -541,6 +557,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelExt;
+    private javax.swing.JPanel jPanelMatrix;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;

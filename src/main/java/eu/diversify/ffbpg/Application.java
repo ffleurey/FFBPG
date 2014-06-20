@@ -2,6 +2,7 @@ package eu.diversify.ffbpg;
 
 import eu.diversify.ffbpg.collections.SortedIntegerCollection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 
 /**
@@ -15,8 +16,22 @@ public class Application {
     
     protected HashSet<Platform> platforms;
     
+    protected int capacity = 10;
+
+    public int getLoad() {
+        return platforms.size();
+    }
+    
+    public int getCapacity() {
+        return capacity;
+    }
+    
     public String getName() {
         return name;
+    }
+    
+    public boolean hasRemainingCapacity() {
+        return getLoad() < capacity;
     }
     
     public HashSet<Platform> getLinkedPlatforms() {
@@ -38,24 +53,28 @@ public class Application {
         return requiredServices;
     }
     
-    public Application(String name) {
+    public Application(String name, int capacity) {
         this.name = name;
+        this.capacity = capacity;
         requiredServices = new SortedIntegerCollection();
         platforms = new HashSet<Platform>();
     }
     
-    public void addLinksToPlatformsProvidingAtLeastOneSrv(ArrayList<Platform> available_platforms) {
-        //platforms = new ArrayList<Platform>();
-        //System.out.println("available_platforms.size() = " + available_platforms.size());
+    public void addLinksToPlatformsProvidingAtLeastOneSrv(ArrayList<Platform> available_platforms, ArrayList<AddLinkIfPossible> result) {
+       
         for (Platform p : available_platforms) {
-            if(p.getProvidedServices().containsSome(requiredServices)) platforms.add(p);
+            if(p.getProvidedServices().containsSome(requiredServices)) {
+                result.add(new AddLinkIfPossible(this, p));
+            }
         }
     }
     
-    public void addLinksToPlatformsProvidingAllSrv(ArrayList<Platform> available_platforms) {
-        //platforms = new ArrayList<Platform>();
+    public void addLinksToPlatformsProvidingAllSrv(ArrayList<Platform> available_platforms, ArrayList<AddLinkIfPossible> result) {
+
         for (Platform p : available_platforms) {
-            if(p.getProvidedServices().containsAll(requiredServices)) platforms.add(p);
+            if(p.getProvidedServices().containsAll(requiredServices)) {
+               result.add(new AddLinkIfPossible(this, p));
+            }
         }
     }
     
@@ -64,10 +83,14 @@ public class Application {
     }
     
     public void updateLinkforAddedPlatform(Platform p) {
-        if (p.getProvidedServices().containsSome(requiredServices)) platforms.add(p);
+        if (p.hasRemainingCapacity() && this.hasRemainingCapacity() && p.getProvidedServices().containsSome(requiredServices)) {
+            platforms.add(p);
+            p.incrementLoad();
+        }
     }
     
     public void updateLinkforRemovedPlatform(Platform p) {
+        if (platforms.contains(p)) p.decrementLoad();
         platforms.remove(p);
     }
     

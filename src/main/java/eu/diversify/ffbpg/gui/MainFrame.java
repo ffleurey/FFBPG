@@ -78,6 +78,10 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jRadioButtonIniti1 = new javax.swing.JRadioButton();
+        jLabel11 = new javax.swing.JLabel();
+        jTextFieldAppCapacity = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jTextFieldSrvCapacity = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jRadioButtonLinkSL = new javax.swing.JRadioButton();
         jRadioButtonLinkAL = new javax.swing.JRadioButton();
@@ -107,7 +111,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel1.setText("lambda=");
 
-        jTextFieldSrvLambda.setText("0.01");
+        jTextFieldSrvLambda.setText("0.25");
         jTextFieldSrvLambda.setPreferredSize(new java.awt.Dimension(60, 20));
         jTextFieldSrvLambda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,7 +122,7 @@ public class MainFrame extends javax.swing.JFrame {
         buttonGroupSrvDist.add(jRadioButtonSrvComb);
         jRadioButtonSrvComb.setText("Combined");
 
-        jTextFieldSrvURate.setText("0.1");
+        jTextFieldSrvURate.setText("0.01");
         jTextFieldSrvURate.setPreferredSize(new java.awt.Dimension(60, 20));
 
         jLabel4.setText("%");
@@ -343,13 +347,30 @@ public class MainFrame extends javax.swing.JFrame {
         jRadioButtonIniti1.setSelected(true);
         jRadioButtonIniti1.setText("One platform / application - Exact services match");
 
+        jLabel11.setText("Applications capacity:");
+
+        jTextFieldAppCapacity.setText("100");
+
+        jLabel13.setText("Servers capacity:");
+
+        jTextFieldSrvCapacity.setText("100");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jRadioButtonIniti1)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButtonIniti1)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldAppCapacity, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                            .addComponent(jTextFieldSrvCapacity))))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -357,6 +378,14 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jRadioButtonIniti1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jTextFieldAppCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jTextFieldSrvCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -545,6 +574,9 @@ public class MainFrame extends javax.swing.JFrame {
         int n_app = Integer.parseInt(jTextFieldSimNApp.getText());
         int n_srv = Integer.parseInt(jTextFieldSimNSrv.getText());
         
+        int app_capacity = Integer.parseInt(jTextFieldAppCapacity.getText());
+        int srv_capacity = Integer.parseInt(jTextFieldSrvCapacity.getText());
+        
         cfg.append("# Number generated graphs\t"); cfg.append(n_run); cfg.append("\n");
         
         cfg.append("# Baseline Nodes\t"); cfg.append("One platform per application, exact service match"); cfg.append("\n");
@@ -552,6 +584,9 @@ public class MainFrame extends javax.swing.JFrame {
         
         cfg.append("# Number of applications\t"); cfg.append(n_app); cfg.append("\n");
         cfg.append("# Number of services\t"); cfg.append(n_srv); cfg.append("\n");
+        
+        cfg.append("# Application Capacity\t"); cfg.append(app_capacity); cfg.append("\n");
+        cfg.append("# Servers Capacity\t"); cfg.append(srv_capacity); cfg.append("\n");
         
         cfg.append("# Dist. of application size\t");
         IntegerGenerator app_size_generator = null;
@@ -601,7 +636,7 @@ public class MainFrame extends javax.swing.JFrame {
            
             g = new BPGraph(n_srv);
             SortedIntegerCollection[] ssets = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_app, app_size_generator, service_sets_generator);
-            g.createGraphWithOnePlatformPerApplicationAndSingleLink(ssets);
+            g.createGraphWithOnePlatformPerApplicationAndSingleLink(ssets, app_capacity, srv_capacity);
             
             
             
@@ -706,7 +741,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBoxNeighbourhood;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -735,6 +772,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextFieldAppCapacity;
     private javax.swing.JTextField jTextFieldAppLambda;
     private javax.swing.JTextField jTextFieldAppMean;
     private javax.swing.JTextField jTextFieldAppN;
@@ -744,6 +782,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldNeighbourhood;
     private javax.swing.JTextField jTextFieldSimNApp;
     private javax.swing.JTextField jTextFieldSimNSrv;
+    private javax.swing.JTextField jTextFieldSrvCapacity;
     private javax.swing.JTextField jTextFieldSrvLambda;
     private javax.swing.JTextField jTextFieldSrvURate;
     // End of variables declaration//GEN-END:variables
