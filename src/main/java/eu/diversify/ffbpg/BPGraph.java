@@ -7,6 +7,7 @@ import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 
 /**
  *
@@ -41,6 +42,14 @@ public class BPGraph {
     public ArrayList<Platform> getPlatforms() {
         return platforms;
     }
+    
+    public ArrayList<Application> getLinkedApplicationsForPlatform(Platform p) {
+        ArrayList<Application> linked_apps = new ArrayList<Application>();
+        for (Application a : this.getApplications()) {
+            if (a.getLinkedPlatforms().contains(p)) linked_apps.add(a);
+        }
+        return linked_apps;
+    }
 
     RandomGenerator randomGenerator = new RandomGenerator();
 
@@ -51,6 +60,30 @@ public class BPGraph {
     public BPGraph(int n_services) {
         services = randomGenerator.createServices(n_services);
         id = graph_counter++;
+    }
+    
+    private BPGraph(BPGraph other) {
+        // Clone the services collection (Service objects are shared)
+        services = (ArrayList<Service>)services.clone();
+        
+        // Clone the platforms
+        Hashtable<String, Platform> new_platforms = new Hashtable<String, Platform>();
+        platforms = new ArrayList<Platform>();
+        for (Platform p : other.getPlatforms()) {
+            Platform np = p.deep_clone();
+            new_platforms.put(p.getName(), np);
+            platforms.add(np);
+        }
+        // clone the applications (and re-link to the cloned platforms)
+        applications = new ArrayList<Application>();
+        for (Application a : other.getApplications()) {
+            Application na = a.deep_clone(new_platforms);
+            applications.add(na);
+        }
+    }
+    
+    public BPGraph deep_clone() {
+        return new BPGraph(this);
     }
     
     public SortedIntegerCollection getAllRequiredServices() {

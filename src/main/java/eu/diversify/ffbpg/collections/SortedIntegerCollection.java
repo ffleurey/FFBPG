@@ -57,6 +57,10 @@ public class SortedIntegerCollection {
         _add_last(value);
     }
 
+    public void remove(int value) {
+        _list.remove(value);
+    }
+    
     public void addAll(SortedIntegerCollection other) {
         if (this.size() == 0) {
             for (int i=0; i<other.size(); i++) {
@@ -137,6 +141,14 @@ public class SortedIntegerCollection {
             if (other.get(i) == this.get(j)) {
                 return true;
             }
+        }
+        return false;
+    }
+    
+    public boolean contains(Integer v) {
+        for (int i = 0; i < size(); i++) {
+            if(this.get(i) > v) break;
+            if (this.get(i) == v) return true;
         }
         return false;
     }

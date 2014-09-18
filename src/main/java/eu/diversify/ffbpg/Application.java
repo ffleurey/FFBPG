@@ -4,6 +4,7 @@ import eu.diversify.ffbpg.collections.SortedIntegerCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Hashtable;
 
 /**
  *
@@ -48,6 +49,15 @@ public class Application {
         return result.toString();
     }
     
+    public int getServicesRedondancy(Integer srv) {
+        int result = 0;
+        if(requiredServices.contains(srv)) {
+            for (Platform p : platforms) {
+                if (p.getProvidedServices().contains(srv)) result ++;
+            }
+        }
+        return result;
+    }
 
     public SortedIntegerCollection getRequiredServices() {
         return requiredServices;
@@ -58,6 +68,22 @@ public class Application {
         this.capacity = capacity;
         requiredServices = new SortedIntegerCollection();
         platforms = new HashSet<Platform>();
+    }
+    
+    private Application(String name, int capacity, SortedIntegerCollection requiredServices, HashSet<Platform> new_platforms) {
+        this.name = name;
+        this.capacity = capacity;
+        this.requiredServices = requiredServices;
+        this.platforms = new_platforms;
+        
+    }
+    
+    public Application deep_clone(Hashtable<String, Platform> new_platforms) {
+        HashSet<Platform> nplatforms = new HashSet<Platform>();
+        for (Platform p : platforms) {
+            nplatforms.add(new_platforms.get(p.getName()));
+        }
+        return new Application(name, capacity, requiredServices.clone(), nplatforms);
     }
     
     public void addLinksToPlatformsProvidingAtLeastOneSrv(ArrayList<Platform> available_platforms, ArrayList<AddLinkIfPossible> result) {

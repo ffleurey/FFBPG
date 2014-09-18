@@ -52,4 +52,15 @@ public class Platform {
         this.name = name;
         providedServices = new SortedIntegerCollection();
     }
+    
+    private Platform(String name, int capacity, SortedIntegerCollection providedServices) {
+        this.capacity = capacity;
+        this.name = name;
+        this.providedServices = providedServices;
+    }
+    
+    public Platform deep_clone() {
+        return new Platform(name, capacity, providedServices.clone());
+    }
+    
 }
