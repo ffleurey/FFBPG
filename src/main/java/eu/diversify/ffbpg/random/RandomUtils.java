@@ -10,6 +10,10 @@ public class RandomUtils {
     
     private static Random rand = new Random(System.currentTimeMillis());
     
+    public static Random getRandom() {
+        return rand;
+    }
+    
     /**
      * Return a random integer between 0 and max inclusive
      * @param max

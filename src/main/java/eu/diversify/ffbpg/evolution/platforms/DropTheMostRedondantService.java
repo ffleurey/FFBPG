@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package eu.diversify.ffbpg.evolution;
+package eu.diversify.ffbpg.evolution.platforms;
 
 import eu.diversify.ffbpg.Application;
 import eu.diversify.ffbpg.BPGraph;
@@ -15,15 +15,15 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
- *
+ * This operator selects a random platform and makes it drop one service.
+ * The removed services is either an unused ser
+ * 
  * @author ffl
  */
-public class LocalPlatformEvolution extends AbstractEvolutionOperator {
+public class DropTheMostRedondantService extends PlatformEvolutionOperator {
 
     @Override
-    public void step1_evolve_platforms(BPGraph graph) {
-        // Select a random platform which will evolve
-        Platform p = graph.getPlatforms().get(RandomUtils.getUniform(graph.getPlatforms().size()));
+    public boolean execute(BPGraph graph, Platform p) {
         // Calculate the links for this platform
         ArrayList<Application> linked_apps = graph.getLinkedApplicationsForPlatform(p);
         // calculate Services usage
@@ -40,8 +40,10 @@ public class LocalPlatformEvolution extends AbstractEvolutionOperator {
                     if (redondancy < min_redondancy) min_redondancy = redondancy;
                 }
             }
-            service_usage.put(srv, apps);
-            service_min_redondancy.put(srv, min_redondancy);
+            if (apps.size() > 0 ) { // Ignore services which are unused.
+                service_usage.put(srv, apps);
+                service_min_redondancy.put(srv, min_redondancy);
+            }
         }
         // Select the service with the higest "min_redondancy"
         int max_r = 1;
@@ -55,23 +57,12 @@ public class LocalPlatformEvolution extends AbstractEvolutionOperator {
         if (selected_service > 0 && max_r > 1) {
             // The selected service can be removed without breaking any applications
             p.getProvidedServices().remove(selected_service);
-            
-            // TODO: Instantiate a replacement service
-            
+            return true;
         }
         else {
             // No service can be removed without breaking some applications
+            return false;
         }
-    }
-
-    @Override
-    public void step2_evolve_applications(BPGraph graph) {
-        
-    }
-
-    @Override
-    public void step3_evolve_links(BPGraph graph) {
-        
     }
     
 }

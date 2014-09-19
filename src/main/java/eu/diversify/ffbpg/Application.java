@@ -103,7 +103,7 @@ public class Application {
             }
         }
     }
-    
+       
     public int linksCount() {
         return platforms.size();
     }
