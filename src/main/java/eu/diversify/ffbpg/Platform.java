@@ -1,6 +1,6 @@
 package eu.diversify.ffbpg;
 
-import eu.diversify.ffbpg.collections.SortedIntegerCollection;
+import eu.diversify.ffbpg.collections.SortedIntegerSet;
 
 /**
  *
@@ -41,26 +41,27 @@ public class Platform {
         return load < capacity;
     }
     
-    protected SortedIntegerCollection providedServices;
+    protected SortedIntegerSet providedServices;
 
-    public SortedIntegerCollection getProvidedServices() {
+    public SortedIntegerSet getProvidedServices() {
         return providedServices;
     }
     
     public Platform(String name, int capacity) {
         this.capacity = capacity;
         this.name = name;
-        providedServices = new SortedIntegerCollection();
+        providedServices = new SortedIntegerSet();
     }
     
-    private Platform(String name, int capacity, SortedIntegerCollection providedServices) {
+    private Platform(String name, int capacity, int load, SortedIntegerSet providedServices) {
         this.capacity = capacity;
+        this.load = load;
         this.name = name;
         this.providedServices = providedServices;
     }
     
     public Platform deep_clone() {
-        return new Platform(name, capacity, providedServices.clone());
+        return new Platform(name, capacity, load, providedServices.clone());
     }
     
 }

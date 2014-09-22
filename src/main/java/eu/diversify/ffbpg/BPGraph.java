@@ -1,12 +1,13 @@
 package eu.diversify.ffbpg;
 
 import eu.diversify.ffbpg.utils.FileUtils;
-import eu.diversify.ffbpg.collections.SortedIntegerCollection;
+import eu.diversify.ffbpg.collections.SortedIntegerSet;
 import eu.diversify.ffbpg.random.IntegerSetGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
@@ -22,9 +23,15 @@ public class BPGraph {
     private static long graph_counter = 0;
     private long id;
     
+    private String label = "";
+    
+    public void setlabel(String label) {
+        this.label = label;
+    }
+    
     @Override
     public String toString() {
-        return "Bi-Partite Graph #" + id;
+        return "Bi-Partite Graph #" + id + " " + label;
     }
 
     public String getName() {
@@ -64,7 +71,7 @@ public class BPGraph {
     
     private BPGraph(BPGraph other) {
         // Clone the services collection (Service objects are shared)
-        services = (ArrayList<Service>)services.clone();
+        services = (ArrayList<Service>)other.services.clone();
         
         // Clone the platforms
         Hashtable<String, Platform> new_platforms = new Hashtable<String, Platform>();
@@ -86,20 +93,20 @@ public class BPGraph {
         return new BPGraph(this);
     }
     
-    public SortedIntegerCollection getAllRequiredServices() {
-        SortedIntegerCollection result = new SortedIntegerCollection();
+    public SortedIntegerSet getAllRequiredServices() {
+        SortedIntegerSet result = new SortedIntegerSet();
         for (Application a : applications) result.addAll(a.requiredServices);
         return result;
     }
     
-    public SortedIntegerCollection getAllProvidedServices() {
-        SortedIntegerCollection result = new SortedIntegerCollection();
+    public SortedIntegerSet getAllProvidedServices() {
+        SortedIntegerSet result = new SortedIntegerSet();
         for (Platform p : platforms) result.addAll(p.providedServices);
         return result;
     }
     
-    public SortedIntegerCollection getAllUsedServices() {
-        SortedIntegerCollection result = getAllRequiredServices();
+    public SortedIntegerSet getAllUsedServices() {
+        SortedIntegerSet result = getAllRequiredServices();
         result.addAll(getAllProvidedServices());
         return result;
     }
@@ -128,7 +135,7 @@ public class BPGraph {
         return result/applications.size();
     }
 
-    public void createGraphWithOnePlatformPerApplicationAndSingleLink(SortedIntegerCollection[] services_sets, int app_capacity, int srv_capacity) {
+    public void createGraphWithOnePlatformPerApplicationAndSingleLink(SortedIntegerSet[] services_sets, int app_capacity, int srv_capacity) {
         applications = new ArrayList<Application>();
         platforms = new ArrayList<Platform>();
         for (int i = 0; i < services_sets.length; i++) {
@@ -150,6 +157,7 @@ public class BPGraph {
         if (app_neighborhood_size >= platforms.size()) {
             for (Application a : applications) {
                 a.addLinksToPlatformsProvidingAtLeastOneSrv(platforms, commands);
+                a.setNeighborhood(new HashSet<Platform>(getPlatforms()));
             }
         }
         else {
@@ -162,6 +170,7 @@ public class BPGraph {
                 int[] indexes = g.getRandomIntegerSet(platforms.size()-1, app_neighborhood_size);
                 for(int i : indexes) neighborhood.add(platforms.get(i));
                 a.addLinksToPlatformsProvidingAtLeastOneSrv(neighborhood, commands);
+                a.setNeighborhood(new HashSet<Platform>(neighborhood));
             }
         }
         Collections.shuffle(commands); // Randomize the order of the commands (Important)
@@ -175,6 +184,7 @@ public class BPGraph {
         if (app_neighborhood_size >= platforms.size()) {
             for (Application a : applications) {
                 a.addLinksToPlatformsProvidingAllSrv(platforms, commands);
+                a.setNeighborhood(new HashSet<Platform>(getPlatforms()));
             }
         }
         else {
@@ -187,6 +197,7 @@ public class BPGraph {
                 int[] indexes = g.getRandomIntegerSet(platforms.size()-1, app_neighborhood_size);
                 for(int i : indexes) neighborhood.add(platforms.get(i));
                 a.addLinksToPlatformsProvidingAllSrv(neighborhood, commands);
+                a.setNeighborhood(new HashSet<Platform>(neighborhood));
             }
         }
         Collections.shuffle(commands); // Randomize the order of the commands (Important)
@@ -238,7 +249,7 @@ public class BPGraph {
     public int[] servicesDistributionInApplications() {
         int[] result = new int[services.size()];
         for (Application a : applications) {
-            SortedIntegerCollection c = a.getRequiredServices();
+            SortedIntegerSet c = a.getRequiredServices();
             for (int i = 0; i < c.size(); i++) {
                 result[c.get(i)]++;
             }
@@ -249,7 +260,7 @@ public class BPGraph {
     public int[] servicesDistributionInPlatforms() {
         int[] result = new int[services.size()];
         for (Platform a : platforms) {
-            SortedIntegerCollection c = a.getProvidedServices();
+            SortedIntegerSet c = a.getProvidedServices();
             for (int i = 0; i < c.size(); i++) {
                 result[c.get(i)]++;
             }

@@ -24,6 +24,9 @@ public class RemoveUnusedLinks extends ApplicationEvolutionOperator {
         }
         else {
             a.getLinkedPlatforms().removeAll(toremove);
+            for (Platform p : toremove) {
+                p.decrementLoad();
+            }
             return true;
         }
     }

@@ -8,6 +8,7 @@ package eu.diversify.ffbpg.gui;
 
 import eu.diversify.ffbpg.Application;
 import eu.diversify.ffbpg.BPGraph;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 import javax.swing.table.AbstractTableModel;
@@ -35,8 +36,10 @@ public class BPGraphAppTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 4;
+        return 9;
     }
+    
+     DecimalFormat df = new DecimalFormat("#.###");
 
     public Object getValueAt(int l, int c) {
        
@@ -48,6 +51,11 @@ public class BPGraphAppTableModel extends AbstractTableModel {
             case 1: return a.getRequiredServices().toString();
             case 2: return a.getLinkedPlatformNames();
             case 3: return a.dependenciesSatisfied();
+            case 4: return a.getServicesPopulation().toString();
+            case 5: return df.format(a.getServicesPopulation().getShannonIndex());
+            case 6: return df.format(a.getServicesPopulation().getShannonEquitability());
+            case 7: return df.format(a.getServicesPopulation().getPopulationMeanSize());
+            case 8: return df.format(a.getServicesPopulation().getPopulationMedianSize());
             default: return "???";
         }
         
@@ -73,6 +81,11 @@ public class BPGraphAppTableModel extends AbstractTableModel {
             case 1: return "Req. Services";
             case 2: return "Linked Platforms";
             case 3: return "Running";
+            case 4: return "Srv Pop";
+            case 5: return "shannon";
+            case 6: return "Equit.";
+            case 7: return "Mean";
+            case 8: return "Med";
             default: return "???";
         }
     }

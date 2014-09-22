@@ -2,47 +2,29 @@ package eu.diversify.ffbpg.collections;
 
 import java.util.ArrayList;
 
-public class SortedIntegerCollection {
+public class SortedIntegerSet extends AbstractSortedIntegerCollection {
 
-    private ArrayList<Integer> _list;
-
-    public SortedIntegerCollection() {
+ 
+    public SortedIntegerSet() {
         _list = new ArrayList<Integer>();
     }
 
-    public SortedIntegerCollection(String data) {
-        _list = new ArrayList<Integer>();
-        String v[] = data.replace("{", " ").replace("}", " ").trim().split(",");
-        if (!v[0].equals("")) {
-            for (int i = 0; i < v.length; i++) {
-                this.add(Integer.parseInt(v[i].trim()));
-            }
-        }
+    public SortedIntegerSet(String data) {
+        super(data);
     }
 
-    public String toString() {
-        String result = "{";
-        for (int i = 0; i < _list.size(); i++) {
-            result += _list.get(i).toString();
-            if (i < _list.size() - 1) {
-                result += ", ";
-            }
-        }
-        result += "}";
-        return result;
-    }
-
-    private SortedIntegerCollection(ArrayList<Integer> list) {
+    private SortedIntegerSet(ArrayList<Integer> list) {
         _list = new ArrayList<Integer>();
         for (int i = 0; i < list.size(); i++) {
             _add_last(list.get(i));
         }
     }
 
-    public SortedIntegerCollection clone() {
-        return new SortedIntegerCollection(_list);
+    public SortedIntegerSet clone() {
+        return new SortedIntegerSet(_list);
     }
 
+    @Override
     public void add(int value) {
         // Keep the list sorted
         for (int i = 0; i < _list.size(); i++) {
@@ -57,11 +39,8 @@ public class SortedIntegerCollection {
         _add_last(value);
     }
 
-    public void remove(int value) {
-        _list.remove(value);
-    }
-    
-    public void addAll(SortedIntegerCollection other) {
+   
+    public void addAll(SortedIntegerSet other) {
         if (this.size() == 0) {
             for (int i=0; i<other.size(); i++) {
                 this._add_last(other.get(i));
@@ -87,27 +66,7 @@ public class SortedIntegerCollection {
         }
     }
 
-    private void _add_last(int value) {
-        _list.add(_list.size(), value);
-    }
-
-    public int[] toArray() {
-        int[] res = new int[_list.size()];
-        for (int i = 0; i < _list.size(); i++) {
-            res[i] = _list.get(i);
-        }
-        return res;
-    }
-
-    public int get(int index) {
-        return _list.get(index);
-    }
-
-    public int size() {
-        return _list.size();
-    }
-
-    public boolean containsAll(SortedIntegerCollection other) {
+     public boolean containsAll(SortedIntegerSet other) {
         if (other.size() > this.size()) {
             return false;
         }
@@ -126,7 +85,7 @@ public class SortedIntegerCollection {
         return true;
     }
 
-    public boolean containsSome(SortedIntegerCollection other) {
+    public boolean containsSome(SortedIntegerSet other) {
         if (this.size() == 0) {
             return false;
         }
@@ -144,17 +103,10 @@ public class SortedIntegerCollection {
         }
         return false;
     }
-    
-    public boolean contains(Integer v) {
-        for (int i = 0; i < size(); i++) {
-            if(this.get(i) > v) break;
-            if (this.get(i) == v) return true;
-        }
-        return false;
-    }
 
-    public SortedIntegerCollection intersection(SortedIntegerCollection other) {
-        SortedIntegerCollection result = new SortedIntegerCollection();
+
+    public SortedIntegerSet intersection(SortedIntegerSet other) {
+        SortedIntegerSet result = new SortedIntegerSet();
         if (this.size() == 0) {
             return result;
         }
@@ -173,8 +125,8 @@ public class SortedIntegerCollection {
         return result;
     }
 
-    public SortedIntegerCollection union(SortedIntegerCollection other) {
-        SortedIntegerCollection result = this.clone();
+    public SortedIntegerSet union(SortedIntegerSet other) {
+        SortedIntegerSet result = this.clone();
         result.addAll(other);
         return result;
     }

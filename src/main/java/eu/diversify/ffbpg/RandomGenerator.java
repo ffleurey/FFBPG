@@ -1,6 +1,6 @@
 package eu.diversify.ffbpg;
 
-import eu.diversify.ffbpg.collections.SortedIntegerCollection;
+import eu.diversify.ffbpg.collections.SortedIntegerSet;
 import eu.diversify.ffbpg.random.IntegerGenerator;
 import eu.diversify.ffbpg.random.IntegerSetGenerator;
 import java.util.ArrayList;
@@ -26,10 +26,10 @@ public class RandomGenerator {
         return services;
     }
     
-    public SortedIntegerCollection[] createRandomServiceSets(ArrayList<Service> services, int length, IntegerGenerator size_generator, IntegerSetGenerator sets_generator) {
-        SortedIntegerCollection[] result = new SortedIntegerCollection[length];
+    public SortedIntegerSet[] createRandomServiceSets(ArrayList<Service> services, int length, IntegerGenerator size_generator, IntegerSetGenerator sets_generator) {
+        SortedIntegerSet[] result = new SortedIntegerSet[length];
         for (int i = 0; i < length; i++) {
-            result[i] = new SortedIntegerCollection();
+            result[i] = new SortedIntegerSet();
             int n_services = size_generator.getNextInteger(1, services.size());
             int[] ridx = sets_generator.getRandomIntegerSet(services.size(), n_services);
             for (int j = 0; j < n_services; j++) {

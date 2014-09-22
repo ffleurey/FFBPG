@@ -2,7 +2,7 @@ package eu.diversify.ffbpg;
 
 import eu.diversify.ffbpg.ExtinctionSequence;
 import eu.diversify.ffbpg.BPGraph;
-import eu.diversify.ffbpg.collections.SortedIntegerCollection;
+import eu.diversify.ffbpg.collections.SortedIntegerSet;
 import eu.diversify.ffbpg.random.GaussianIntegerGenerator;
 import eu.diversify.ffbpg.random.IntegerGenerator;
 import eu.diversify.ffbpg.random.IntegerSetGenerator;
@@ -62,7 +62,7 @@ public class BPGraphTest
         
         for(int i=0; i<n_run; i++) {
             g = new BPGraph(n_services);
-            SortedIntegerCollection[] ssets = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_applications, app_size_generator, service_sets_generator);
+            SortedIntegerSet[] ssets = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_applications, app_size_generator, service_sets_generator);
             g.createGraphWithOnePlatformPerApplicationAndSingleLink(ssets,n_applications, n_applications);
             if (all_links) g.addLinksToAllPlatformsProvidingAtLeastOneSrv();
             apps_srv[i] = g.applicationsServicesCountsDistribution();
