@@ -20,6 +20,7 @@ public class AddOneRandomLink extends ApplicationEvolutionOperator {
     @Override
     public boolean execute(BPGraph graph, Application a) {
         
+        if (a.getCapacity() <= a.getLinkedPlatforms().size()) return false; // do not exeed app capacity
         // Create the candidate applications
         ArrayList<Platform> candidates = new ArrayList<Platform>();
         for(Platform p : a.getNeighborhood()) {

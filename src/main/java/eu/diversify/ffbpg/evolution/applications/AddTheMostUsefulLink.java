@@ -16,6 +16,8 @@ public class AddTheMostUsefulLink extends ApplicationEvolutionOperator {
     @Override
     public boolean execute(BPGraph graph, Application a) {
         
+        if (a.getCapacity() <= a.getLinkedPlatforms().size()) return false; // do not exeed app capacity
+        
         // Create the candidate applications
         Hashtable<Platform, Population> candidates = new Hashtable<Platform, Population>();
         for(Platform p : a.getNeighborhood()) {
