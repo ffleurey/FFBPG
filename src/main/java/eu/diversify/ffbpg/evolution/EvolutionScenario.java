@@ -17,6 +17,9 @@ public abstract class EvolutionScenario {
         EvolutionScenario s;
         s = new GuidedApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);
         s = new RandomApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);
+        s = new GuidedPlatformServicesEvolutionScenario(); prototypes.put(s.getName(), s);
+        s = new RandomPlatformServicesEvolutionScenario1(); prototypes.put(s.getName(), s);
+        s = new GuidedCoEvolutionScenario(); prototypes.put(s.getName(), s);
     }
     
     public static Object[] getAllScenarioNames() {

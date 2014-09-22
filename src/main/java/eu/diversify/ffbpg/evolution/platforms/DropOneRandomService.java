@@ -10,6 +10,7 @@ import eu.diversify.ffbpg.Application;
 import eu.diversify.ffbpg.BPGraph;
 import eu.diversify.ffbpg.Platform;
 import eu.diversify.ffbpg.Service;
+import eu.diversify.ffbpg.collections.SortedIntegerSet;
 import eu.diversify.ffbpg.random.RandomUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,16 +22,15 @@ import java.util.Hashtable;
  * 
  * @author ffl
  */
-public class DropOneUnusedService extends PlatformEvolutionOperator {
+public class DropOneRandomService extends PlatformEvolutionOperator {
 
     @Override
     public boolean execute(BPGraph graph, Platform p) {
         // Calculate the links for this platform
         ArrayList<Application> linked_apps = graph.getLinkedApplicationsForPlatform(p);
-        // calculate Services usage
-        Hashtable<Integer, ArrayList<Application>> service_usage = new Hashtable<Integer, ArrayList<Application>>();
-        Hashtable<Integer, Integer> service_min_redondancy = new Hashtable<Integer, Integer>();
+     
         ArrayList<Integer> unused_services = new ArrayList<Integer>();
+        
         for (int i=0; i<p.getProvidedServices().size(); i++) {
             Integer srv = p.getProvidedServices().get(i);
             boolean used = false;

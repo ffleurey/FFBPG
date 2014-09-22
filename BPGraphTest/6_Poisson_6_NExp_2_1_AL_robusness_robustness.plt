@@ -1,4 +1,4 @@
-set title '6_Poisson_6_NExp_2_1_AL_robusness: Robustness index for 5 runs (avg = 24.997849462365593)'
+set title '6_Poisson_6_NExp_2_1_AL_robusness: Robustness index for 5 runs (avg = 22.494623655913976)'
 set xlabel 'Run'
 set ylabel 'Robusness index (%)'
 set xrange [0:4]

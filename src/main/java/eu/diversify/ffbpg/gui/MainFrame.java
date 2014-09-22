@@ -135,7 +135,7 @@ public class MainFrame extends javax.swing.JFrame {
         jRadioButtonSrvComb.setSelected(true);
         jRadioButtonSrvComb.setText("Combined");
 
-        jTextFieldSrvURate.setText("0.01");
+        jTextFieldSrvURate.setText("0.005");
         jTextFieldSrvURate.setPreferredSize(new java.awt.Dimension(60, 20));
 
         jLabel4.setText("%");
@@ -206,7 +206,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel2.setText("lambda=");
 
-        jTextFieldAppLambda.setText("8.0");
+        jTextFieldAppLambda.setText("6.0");
         jTextFieldAppLambda.setPreferredSize(new java.awt.Dimension(60, 20));
 
         jLabel5.setText("mean=");
@@ -281,7 +281,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jRadioButtonAppUniform)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -313,7 +313,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTextFieldSimNApp.setText("100");
         jTextFieldSimNApp.setPreferredSize(new java.awt.Dimension(60, 20));
 
-        jTextFieldSimNSrv.setText("150");
+        jTextFieldSimNSrv.setText("80");
         jTextFieldSimNSrv.setPreferredSize(new java.awt.Dimension(60, 20));
         jTextFieldSimNSrv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -362,7 +362,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel11.setText("Applications capacity:");
 
-        jTextFieldAppCapacity.setText("10");
+        jTextFieldAppCapacity.setText("5");
 
         jLabel13.setText("Servers capacity:");
 
@@ -456,14 +456,14 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBoxNeighbourhood)
                     .addComponent(jTextFieldNeighbourhood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Bipartite graph generator"));
 
         jLabel12.setText("Number of graphs");
 
-        jTextFieldNGraphs.setText("25");
+        jTextFieldNGraphs.setText("10");
         jTextFieldNGraphs.setPreferredSize(new java.awt.Dimension(60, 20));
 
         jButton1.setText("Generate");

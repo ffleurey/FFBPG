@@ -12,6 +12,7 @@ import eu.diversify.ffbpg.Platform;
 import eu.diversify.ffbpg.Service;
 import eu.diversify.ffbpg.random.RandomUtils;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 
 /**
@@ -26,9 +27,13 @@ public class DropTheMostRedondantService extends PlatformEvolutionOperator {
     public boolean execute(BPGraph graph, Platform p) {
         // Calculate the links for this platform
         ArrayList<Application> linked_apps = graph.getLinkedApplicationsForPlatform(p);
+        
         // calculate Services usage
         Hashtable<Integer, ArrayList<Application>> service_usage = new Hashtable<Integer, ArrayList<Application>>();
         Hashtable<Integer, Integer> service_min_redondancy = new Hashtable<Integer, Integer>();
+        
+        ArrayList<Integer> unused_services = new ArrayList<Integer>();
+        
         for (int i=0; i<p.getProvidedServices().size(); i++) {
             Integer srv = p.getProvidedServices().get(i);
             ArrayList<Application> apps = new ArrayList<Application>();
@@ -44,6 +49,9 @@ public class DropTheMostRedondantService extends PlatformEvolutionOperator {
                 service_usage.put(srv, apps);
                 service_min_redondancy.put(srv, min_redondancy);
             }
+            else {
+                unused_services.add(srv);
+            }
         }
         // Select the service with the higest "min_redondancy"
         int max_r = 1;
@@ -57,6 +65,11 @@ public class DropTheMostRedondantService extends PlatformEvolutionOperator {
         if (selected_service > 0 && max_r > 1) {
             // The selected service can be removed without breaking any applications
             p.getProvidedServices().remove(selected_service);
+            return true;
+        }
+        else if (!unused_services.isEmpty()){ 
+            Collections.shuffle(unused_services, RandomUtils.getRandom());
+            p.getProvidedServices().remove(unused_services.get(0));
             return true;
         }
         else {

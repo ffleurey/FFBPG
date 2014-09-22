@@ -29,10 +29,12 @@ public class BPGraphFrame extends javax.swing.JFrame {
     protected BPGraph graph;
 
     protected BPGraphAppTableModel apptablemodel = new BPGraphAppTableModel();
+    protected BPGraphPLatformTableModel plattablemodel = new BPGraphPLatformTableModel();
 
     public void setBPGraph(BPGraph g, boolean scale_graphs) {
         graph = g;
         apptablemodel.setBPGraph(g);
+        plattablemodel.setBPGraph(g);
         jTextFieldBPgraph.setText(g.toString());
         
         ((BPMatrixGraph)jPanelMatrix).setBPGraph(g);
@@ -181,6 +183,9 @@ public class BPGraphFrame extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPanel10 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jPanel1 = new BarGraphPanel(appsize, "Distribution of the application sizes (# required srv)", 0, 100, 25, Color.GREEN);
         jPanel2 = new BarGraphPanel(srvuse, "Distribution of the services usage", 0, 100, 25, Color.ORANGE);
@@ -318,6 +323,22 @@ public class BPGraphFrame extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Applications", jPanel8);
+
+        jTable2.setModel(plattablemodel);
+        jScrollPane3.setViewportView(jTable2);
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Platforms", jPanel10);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -548,6 +569,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelRIndex;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -560,8 +582,10 @@ public class BPGraphFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelMatrix;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextAreaParams;
     private javax.swing.JTextField jTextFieldBPgraph;
     private javax.swing.JTextField jTextFieldFolder;

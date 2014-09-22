@@ -43,7 +43,7 @@ public abstract class AbstractSortedIntegerCollection {
     public abstract void add(int value);
 
     public void remove(int value) {
-        _list.remove(value);
+        _list.remove((Object)value);
     }
     
    

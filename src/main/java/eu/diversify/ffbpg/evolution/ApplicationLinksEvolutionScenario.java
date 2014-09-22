@@ -4,6 +4,7 @@ import eu.diversify.ffbpg.Application;
 import eu.diversify.ffbpg.BPGraph;
 import eu.diversify.ffbpg.evolution.applications.AddTheMostUsefulLink;
 import eu.diversify.ffbpg.evolution.applications.ApplicationEvolutionOperator;
+import eu.diversify.ffbpg.evolution.applications.EvolveAppNeighborhood;
 import eu.diversify.ffbpg.evolution.applications.RemoveTheLeastUsefulLink;
 import eu.diversify.ffbpg.random.RandomUtils;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
     
     ApplicationEvolutionOperator remove_link_op;
     ApplicationEvolutionOperator add_link_op;
+    EvolveAppNeighborhood evolve_neigh = new EvolveAppNeighborhood();
     String name;
     
     public ApplicationLinksEvolutionScenario(String name, ApplicationEvolutionOperator remove_link_op, ApplicationEvolutionOperator add_link_op) {
@@ -26,10 +28,14 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
     }
     
     public void step(BPGraph graph) {
-        
-        // First remove some links
-        
+ 
         ArrayList<Application> apps = (ArrayList<Application>)graph.getApplications().clone();
+        Collections.shuffle(apps);
+        
+        // Evolve the apps neigborhood
+        for(Application a : apps) {
+            evolve_neigh.execute(graph, a);
+        }
         
         int removed = 0;
         int added = 0;
@@ -45,17 +51,21 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
             }
         }
         
-        
-        
-        // Add as many links as we can
-        for(Application a : apps) {
-           
-            //while (true) {
-                if (add_link_op.execute(graph, a)) added++;
-                else break; // we cannot remove more links
-            //}
+        // Add just as many links as has been removed
+        boolean finished = false;
+            while (!finished) {
+            Collections.shuffle(apps);
+            for(Application a : apps) {
+                    if (add_link_op.execute(graph, a)) {
+                        added++;
+                        if (added == removed) {
+                            finished = true;
+                            break;
+                        }
+                    }
+                    else break; // we cannot remove more links
+            }
         }
-        
         System.out.println("Step complete removed links = " + removed + " added links = " + added);
     }
 
