@@ -791,7 +791,10 @@ public class MainFrame extends javax.swing.JFrame {
                 System.out.println("Running Simuation step #" + i);
                 current = current.deep_clone(); // Create the new bp graph
                 current.setlabel("[Simulation step " + (i+1) + "]");
-                for (int j=0; j<sim_steps_size; j++) s.step(current);
+                for (int j=0; j<sim_steps_size; j++) {
+                    current.clearAllCachedData();
+                    s.step(current);
+                }
                 results.add(current);
             }
             System.out.println("End of simualtion.");

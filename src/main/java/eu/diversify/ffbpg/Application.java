@@ -28,6 +28,9 @@ public class Application {
         neighborhood = platforms;
     }
     
+    public void clearAllCachedData() {
+        resetServicesPopulation();
+    }
     
     protected int capacity = 10;
 

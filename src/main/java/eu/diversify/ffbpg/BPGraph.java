@@ -50,6 +50,15 @@ public class BPGraph {
         return platforms;
     }
     
+    public void clearAllCachedData() {
+        for (Application a : applications) {
+            a.clearAllCachedData();
+        }
+        for (Platform p : platforms) {
+            p.clearAllCachedData();
+        }
+    }
+    
     public ArrayList<Application> getLinkedApplicationsForPlatform(Platform p) {
         ArrayList<Application> linked_apps = new ArrayList<Application>();
         for (Application a : this.getApplications()) {

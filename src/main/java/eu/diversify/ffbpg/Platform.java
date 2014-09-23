@@ -1,6 +1,8 @@
 package eu.diversify.ffbpg;
 
+import eu.diversify.ffbpg.collections.Population;
 import eu.diversify.ffbpg.collections.SortedIntegerSet;
+import java.util.ArrayList;
 
 /**
  *
@@ -63,5 +65,110 @@ public class Platform {
     public Platform deep_clone() {
         return new Platform(name, capacity, load, providedServices.clone());
     }
+    
+    
+     public void clearAllCachedData() {
+         linked_apps = null;
+         all_known_services = null;
+         //servicesUsagePopulation = null;
+         //servicesRedondancyPopulation = null;
+         servicesMinRedondancyPopulation = null;
+         providedServicesMinRedondancyPopulation = null;
+         
+     }
+     
+     // Calcullated data:
+     ArrayList<Application> linked_apps;
+     SortedIntegerSet all_known_services;
+     //Population servicesUsagePopulation;
+     //Population servicesRedondancyPopulation;
+     Population servicesMinRedondancyPopulation;
+     Population providedServicesMinRedondancyPopulation;
+
+    public ArrayList<Application> getLinked_apps(BPGraph graph) {
+        if (linked_apps == null) computeServicePopulation(graph);
+        return linked_apps;
+    }
+
+    public SortedIntegerSet getAll_known_services(BPGraph graph) {
+        if (linked_apps == null) computeServicePopulation(graph);
+        return all_known_services;
+    }
+
+//    public Population getServicesUsagePopulation(BPGraph graph) {
+//        if (linked_apps == null) computeServicePopulation(graph);
+//        return servicesUsagePopulation;
+//    }
+//
+//    public Population getServicesRedondancyPopulation(BPGraph graph) {
+//        if (linked_apps == null) computeServicePopulation(graph);
+//        return servicesRedondancyPopulation;
+//    }
+
+    public Population getServicesMinRedondancyPopulation(BPGraph graph) {
+        if (linked_apps == null) computeServicePopulation(graph);
+        return servicesMinRedondancyPopulation;
+    }
+    
+    public Population getProvidedServicesMinRedondancyPopulation(BPGraph graph) {
+        if (linked_apps == null) computeServicePopulation(graph);
+        return providedServicesMinRedondancyPopulation;
+    }
+    
+     
+     private void computeServicePopulation(BPGraph graph) {
+         
+         linked_apps = graph.getLinkedApplicationsForPlatform(this);
+         // Collect all services
+         all_known_services = providedServices.clone();
+         for (Application a : linked_apps) {
+             all_known_services.addAll(a.getRequiredServices());
+         }
+         // remove the services which are offered by p:
+         for (int i=0; i<providedServices.size(); i++) {
+             all_known_services.remove(providedServices.get(i));
+         }
+         
+         //int[] usage_pop = new int[all_known_services.size()]; // # of apps using the service
+         //int[] total_red_pop = new int[all_known_services.size()]; // Min # of redondancy for apps
+         int[] min_red_pop = new int[all_known_services.size()]; // Min # of redondancy for apps
+         
+         for (int i=0; i<all_known_services.size(); i++) {
+             Integer srv = all_known_services.get(i);
+             min_red_pop[i] = -1; // Theoritical absolute maximum
+             //usage_pop[i] = 0;
+             //total_red_pop[i] = 0;
+             for (Application a : linked_apps) {
+                 if (a.requiredServices.contains(srv)) {
+                     //usage_pop[i]++;
+                     int r = a.getServicesRedondancy(srv);
+                     //total_red_pop[i] += r;
+                     if (min_red_pop[i] < 0 || r < min_red_pop[i]) min_red_pop[i] = r;
+                 }
+             }
+         }
+         //servicesUsagePopulation = new Population(usage_pop);
+         //servicesRedondancyPopulation = new Population(total_red_pop);
+         servicesMinRedondancyPopulation = new Population(min_red_pop);
+         
+         min_red_pop = new int[getProvidedServices().size()]; // Min # of redondancy for apps
+         
+         for (int i=0; i<getProvidedServices().size(); i++) {
+             Integer srv = getProvidedServices().get(i);
+             min_red_pop[i] = -1; // Theoritical absolute maximum
+             //usage_pop[i] = 0;
+             //total_red_pop[i] = 0;
+             for (Application a : linked_apps) {
+                 if (a.requiredServices.contains(srv)) {
+                     //usage_pop[i]++;
+                     int r = a.getServicesRedondancy(srv);
+                     //total_red_pop[i] += r;
+                     if (min_red_pop[i] < 0 || r < min_red_pop[i]) min_red_pop[i] = r;
+                 }
+             }
+         }
+
+         providedServicesMinRedondancyPopulation = new Population(min_red_pop);
+     }
     
 }

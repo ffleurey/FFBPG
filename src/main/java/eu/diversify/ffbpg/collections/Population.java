@@ -20,6 +20,10 @@ public class Population {
         population = pop;
     }
     
+    public int[] getData() {
+        return population;
+    }
+    
     public String toString() {
         if (string == null) {
             StringBuffer b = new StringBuffer();

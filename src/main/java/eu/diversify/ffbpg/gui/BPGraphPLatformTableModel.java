@@ -37,7 +37,7 @@ public class BPGraphPLatformTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 3;
+        return 7;
     }
     
      DecimalFormat df = new DecimalFormat("#.###");
@@ -49,14 +49,13 @@ public class BPGraphPLatformTableModel extends AbstractTableModel {
         
         switch(c) {
             case 0: return p.getName();
-            case 1: return p.getProvidedServices().toString();
-            case 2: return p.getLoad();/*
-            case 3: return p.();
-            case 4: return p.getServicesPopulation().toString();
-            case 5: return df.format(a.getServicesPopulation().getShannonIndex());
-            case 6: return df.format(a.getServicesPopulation().getShannonEquitability());
-            case 7: return df.format(a.getServicesPopulation().getPopulationMeanSize());
-            case 8: return df.format(a.getServicesPopulation().getPopulationMedianSize());*/
+            case 1: return p.getLoad();
+            case 2: return p.getLinked_apps(data).size();
+            case 3: return p.getProvidedServices().toString();
+            case 4: return p.getProvidedServicesMinRedondancyPopulation(data).toString();
+            case 5: return p.getAll_known_services(data).toString();
+            case 6: return p.getServicesMinRedondancyPopulation(data).toString();
+            
             default: return "???";
         }
         
@@ -79,14 +78,13 @@ public class BPGraphPLatformTableModel extends AbstractTableModel {
         
         switch(c) {
             case 0: return "Platform";
-            case 1: return "Prov. Services";
-            case 2: return "Load";/*
-            case 3: return "Running";
-            case 4: return "Srv Pop";
-            case 5: return "shannon";
-            case 6: return "Equit.";
-            case 7: return "Mean";
-            case 8: return "Med";*/
+            case 1: return "Load";
+            case 2: return "Links";
+            case 3: return "Prov. Srv";
+            case 4: return "Prov Srv Min Red";
+            case 5: return "All Srv";
+            case 6: return "All Srv Min Red";
+
             default: return "???";
         }
     }
