@@ -20,7 +20,7 @@ public class Facade {
         return new UniformIntegerGenerator();
     }
     
-    public static IntegerGenerator getPoiIntegerGenerator(double lambda) {
+    public static IntegerGenerator getPoissonIntegerGenerator(double lambda) {
         return new PoissonIntegerGenerator(lambda);
     }
     

@@ -1,6 +1,5 @@
 package eu.diversify.ffbpg;
 
-import eu.diversify.ffbpg.collections.*;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -32,7 +31,7 @@ public class FacadeTest
     public void testGenerateBPGraph()
     {
         // Here is the default parameters I am using
-        BPGraph g = Facade.createBPgraph(100, 80, Facade.getPoiIntegerGenerator(6), Facade.getNegExpIntegerSetGenerator(0.25, 0.005));
+        BPGraph g = Facade.createBPgraph(100, 80, Facade.getPoissonIntegerGenerator(6), Facade.getNegExpIntegerSetGenerator(0.25, 0.005));
      
         assertEquals(g.getServices().size(), 80);
         assertEquals(g.getApplications().size(), 100);
