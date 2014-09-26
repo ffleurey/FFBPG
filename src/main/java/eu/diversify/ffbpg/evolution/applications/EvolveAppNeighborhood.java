@@ -19,7 +19,7 @@ public class EvolveAppNeighborhood extends ApplicationEvolutionOperator {
 
     @Override
     public boolean execute(BPGraph graph, Application a) {
-        
+        /*
         ArrayList<Platform> rn = new ArrayList<Platform>(a.getNeighborhood());
         Collections.shuffle(rn, RandomUtils.getRandom());
         
@@ -50,7 +50,7 @@ public class EvolveAppNeighborhood extends ApplicationEvolutionOperator {
    
         a.getNeighborhood().remove(toRemove);
         a.getNeighborhood().add(toAdd);
-        
+        */
         return true;
     }
     

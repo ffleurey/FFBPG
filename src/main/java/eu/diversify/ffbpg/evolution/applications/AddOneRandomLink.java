@@ -23,7 +23,7 @@ public class AddOneRandomLink extends ApplicationEvolutionOperator {
         if (a.getCapacity() <= a.getLinkedPlatforms().size()) return false; // do not exeed app capacity
         // Create the candidate applications
         ArrayList<Platform> candidates = new ArrayList<Platform>();
-        for(Platform p : a.getNeighborhood()) {
+        for(Platform p : graph.getPlatforms()) {
             if (a.getLinkedPlatforms().contains(p)) continue; // Eliminate already linked platforms
             if (!p.getProvidedServices().containsSome(a.getRequiredServices())) continue; // Eliminate useless platforms
             if (!p.hasRemainingCapacity()) continue; // Eliminate saturated platforms

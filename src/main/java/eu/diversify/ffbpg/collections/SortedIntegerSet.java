@@ -130,4 +130,12 @@ public class SortedIntegerSet extends AbstractSortedIntegerCollection {
         result.addAll(other);
         return result;
     }
+
+    public SortedIntegerSet minus(SortedIntegerSet other) {
+        SortedIntegerSet result = this.clone();
+        for (int i=0; i<other.size(); i++) {
+            result.remove(other.get(i));
+        }
+        return result;
+    }
 }

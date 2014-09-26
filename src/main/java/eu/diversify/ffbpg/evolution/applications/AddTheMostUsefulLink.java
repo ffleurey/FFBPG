@@ -20,7 +20,7 @@ public class AddTheMostUsefulLink extends ApplicationEvolutionOperator {
         
         // Create the candidate applications
         Hashtable<Platform, Population> candidates = new Hashtable<Platform, Population>();
-        for(Platform p : a.getNeighborhood()) {
+        for(Platform p : graph.getPlatforms()) {
             HashSet<Platform> new_links = (HashSet<Platform>)a.getLinkedPlatforms().clone();
             new_links.add(p);
             if (a.getLinkedPlatforms().contains(p)) continue; // Eliminate already linked platforms

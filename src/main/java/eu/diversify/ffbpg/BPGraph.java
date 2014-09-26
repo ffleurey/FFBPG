@@ -3,6 +3,7 @@ package eu.diversify.ffbpg;
 import eu.diversify.ffbpg.utils.FileUtils;
 import eu.diversify.ffbpg.collections.SortedIntegerSet;
 import eu.diversify.ffbpg.random.IntegerSetGenerator;
+import eu.diversify.ffbpg.random.RandomUtils;
 import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.io.File;
 import java.util.ArrayList;
@@ -157,6 +158,62 @@ public class BPGraph {
             // Add a single ling between the application and the platform
             a.updateLinkforAddedPlatform(p);
         }
+    }
+    
+    public void createRandomizedGraphWithoutLinks(SortedIntegerSet[] apps, SortedIntegerSet[] plats, int app_capacity, int srv_capacity) {
+       
+        platforms = new ArrayList<Platform>();
+        for (int i = 0; i < plats.length; i++) {
+            Platform p = new Platform("P" + i, srv_capacity);
+            p.getProvidedServices().addAll(plats[i]);
+            platforms.add(p);
+        }
+        
+        applications = new ArrayList<Application>();
+        for (int i = 0; i < apps.length; i++) {
+            Application a = new Application("A" + i, app_capacity);
+            a.getRequiredServices().addAll(apps[i]);
+            applications.add(a);
+        }
+    }
+    
+    public void addRandomLinksToSatisfyDeps() {
+        
+        ArrayList<Platform> plats = getPlatforms();
+        
+        for (Application a : getApplications()) {
+            if (a.dependenciesSatisfied()) continue; // No problem
+            if (!a.hasRemainingCapacity()) continue; // Cannot be repared by adding links
+            SortedIntegerSet required = a.getRequiredServices();
+            for (Platform p : a.getLinkedPlatforms()) {
+                required = required.minus(p.getProvidedServices());
+            }
+            Collections.shuffle(plats, RandomUtils.getRandom());
+            for(Platform p : plats) {
+                if(a.getLinkedPlatforms().contains(p)) continue;
+                if (p.hasRemainingCapacity() && p.getProvidedServices().containsSome(required)) {
+                    a.getLinkedPlatforms().add(p);
+                    if (!a.hasRemainingCapacity()) break;
+                    p.incrementLoad();
+                    required = required.minus(p.getProvidedServices());
+                    if(required.size() == 0) break;
+                }
+            }
+        }
+    }
+    
+    public void purgeDeadApplications() {
+        ArrayList<Application> toremove = new ArrayList<Application>();
+        for (Application a : getApplications()) {
+            if (!a.dependenciesSatisfied()) {
+                toremove.add(a);
+                // Clear any existing links
+                for (Platform p : a.getLinkedPlatforms()) {
+                    p.decrementLoad();
+                }
+            }
+        }
+        applications.removeAll(toremove);
     }
     
     

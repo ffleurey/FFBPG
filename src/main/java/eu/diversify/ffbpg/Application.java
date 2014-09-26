@@ -20,7 +20,7 @@ public class Application {
     
     protected HashSet<Platform> neighborhood;
     
-    public HashSet<Platform> getNeighborhood() {
+    private HashSet<Platform> getNeighborhood() {
         return neighborhood;
     }
     
@@ -123,8 +123,10 @@ public class Application {
         }
         
         HashSet<Platform> nneighborhood = new HashSet<Platform>();
-        for (Platform p : neighborhood) {
-            nneighborhood.add(new_platforms.get(p.getName()));
+        if (neighborhood != null) {
+            for (Platform p : neighborhood) {
+                nneighborhood.add(new_platforms.get(p.getName()));
+            }
         }
         
         return new Application(name, capacity, requiredServices.clone(), nplatforms, nneighborhood);
