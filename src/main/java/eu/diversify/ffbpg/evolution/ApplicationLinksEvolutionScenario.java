@@ -9,12 +9,34 @@ import eu.diversify.ffbpg.evolution.applications.RemoveTheLeastUsefulLink;
 import eu.diversify.ffbpg.random.RandomUtils;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 
 /**
  *
  * @author ffl
  */
 public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenario{
+    
+    
+    protected static Hashtable<String, ApplicationLinksEvolutionScenario> prototypes = new Hashtable<String, ApplicationLinksEvolutionScenario>();
+    protected static ArrayList<String> prototypes_names = new ArrayList<String>();
+    
+    static {
+        ApplicationLinksEvolutionScenario s;
+        s = new NoApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new RandomApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new GuidedRemoveApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new GuidedAddApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new GuidedApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+    }
+    
+    public static Object[] getAllScenarioNames() {
+        return prototypes_names.toArray();
+    }
+    
+    public static ApplicationLinksEvolutionScenario getScenarioByName(String name) {
+        return prototypes.get(name);
+    }
     
     ApplicationEvolutionOperator remove_link_op;
     ApplicationEvolutionOperator add_link_op;

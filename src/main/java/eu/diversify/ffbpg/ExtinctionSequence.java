@@ -18,8 +18,8 @@ public class ExtinctionSequence {
     private int[] data;
     private Platform[] platforms;
 
-    public ExtinctionSequence(int n_platforms, int n_applications) {
-        this.data = new int[n_platforms + 1];
+    public ExtinctionSequence(int n_platforms, int n_applications, int steps) {
+        this.data = new int[steps + 1];
         this.data[0] = n_applications;
         this.platforms = new Platform[n_platforms];
     }
@@ -70,7 +70,8 @@ public class ExtinctionSequence {
      * @param n_apps
      * @return 
      */
-    public static double averageRobustnessIndex(double[] average_extinction) {
+    /*
+    public static double linear_averageRobustnessIndex(double[] average_extinction) {
         double np = average_extinction.length-1;
         double na = average_extinction[0];
         double delta = 0;
@@ -82,6 +83,24 @@ public class ExtinctionSequence {
             delta += average_extinction[p] - linear;
         }
         double result = delta / total;
+        return result;
+    }
+    */
+    public static double averageRobustnessIndex(double[] average_extinction, int steps) {
+        if (steps < 1 || steps > average_extinction.length) {
+            System.err.println("ERROR PRE in averageRobustnessIndex steps = " + steps);
+            return 0;
+        }
+        
+        double na = average_extinction[0];
+        double np = average_extinction[steps-1];
+
+        double total = 0;
+
+        for (int p=0; p<steps; p++) {
+            total += average_extinction[p];
+        }
+        double result = total / (steps * na);
         return result;
     }
 

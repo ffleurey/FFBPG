@@ -17,7 +17,7 @@ import java.util.Collections;
 public class GuidedApplicationLinksEvolutionScenario extends ApplicationLinksEvolutionScenario {
 
     public GuidedApplicationLinksEvolutionScenario() {
-        super("Guided Application Links Evolution", 
+        super("Smart Remove, Smart Add", 
                     new RemoveTheLeastUsefulLink(), new AddTheMostUsefulLink());
     }
 

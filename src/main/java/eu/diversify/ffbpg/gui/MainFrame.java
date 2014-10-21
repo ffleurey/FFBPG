@@ -9,7 +9,10 @@ package eu.diversify.ffbpg.gui;
 import eu.diversify.ffbpg.BPGraph;
 import eu.diversify.ffbpg.Facade;
 import eu.diversify.ffbpg.collections.SortedIntegerSet;
+import eu.diversify.ffbpg.evolution.ApplicationLinksEvolutionScenario;
 import eu.diversify.ffbpg.evolution.EvolutionScenario;
+import eu.diversify.ffbpg.evolution.InitializationEvolutionScenario;
+import eu.diversify.ffbpg.evolution.PlatformServicesEvolutionScenario;
 import eu.diversify.ffbpg.random.BinomialIntegerGenerator;
 import eu.diversify.ffbpg.random.GaussianIntegerGenerator;
 import eu.diversify.ffbpg.random.IntegerGenerator;
@@ -36,7 +39,9 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        jComboBoxSimulScenario.setModel(new DefaultComboBoxModel(EvolutionScenario.getAllScenarioNames()));
+        jComboBoxSimulAppScenario.setModel(new DefaultComboBoxModel(ApplicationLinksEvolutionScenario.getAllScenarioNames()));
+        jComboBoxSimulPlatScenario.setModel(new DefaultComboBoxModel(PlatformServicesEvolutionScenario.getAllScenarioNames()));
+        jComboBoxInitSimul.setModel(new DefaultComboBoxModel(InitializationEvolutionScenario.getAllScenarioNames()));
     }
 
     /**
@@ -109,10 +114,14 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jTextFieldSimulSteps = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jComboBoxSimulScenario = new javax.swing.JComboBox();
+        jComboBoxSimulAppScenario = new javax.swing.JComboBox();
         jButton2 = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         jTextFieldSimStepSize = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jComboBoxSimulPlatScenario = new javax.swing.JComboBox();
+        jLabel19 = new javax.swing.JLabel();
+        jComboBoxInitSimul = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Diversify Bi-Partite Graph Generator");
@@ -317,7 +326,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTextFieldSimNApp.setText("300");
         jTextFieldSimNApp.setPreferredSize(new java.awt.Dimension(60, 20));
 
-        jTextFieldSimNSrv.setText("150");
+        jTextFieldSimNSrv.setText("50");
         jTextFieldSimNSrv.setPreferredSize(new java.awt.Dimension(60, 20));
         jTextFieldSimNSrv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -336,7 +345,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(99, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel9)
@@ -383,7 +392,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel13.setText("Servers capacity:");
 
-        jTextFieldSrvCapacity.setText("10");
+        jTextFieldSrvCapacity.setText("18");
 
         buttonGroupInitial.add(jRadioButtonInitRandom);
         jRadioButtonInitRandom.setSelected(true);
@@ -538,14 +547,14 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButtonBPGView))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))
         );
 
         jLabel14.setText("Simulation steps: ");
 
         jTextFieldSimulSteps.setText("50");
 
-        jLabel15.setText("Simulation Scenario: ");
+        jLabel15.setText("Application Links Evolution: ");
 
         jButton2.setText("RUN !");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -558,11 +567,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTextFieldSimStepSize.setText("1");
 
+        jLabel18.setText("Platform Services Evolution: ");
+
+        jLabel19.setText("Initialization step(s): ");
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
@@ -575,9 +588,15 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(jTextFieldSimStepSize)))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel15)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel19))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxSimulScenario, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBoxSimulAppScenario, 0, 286, Short.MAX_VALUE)
+                            .addComponent(jComboBoxSimulPlatScenario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxInitSimul, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addGap(404, 404, 404))
@@ -588,7 +607,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextFieldSimulSteps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldSimulSteps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
@@ -596,9 +616,16 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(jComboBoxSimulScenario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addContainerGap(75, Short.MAX_VALUE))
+                    .addComponent(jComboBoxSimulAppScenario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(jComboBoxSimulPlatScenario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19)
+                    .addComponent(jComboBoxInitSimul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -818,24 +845,39 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             int sim_steps = Integer.parseInt(jTextFieldSimulSteps.getText());
             int sim_steps_size = Integer.parseInt(jTextFieldSimStepSize.getText());
-            EvolutionScenario s = EvolutionScenario.getScenarioByName(jComboBoxSimulScenario.getSelectedItem().toString());
+            
+            ApplicationLinksEvolutionScenario link_s = ApplicationLinksEvolutionScenario.getScenarioByName(jComboBoxSimulAppScenario.getSelectedItem().toString());
+            
+            PlatformServicesEvolutionScenario serv_s = PlatformServicesEvolutionScenario.getScenarioByName(jComboBoxSimulPlatScenario.getSelectedItem().toString());
+            
+            InitializationEvolutionScenario init_s = InitializationEvolutionScenario.getScenarioByName(jComboBoxInitSimul.getSelectedItem().toString());
+            
             if (bpgraphtable.getData().size() == 0) return;
             int row = jTable1.getSelectedRow();
             if (row < 0) row = 0;
             BPGraph initial = bpgraphtable.getData().get(row);
             
             // run the simulation;
-            System.out.println("Starting simulations " + s.getName());
+            System.out.println("Starting simulations... ");
             ArrayList<BPGraph> results = new  ArrayList<BPGraph>();
             BPGraph current = initial;
             results.add(current);
+            
+            System.out.println("Running initialization step...");
+            
+            current = current.deep_clone(); // Create the new bp graph
+            current.clearAllCachedData();
+            init_s.step(current);
+            results.add(current);
+            
             for (int i = 0; i<sim_steps; i++) {
                 System.out.println("Running Simuation step #" + i);
                 current = current.deep_clone(); // Create the new bp graph
                 current.setlabel("[Simulation step " + (i+1) + "]");
                 for (int j=0; j<sim_steps_size; j++) {
                     current.clearAllCachedData();
-                    s.step(current);
+                    if (serv_s != null) serv_s.step(current);
+                    if (link_s != null) link_s.step(current);
                 }
                 results.add(current);
             }
@@ -843,7 +885,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             BPGraphFrame f = new BPGraphFrame();
             f.setVisible(true);
-            f.setBPGraphCollection(results, 0, "Simulation " + s.getName());
+            f.setBPGraphCollection(results, 0, "Simulation Result");
             
         }
         catch(Exception e) {
@@ -902,7 +944,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonBPGView;
     private javax.swing.JCheckBox jCheckBoxNeighbourhood;
-    private javax.swing.JComboBox jComboBoxSimulScenario;
+    private javax.swing.JComboBox jComboBoxInitSimul;
+    private javax.swing.JComboBox jComboBoxSimulAppScenario;
+    private javax.swing.JComboBox jComboBoxSimulPlatScenario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -912,6 +956,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

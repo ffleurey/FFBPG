@@ -12,24 +12,6 @@ import java.util.Hashtable;
  */
 public abstract class EvolutionScenario {
     
-    protected static Hashtable<String, EvolutionScenario> prototypes = new Hashtable<String, EvolutionScenario>();
-    static {
-        EvolutionScenario s;
-        s = new GuidedApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);
-        s = new RandomApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);
-        s = new GuidedPlatformServicesEvolutionScenario(); prototypes.put(s.getName(), s);
-        s = new RandomPlatformServicesEvolutionScenario1(); prototypes.put(s.getName(), s);
-        s = new GuidedCoEvolutionScenario(); prototypes.put(s.getName(), s);
-    }
-    
-    public static Object[] getAllScenarioNames() {
-        return prototypes.keySet().toArray();
-    }
-    
-    public static EvolutionScenario getScenarioByName(String name) {
-        return prototypes.get(name);
-    }
-    
     public abstract String getName();
     
     public abstract void step(BPGraph graph);

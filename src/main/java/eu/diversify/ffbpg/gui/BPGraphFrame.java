@@ -94,10 +94,10 @@ public class BPGraphFrame extends javax.swing.JFrame {
         jLabelRIndex.setText("");
     }
 
-    public void computeExtinctionSeq(int n, boolean export) {
-        ExtinctionSequence[] seqs = graph.performRandomExtinctionSequences(n);
+    public void computeExtinctionSeq(int n, int percent_ext, boolean export) {
+        ExtinctionSequence[] seqs = graph.performRandomExtinctionSequences(n, (graph.getPlatforms().size() * percent_ext) / 100 );
         double[] ext = ExtinctionSequence.averageExtinctionSequences(seqs);
-        double result = ExtinctionSequence.averageRobustnessIndex(ext) * 100;
+        double result = ExtinctionSequence.averageRobustnessIndex(ext, ext.length) * 100;
         jLabelRIndex.setText(String.format("%1$,.2f", result) + "%");
         int[] l = new int[ext.length];
         for (int i = 0; i < l.length; i++) {
@@ -203,6 +203,8 @@ public class BPGraphFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabelRIndex = new javax.swing.JLabel();
         jCheckBoxExportToFile = new javax.swing.JCheckBox();
+        jLabel5 = new javax.swing.JLabel();
+        jTextFieldPercentExt = new javax.swing.JTextField();
         jPanelExt = new BarGraphPanel(extinction, "Average extinction sequence", 0, 100, 25, new java.awt.Color(0, 153, 255));
         jPanel9 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -397,6 +399,10 @@ public class BPGraphFrame extends javax.swing.JFrame {
 
         jCheckBoxExportToFile.setText("Export to file");
 
+        jLabel5.setText("Percentage of Platforms to kill: ");
+
+        jTextFieldPercentExt.setText("100");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -408,7 +414,11 @@ public class BPGraphFrame extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldNExt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldPercentExt, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -425,7 +435,9 @@ public class BPGraphFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jTextFieldNExt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
-                    .addComponent(jCheckBoxExportToFile))
+                    .addComponent(jCheckBoxExportToFile)
+                    .addComponent(jLabel5)
+                    .addComponent(jTextFieldPercentExt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelRIndex)
                 .addContainerGap())
@@ -521,7 +533,8 @@ public class BPGraphFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int n = Integer.parseInt(jTextFieldNExt.getText());
-        computeExtinctionSeq(n, jCheckBoxExportToFile.isSelected());
+        int ext_percent = Integer.parseInt(jTextFieldPercentExt.getText());
+        computeExtinctionSeq(n, ext_percent, jCheckBoxExportToFile.isSelected());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -576,6 +589,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
         if (folder == null) return;
         
         final int n_run = Integer.parseInt(jTextFieldNExt.getText());
+        final int ext_percent = Integer.parseInt(jTextFieldPercentExt.getText());
         
         final ProgressMonitor progressMonitor = new ProgressMonitor(this,
                                       "Calculating extinction sequences...",
@@ -588,13 +602,16 @@ public class BPGraphFrame extends javax.swing.JFrame {
             int[][] robusness = new int[1][collection.size()];
             
             int[][] cost = new int[4][collection.size()];
+            
+            int[][] links_utility = new int[1][collection.size()];
            
         
             for(int i=0; i<collection.size(); i++) {
                 
                 BPGraph g = collection.get(i);
-                ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run);
-                robusness[0][i] = (int) (100.0 * ExtinctionSequence.averageRobustnessIndex(ExtinctionSequence.averageExtinctionSequences(seqs)));
+                ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run, (g.getPlatforms().size() * ext_percent) / 100);
+                double[] res = ExtinctionSequence.averageExtinctionSequences(seqs);
+                robusness[0][i] = (int) (1000.0 * ExtinctionSequence.averageRobustnessIndex(res, res.length));
                 
                 cost[0][i] = g.getPlatforms().size();
 
@@ -605,10 +622,15 @@ public class BPGraphFrame extends javax.swing.JFrame {
                 cost[1][i] = n_services;
                 
                 int n_links = 0;
+                int u_links = 0;
                 for (Application a : g.getApplications()) {
                     n_links += a.getLinkedPlatforms().size();
+                    for (Platform p : a.getLinkedPlatforms()) {
+                        u_links += a.getRequiredServices().intersection(p.getProvidedServices()).size();
+                    }
                 }
                 cost[2][i] = n_links;
+                links_utility[0][i] = (u_links * 100) / n_links;
                 
                  int n_load = 0;
                 for(Platform p : g.getPlatforms()) {
@@ -627,6 +649,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
             }
             BPGraph.writeGNUPlotScriptForData(robusness, folder, "robusness_evolution");
             BPGraph.writeGNUPlotScriptForData(cost, folder, "cost_evolution");
+            BPGraph.writeGNUPlotScriptForData(links_utility, folder, "links_utility");
         }
         };
         
@@ -647,6 +670,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelRIndex;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -671,5 +695,6 @@ public class BPGraphFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldFolder;
     private javax.swing.JTextField jTextFieldNExt;
     private javax.swing.JTextField jTextFieldName;
+    private javax.swing.JTextField jTextFieldPercentExt;
     // End of variables declaration//GEN-END:variables
 }

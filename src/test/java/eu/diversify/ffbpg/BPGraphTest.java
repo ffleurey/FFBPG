@@ -69,8 +69,9 @@ public class BPGraphTest
             apps_link[i] = g.applicationsLinksCountsDistribution();
             srv_dist[i] = g.servicesDistributionInApplications();
             
-            ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run);
-            robusness[i] = 100 * ExtinctionSequence.averageRobustnessIndex(ExtinctionSequence.averageExtinctionSequences(seqs));
+            ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run, g.getPlatforms().size());
+            double[] res = ExtinctionSequence.averageExtinctionSequences(seqs);
+            robusness[i] = 100 * ExtinctionSequence.averageRobustnessIndex(res, res.length);
         }
         
         BPGraph.writeGNUPlotScriptForData(srv_dist, out_dir, name + "_srv_dist");
@@ -79,8 +80,9 @@ public class BPGraphTest
         
         ExtinctionSequence.writeGNUPlotScriptForDouble(robusness, out_dir, name + "_robusness");
         
-        ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run);
-        ExtinctionSequence.averageRobustnessIndex(ExtinctionSequence.averageExtinctionSequences(seqs));
+        ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run, g.getPlatforms().size());
+        double[] res = ExtinctionSequence.averageExtinctionSequences(seqs);
+        ExtinctionSequence.averageRobustnessIndex(res, res.length);
         ExtinctionSequence.writeGNUPlotScriptForAll(seqs, out_dir, name + "_extinctions");
         
     }

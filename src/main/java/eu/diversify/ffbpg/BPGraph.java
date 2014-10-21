@@ -278,8 +278,9 @@ public class BPGraph {
     
     IntegerSetGenerator seq_generator = new UniformIntegerSetGenerator();
 
-    public ExtinctionSequence performRandomExtinctionSequence() {
-        int[] rseq = seq_generator.getRandomIntegerSet(platforms.size(), platforms.size());
+    public ExtinctionSequence performRandomExtinctionSequence(int steps) {
+        assert steps >= 1 && steps <= platforms.size();
+        int[] rseq = seq_generator.getRandomIntegerSet(platforms.size(), steps);
         ArrayList<Application> alive_applications = new ArrayList<Application>();
         for (Application a : applications) {
             a.startExtinctionSequence();
@@ -287,9 +288,9 @@ public class BPGraph {
                 alive_applications.add(a);
             }
         }
-        ExtinctionSequence result = new ExtinctionSequence(platforms.size(), alive_applications.size());
+        ExtinctionSequence result = new ExtinctionSequence(platforms.size(), alive_applications.size(), steps);
 
-        for (int i = 0; i < rseq.length; i++) {
+        for (int i = 0; i < steps; i++) {
             Platform tokill = platforms.get(rseq[i]);
             ArrayList<Application> dead_applications = new ArrayList<Application>();
             for (Application a : alive_applications) {
@@ -304,10 +305,10 @@ public class BPGraph {
         return result;
     }
 
-    public ExtinctionSequence[] performRandomExtinctionSequences(int n_sequences) {
+    public ExtinctionSequence[] performRandomExtinctionSequences(int n_sequences, int steps) {
         ExtinctionSequence[] result = new ExtinctionSequence[n_sequences];
         for (int i = 0; i < result.length; i++) {
-            result[i] = performRandomExtinctionSequence();
+            result[i] = performRandomExtinctionSequence(steps);
         }
         return result;
     }

@@ -6,6 +6,7 @@ import eu.diversify.ffbpg.evolution.platforms.PlatformEvolutionOperator;
 import eu.diversify.ffbpg.random.RandomUtils;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -13,6 +14,25 @@ import java.util.List;
  * @author ffl
  */
 public abstract class PlatformServicesEvolutionScenario extends EvolutionScenario{
+    
+        protected static Hashtable<String, PlatformServicesEvolutionScenario> prototypes = new Hashtable<String, PlatformServicesEvolutionScenario>();
+        protected static ArrayList<String> prototypes_names = new ArrayList<String>();
+        
+        static {
+            PlatformServicesEvolutionScenario s;  
+            s = new NoPlatformServicesEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+            s = new GuidedPlatformServicesEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+            s = new RandomPlatformServicesEvolutionScenario1(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        }
+    
+    public static Object[] getAllScenarioNames() {
+        return prototypes_names.toArray();
+    }
+    
+    public static PlatformServicesEvolutionScenario getScenarioByName(String name) {
+        return prototypes.get(name);
+    }
+    
     
     PlatformEvolutionOperator remove_srv_op;
     PlatformEvolutionOperator add_srv_op;
