@@ -17,7 +17,7 @@ public class Application {
     protected SortedIntegerSet requiredServices;
     
     protected HashSet<Platform> platforms;
-    
+    /*
     protected HashSet<Platform> neighborhood;
     
     private HashSet<Platform> getNeighborhood() {
@@ -27,7 +27,7 @@ public class Application {
     public void setNeighborhood(HashSet<Platform> platforms) {
         neighborhood = platforms;
     }
-    
+    */
     public void clearAllCachedData() {
         resetServicesPopulation();
     }
@@ -113,7 +113,7 @@ public class Application {
         this.capacity = capacity;
         this.requiredServices = requiredServices;
         this.platforms = new_platforms;
-        this.neighborhood = neighborhood;
+        //this.neighborhood = neighborhood;
     }
     
     public Application deep_clone(Hashtable<String, Platform> new_platforms) {
@@ -123,11 +123,13 @@ public class Application {
         }
         
         HashSet<Platform> nneighborhood = new HashSet<Platform>();
+        /*
         if (neighborhood != null) {
             for (Platform p : neighborhood) {
                 nneighborhood.add(new_platforms.get(p.getName()));
             }
         }
+                */
         
         return new Application(name, capacity, requiredServices.clone(), nplatforms, nneighborhood);
     }
@@ -157,12 +159,16 @@ public class Application {
     
     public void updateLinkforAddedPlatform(Platform p) {
         if (p.hasRemainingCapacity() && this.hasRemainingCapacity() && p.getProvidedServices().containsSome(requiredServices)) {
-            platforms.add(p);
-            p.incrementLoad();
+            addLinkToPlatform(p);
         }
     }
     
-    public void updateLinkforRemovedPlatform(Platform p) {
+    public void addLinkToPlatform(Platform p) {
+            platforms.add(p);
+            p.incrementLoad();
+    }
+    
+    public void removeLinkToPlatform(Platform p) {
         if (platforms.contains(p)) p.decrementLoad();
         platforms.remove(p);
     }

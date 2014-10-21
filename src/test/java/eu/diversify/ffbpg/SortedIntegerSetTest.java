@@ -28,6 +28,53 @@ public class SortedIntegerSetTest
     {
         return new TestSuite( SortedIntegerSetTest.class );
     }
+    
+
+    public void testMisterious()
+    {
+        SortedIntegerSet a64 = new SortedIntegerSet("{6,17,135}");
+        SortedIntegerSet p5 = new SortedIntegerSet("{0,1,6,10,20,29,44,96}");
+        SortedIntegerSet p36 = new SortedIntegerSet("{0,1,2,3,4,17,18,40,122}");
+        
+        SortedIntegerSet all_provided = new SortedIntegerSet();
+        
+        all_provided.addAll(p5);
+        all_provided.addAll(p36);
+        
+        assertEquals(all_provided.toString(), "{0, 1, 2, 3, 4, 6, 10, 17, 18, 20, 29, 40, 44, 96, 122}");
+        
+        assertFalse(all_provided.containsAll(a64));
+                
+    }
+    
+    public void testNotContainsAll1() {
+        SortedIntegerSet l1 = new SortedIntegerSet("{4, 6, 10, 17, 122}");
+        SortedIntegerSet l2 = new SortedIntegerSet("{6,17,135}");
+        
+        assertFalse(l1.containsAll(l2));
+    }
+    
+     public void testNotContainsAll2() {
+        SortedIntegerSet l1 = new SortedIntegerSet("{3, 4}");
+        SortedIntegerSet l2 = new SortedIntegerSet("{10}");
+        
+        assertFalse(l1.containsAll(l2));
+    }
+     
+     public void testNotContainsAll3() {
+        SortedIntegerSet l1 = new SortedIntegerSet("{3, 4, 22}");
+        SortedIntegerSet l2 = new SortedIntegerSet("{10}");
+        
+        assertFalse(l1.containsAll(l2));
+    }
+     
+     public void testContainsAll6() {
+        SortedIntegerSet l1 = new SortedIntegerSet("{3, 4, 10}");
+        SortedIntegerSet l2 = new SortedIntegerSet("{3, 4, 10}");
+        
+        assertTrue(l1.containsAll(l2));
+    }
+            
 
     public void testCreate1()
     {

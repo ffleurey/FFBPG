@@ -223,7 +223,7 @@ public class BPGraph {
         if (app_neighborhood_size >= platforms.size()) {
             for (Application a : applications) {
                 a.addLinksToPlatformsProvidingAtLeastOneSrv(platforms, commands);
-                a.setNeighborhood(new HashSet<Platform>(getPlatforms()));
+                //a.setNeighborhood(new HashSet<Platform>(getPlatforms()));
             }
         }
         else {
@@ -236,7 +236,7 @@ public class BPGraph {
                 int[] indexes = g.getRandomIntegerSet(platforms.size()-1, app_neighborhood_size);
                 for(int i : indexes) neighborhood.add(platforms.get(i));
                 a.addLinksToPlatformsProvidingAtLeastOneSrv(neighborhood, commands);
-                a.setNeighborhood(new HashSet<Platform>(neighborhood));
+                //a.setNeighborhood(new HashSet<Platform>(neighborhood));
             }
         }
         Collections.shuffle(commands); // Randomize the order of the commands (Important)
@@ -250,7 +250,7 @@ public class BPGraph {
         if (app_neighborhood_size >= platforms.size()) {
             for (Application a : applications) {
                 a.addLinksToPlatformsProvidingAllSrv(platforms, commands);
-                a.setNeighborhood(new HashSet<Platform>(getPlatforms()));
+                //a.setNeighborhood(new HashSet<Platform>(getPlatforms()));
             }
         }
         else {
@@ -263,7 +263,7 @@ public class BPGraph {
                 int[] indexes = g.getRandomIntegerSet(platforms.size()-1, app_neighborhood_size);
                 for(int i : indexes) neighborhood.add(platforms.get(i));
                 a.addLinksToPlatformsProvidingAllSrv(neighborhood, commands);
-                a.setNeighborhood(new HashSet<Platform>(neighborhood));
+                //a.setNeighborhood(new HashSet<Platform>(neighborhood));
             }
         }
         Collections.shuffle(commands); // Randomize the order of the commands (Important)
@@ -386,6 +386,23 @@ public class BPGraph {
         }
         return b.toString();
     }
+    
+    public String serialize_txt() {
+        StringBuffer buf = new StringBuffer();
+        buf.append("PLATFORMS\n");
+        for (Platform p : getPlatforms()) {
+            buf.append(p.name + ";" + p.capacity + ";" + p.load + "\n");
+            buf.append(p.getProvidedServices().toString() + "\n");
+        }
+        buf.append("APPLICATIONS\n");
+        for (Application a : getApplications()) {
+            buf.append(a.name + ";" + a.capacity + "\n");
+            buf.append(a.getRequiredServices().toString()+"\n");
+            buf.append(a.getLinkedPlatformNames()+"\n");
+        }
+        return buf.toString();
+    }
+    
     
     public String exportToGraphViz() {
         StringBuilder b = new StringBuilder();

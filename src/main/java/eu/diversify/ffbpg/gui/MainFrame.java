@@ -314,10 +314,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel9.setText("Number of applications");
 
-        jTextFieldSimNApp.setText("150");
+        jTextFieldSimNApp.setText("300");
         jTextFieldSimNApp.setPreferredSize(new java.awt.Dimension(60, 20));
 
-        jTextFieldSimNSrv.setText("120");
+        jTextFieldSimNSrv.setText("150");
         jTextFieldSimNSrv.setPreferredSize(new java.awt.Dimension(60, 20));
         jTextFieldSimNSrv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -379,7 +379,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel11.setText("Applications capacity:");
 
-        jTextFieldAppCapacity.setText("5");
+        jTextFieldAppCapacity.setText("100");
 
         jLabel13.setText("Servers capacity:");
 
@@ -543,7 +543,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel14.setText("Simulation steps: ");
 
-        jTextFieldSimulSteps.setText("25");
+        jTextFieldSimulSteps.setText("50");
 
         jLabel15.setText("Simulation Scenario: ");
 

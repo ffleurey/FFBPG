@@ -18,7 +18,7 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
     
     ApplicationEvolutionOperator remove_link_op;
     ApplicationEvolutionOperator add_link_op;
-    EvolveAppNeighborhood evolve_neigh = new EvolveAppNeighborhood();
+    
     String name;
     
     public ApplicationLinksEvolutionScenario(String name, ApplicationEvolutionOperator remove_link_op, ApplicationEvolutionOperator add_link_op) {
@@ -30,12 +30,7 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
     public void step(BPGraph graph) {
  
         ArrayList<Application> apps = (ArrayList<Application>)graph.getApplications().clone();
-        Collections.shuffle(apps);
-        
-        // Evolve the apps neigborhood
-        for(Application a : apps) {
-            evolve_neigh.execute(graph, a);
-        }
+        //Collections.shuffle(apps);
         
         int removed = 0;
         int added = 0;
@@ -43,16 +38,26 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
         // Try to remove a set of links for each app
         Collections.shuffle(apps);
         for(Application a : apps) {
-            // try to remove at least one links and no more than half the max number of links 
-            int n = 1;//RandomUtils.getUniform(a.getCapacity()/2) + 1; 
-            for (int i=0; i<n; i++) {
-                if (remove_link_op.execute(graph, a)) removed++;
-                else break; // we cannot remove more links
+
+             if (remove_link_op.execute(graph, a)) removed++;
+
+             if (!a.dependenciesSatisfied()) {
+                System.err.println("ERROR removing links: dependancies of " + a.toString() + " not satisfied after removing \n" );
             }
         }
         
+        System.out.println("Removed links = " + removed);
+         // POST CONDITION: All apps should still be running! 
+        /*
+        for (Application a : graph.getApplications()) {
+        if (!a.dependenciesSatisfied()) {
+                System.err.println("ERROR after remove: dependancies of " + a.getName() + " not satisfied after evolution step \n" );
+            }
+        }
+        */
+        
         // Add just as many links as has been removed
-        boolean finished = false;
+        boolean finished = (removed == 0);
             while (!finished) {
             Collections.shuffle(apps);
             for(Application a : apps) {
@@ -63,10 +68,20 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
                             break;
                         }
                     }
-                    else break; // we cannot remove more links
             }
         }
         System.out.println("Step complete removed links = " + removed + " added links = " + added);
+        
+        // POST CONDITION: All apps should still be running!
+        
+        for (Application a : graph.getApplications()) {
+            /*
+        if (!a.dependenciesSatisfied()) {
+                System.err.println("ERROR in ApplicationLinksEvolutionScenario: dependancies of " + a.getName() + " not satisfied after evolution step \n" );
+            }
+                    */
+        }
+                    
     }
 
     @Override

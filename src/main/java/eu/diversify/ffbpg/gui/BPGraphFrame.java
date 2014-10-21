@@ -10,10 +10,13 @@ import eu.diversify.ffbpg.*;
 import eu.diversify.ffbpg.utils.FileUtils;
 import java.awt.Color;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.ProgressMonitor;
 
 /**
  *
@@ -135,6 +138,8 @@ public class BPGraphFrame extends javax.swing.JFrame {
         chooser.setMultiSelectionEnabled(false);
         jTextFieldFolder.setText(prefs.get("DataFolder", ""));
         File folder = new File(jTextFieldFolder.getText());
+        
+        jTextFieldName.setText(new SimpleDateFormat("yyyyMMddhhmmss").format(new Date()));
     }
 
     public File getDataFolder() {
@@ -179,6 +184,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
         jTextFieldName = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -251,6 +257,13 @@ public class BPGraphFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setText("Export Evolution");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -279,6 +292,8 @@ public class BPGraphFrame extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -304,7 +319,8 @@ public class BPGraphFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton4))
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
                 .addContainerGap())
         );
 
@@ -368,7 +384,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Number of sequences:");
 
-        jTextFieldNExt.setText("1");
+        jTextFieldNExt.setText("50");
 
         jButton1.setText("Run");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -524,6 +540,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
         if (folder == null) return;
         for (BPGraph g : collection) {
             FileUtils.writeTextFile(folder, g.getName() + ".dot", g.exportToGraphViz());
+            FileUtils.writeTextFile(folder, g.getName() + ".txt", g.serialize_txt());
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -554,12 +571,75 @@ public class BPGraphFrame extends javax.swing.JFrame {
         BPGraph.writeGNUPlotScriptForData(apps_srv, folder, "app_size_dist");
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        final File folder = getDataFolder();
+        if (folder == null) return;
+        
+        final int n_run = Integer.parseInt(jTextFieldNExt.getText());
+        
+        final ProgressMonitor progressMonitor = new ProgressMonitor(this,
+                                      "Calculating extinction sequences...",
+                                      "", 0, collection.size());
+       
+        progressMonitor.setMillisToPopup(500);
+        
+        Thread queryThread = new Thread() {
+        public void run() {
+            int[][] robusness = new int[1][collection.size()];
+            
+            int[][] cost = new int[4][collection.size()];
+           
+        
+            for(int i=0; i<collection.size(); i++) {
+                
+                BPGraph g = collection.get(i);
+                ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run);
+                robusness[0][i] = (int) (100.0 * ExtinctionSequence.averageRobustnessIndex(ExtinctionSequence.averageExtinctionSequences(seqs)));
+                
+                cost[0][i] = g.getPlatforms().size();
+
+                int n_services = 0;
+                for(Platform p : g.getPlatforms()) {
+                   n_services += p.getProvidedServices().size();
+                }
+                cost[1][i] = n_services;
+                
+                int n_links = 0;
+                for (Application a : g.getApplications()) {
+                    n_links += a.getLinkedPlatforms().size();
+                }
+                cost[2][i] = n_links;
+                
+                 int n_load = 0;
+                for(Platform p : g.getPlatforms()) {
+                   n_load += p.getLoad();
+                }
+                cost[3][i] = n_services;
+
+                 final int progress = i+1;
+                    java.awt.EventQueue.invokeLater(new Runnable() {    
+                        public void run() {
+                           progressMonitor.setProgress(progress);
+                       }
+                });
+           
+                
+            }
+            BPGraph.writeGNUPlotScriptForData(robusness, folder, "robusness_evolution");
+            BPGraph.writeGNUPlotScriptForData(cost, folder, "cost_evolution");
+        }
+        };
+        
+       queryThread.start();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButtonnext;
     private javax.swing.JButton jButtonprev;
     private javax.swing.JCheckBox jCheckBoxExportToFile;
