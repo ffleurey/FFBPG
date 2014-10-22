@@ -30,6 +30,10 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
         s = new GuidedApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
         s = new GuidedAddApplicationLinksEvolutionScenarioCheating(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
         s = new GuidedApplicationLinksEvolutionScenarioCheats(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new ChangeLinksForEquitabilityEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new ChangeLinksForShannonEvolutionScenario1(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new ChangeLinksForShannonWithNoiseEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        
     }
     
     public static Object[] getAllScenarioNames() {
