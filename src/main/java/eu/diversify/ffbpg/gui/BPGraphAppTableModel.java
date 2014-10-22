@@ -36,7 +36,7 @@ public class BPGraphAppTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 9;
+        return 11;
     }
     
      DecimalFormat df = new DecimalFormat("#.###");
@@ -56,6 +56,8 @@ public class BPGraphAppTableModel extends AbstractTableModel {
             case 6: return df.format(a.getServicesPopulation().getShannonEquitability());
             case 7: return df.format(a.getServicesPopulation().getPopulationMeanSize());
             case 8: return df.format(a.getServicesPopulation().getPopulationMedianSize());
+            case 9: return a.getApplicationNeighborhoods(data).size();
+            case 10: return a.getPlatformNeighborhoods(data).size();
             default: return "???";
         }
         
@@ -86,6 +88,8 @@ public class BPGraphAppTableModel extends AbstractTableModel {
             case 6: return "Equit.";
             case 7: return "Mean";
             case 8: return "Med";
+            case 9: return "#N_App";
+            case 10: return "#N_Plat";
             default: return "???";
         }
     }

@@ -15,11 +15,11 @@ import java.util.Collections;
  *
  * @author ffl
  */
-public class GuidedApplicationLinksEvolutionScenario extends ApplicationLinksEvolutionScenario {
+public class GuidedApplicationLinksEvolutionScenarioCheats extends ApplicationLinksEvolutionScenario {
 
-    public GuidedApplicationLinksEvolutionScenario() {
-        super("Smart Remove, Smart Add", 
-                    new RemoveTheLeastUsefulLink(), new AddAUsefulLink());
+    public GuidedApplicationLinksEvolutionScenarioCheats() {
+        super("Smart Remove, Smart+ Add", 
+                    new RemoveTheLeastUsefulLink(), new AddTheMostUsefulLink());
     }
 
     

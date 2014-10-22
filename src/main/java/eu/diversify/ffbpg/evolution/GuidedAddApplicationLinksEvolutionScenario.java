@@ -2,6 +2,7 @@ package eu.diversify.ffbpg.evolution;
 
 import eu.diversify.ffbpg.Application;
 import eu.diversify.ffbpg.BPGraph;
+import eu.diversify.ffbpg.evolution.applications.AddAUsefulLink;
 import eu.diversify.ffbpg.evolution.applications.AddOneRandomLink;
 import eu.diversify.ffbpg.evolution.applications.AddTheMostUsefulLink;
 import eu.diversify.ffbpg.evolution.applications.ApplicationEvolutionOperator;
@@ -18,7 +19,7 @@ public class GuidedAddApplicationLinksEvolutionScenario extends ApplicationLinks
 
     public GuidedAddApplicationLinksEvolutionScenario() {
         super("Random Remove, Smart Add", 
-                    new RemoveOneRandomLink(), new AddTheMostUsefulLink());
+                    new RemoveOneRandomLink(), new AddAUsefulLink());
     }
 
     

@@ -17,13 +17,14 @@ public class RemoveTheLeastUsefulLink extends ApplicationEvolutionOperator {
     @Override
     public boolean execute(BPGraph graph, Application a) {
         
+        ArrayList<Platform> valids = AppLinksHelper.getValidLinksToRemove(graph, a);
+        
         // Create the candidate applications and compute the resulting Populations
         Hashtable<Platform, Population> candidates = new Hashtable<Platform, Population>();
-        for(Platform p : a.getLinkedPlatforms()) {
+        for(Platform p : valids) {
             HashSet<Platform> remaining = (HashSet<Platform>)a.getLinkedPlatforms().clone();
             remaining.remove(p);
-            if(a.dependenciesSatisfied(remaining)) // Do not include options which break the app
-                candidates.put(p, a.getServicesPopulation(remaining));
+            candidates.put(p, a.getServicesPopulation(remaining));
         }
         
         Platform toRemove = null;
@@ -37,8 +38,7 @@ public class RemoveTheLeastUsefulLink extends ApplicationEvolutionOperator {
         }
         
         if (toRemove != null) {
-            a.getLinkedPlatforms().remove(toRemove);
-            toRemove.decrementLoad();
+            a.removeLinkToPlatform(toRemove);
             return true;
         }
         

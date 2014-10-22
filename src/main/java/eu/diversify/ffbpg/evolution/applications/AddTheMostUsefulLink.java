@@ -4,6 +4,7 @@ import eu.diversify.ffbpg.Application;
 import eu.diversify.ffbpg.BPGraph;
 import eu.diversify.ffbpg.Platform;
 import eu.diversify.ffbpg.collections.Population;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 
@@ -18,14 +19,14 @@ public class AddTheMostUsefulLink extends ApplicationEvolutionOperator {
         
         if (a.getCapacity() <= a.getLinkedPlatforms().size()) return false; // do not exeed app capacity
         
-        // Create the candidate applications
+         ArrayList<Platform> environment = AppLinksHelper.getRandomNeighborhood(graph, 10);
+        ArrayList<Platform> valids = AppLinksHelper.getValidLinksToAdd(graph, a, environment);
+        
         Hashtable<Platform, Population> candidates = new Hashtable<Platform, Population>();
-        for(Platform p : graph.getPlatforms()) {
+        
+        for(Platform p : valids) {
             HashSet<Platform> new_links = (HashSet<Platform>)a.getLinkedPlatforms().clone();
             new_links.add(p);
-            if (a.getLinkedPlatforms().contains(p)) continue; // Eliminate already linked platforms
-            if (!p.getProvidedServices().containsSome(a.getRequiredServices())) continue; // Eliminate useless platforms
-            if (!p.hasRemainingCapacity()) continue; // Eliminate saturated platforms
             candidates.put(p, a.getServicesPopulation(new_links)); // We found a suitable candidate
         }
         
@@ -41,8 +42,7 @@ public class AddTheMostUsefulLink extends ApplicationEvolutionOperator {
         }
         
         if (toAdd != null) {
-            a.getLinkedPlatforms().add(toAdd);
-            toAdd.incrementLoad();
+            a.addLinkToPlatform(toAdd);
             return true;
         }
         

@@ -17,13 +17,34 @@ public class Application {
     protected SortedIntegerSet requiredServices;
     
     protected HashSet<Platform> platforms;
-    /*
-    protected HashSet<Platform> neighborhood;
     
-    private HashSet<Platform> getNeighborhood() {
-        return neighborhood;
+    protected HashSet<Platform> __neighborhood_platforms;
+    protected HashSet<Application> __neighborhood_applications;
+    
+    private void computeNeighborhoods(BPGraph graph) {
+
+            __neighborhood_applications = new HashSet<Application>();
+            for (Platform p : getLinkedPlatforms()) {
+                __neighborhood_applications.addAll(p.getLinked_apps(graph));
+            }
+            __neighborhood_platforms = new HashSet<Platform>();
+            for (Application a : __neighborhood_applications) {
+                __neighborhood_platforms.addAll(a.getLinkedPlatforms());
+            }
+
     }
     
+    public HashSet<Application> getApplicationNeighborhoods(BPGraph graph) {
+        if (__neighborhood_applications == null) computeNeighborhoods(graph);
+        return __neighborhood_applications;
+    }
+    
+    public HashSet<Platform> getPlatformNeighborhoods(BPGraph graph) {
+        if (__neighborhood_platforms == null) computeNeighborhoods(graph);
+        return __neighborhood_platforms;
+    }
+    
+    /*
     public void setNeighborhood(HashSet<Platform> platforms) {
         neighborhood = platforms;
     }
@@ -108,7 +129,7 @@ public class Application {
         platforms = new HashSet<Platform>();
     }
     
-    private Application(String name, int capacity, SortedIntegerSet requiredServices, HashSet<Platform> new_platforms, HashSet<Platform> neighborhood) {
+    private Application(String name, int capacity, SortedIntegerSet requiredServices, HashSet<Platform> new_platforms) {
         this.name = name;
         this.capacity = capacity;
         this.requiredServices = requiredServices;
@@ -122,7 +143,7 @@ public class Application {
             nplatforms.add(new_platforms.get(p.getName()));
         }
         
-        HashSet<Platform> nneighborhood = new HashSet<Platform>();
+        //HashSet<Platform> nneighborhood = new HashSet<Platform>();
         /*
         if (neighborhood != null) {
             for (Platform p : neighborhood) {
@@ -131,7 +152,7 @@ public class Application {
         }
                 */
         
-        return new Application(name, capacity, requiredServices.clone(), nplatforms, nneighborhood);
+        return new Application(name, capacity, requiredServices.clone(), nplatforms);
     }
     
     public void addLinksToPlatformsProvidingAtLeastOneSrv(ArrayList<Platform> available_platforms, ArrayList<AddLinkIfPossible> result) {
