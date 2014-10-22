@@ -59,10 +59,26 @@ public abstract class PlatformServicesEvolutionScenario extends EvolutionScenari
         for(Platform p : plats) {
             if (remove_srv_op.execute(graph, p)) {
                 removed++;
-                if (add_srv_op.execute(graph, p)) added++;
             }
-               
         }
+        
+        Collections.shuffle(plats, RandomUtils.getRandom());
+        
+        // Add just as many links as has been removed
+        boolean finished = (removed == 0);
+            while (!finished) {
+            Collections.shuffle(plats, RandomUtils.getRandom());
+            for(Platform p : plats) {
+                    if (add_srv_op.execute(graph, p)) {
+                        added++;
+                        if (added == removed) {
+                            finished = true;
+                            break;
+                        }
+                    }
+            }
+        }
+        
 
         System.out.println("Step complete removed services = " + removed + " added services = " + added);
     }

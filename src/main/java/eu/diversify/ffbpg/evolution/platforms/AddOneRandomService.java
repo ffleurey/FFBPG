@@ -24,21 +24,8 @@ public class AddOneRandomService extends PlatformEvolutionOperator {
 
     @Override
     public boolean execute(BPGraph graph, Platform p) {
-        // Calculate the links for this platform
-        ArrayList<Application> linked_apps = graph.getLinkedApplicationsForPlatform(p);
-        // Get a list of  the services which are known by the apps but not offered.
-        SortedIntegerSet candidates = new SortedIntegerSet();
-       for (Application a : linked_apps) {
-            candidates.addAll(a.getRequiredServices());
-        }
-        for (int i=0; i<p.getProvidedServices().size(); i++) {
-            candidates.remove(p.getProvidedServices().get(i));
-        }
-        
-        // shuffle the candidates and select one
-        ArrayList<Integer> rc = new ArrayList<Integer>();
-        for (int i=0; i<candidates.size(); i++) rc.add(candidates.get(i));
-        Collections.shuffle(rc, RandomUtils.getRandom());
+
+        ArrayList<Integer> rc = PlatformSrvHelper.getValidServicesToAdd(graph, p);
         
         if (rc.size()>0) {
             p.getProvidedServices().add(rc.get(0));

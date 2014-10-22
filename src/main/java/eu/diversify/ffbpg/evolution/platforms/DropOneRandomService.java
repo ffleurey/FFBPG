@@ -26,25 +26,10 @@ public class DropOneRandomService extends PlatformEvolutionOperator {
 
     @Override
     public boolean execute(BPGraph graph, Platform p) {
-        // Calculate the links for this platform
-        ArrayList<Application> linked_apps = graph.getLinkedApplicationsForPlatform(p);
      
-        ArrayList<Integer> unused_services = new ArrayList<Integer>();
-        
-        for (int i=0; i<p.getProvidedServices().size(); i++) {
-            Integer srv = p.getProvidedServices().get(i);
-            boolean used = false;
-            for (Application a : linked_apps) {
-                if (a.getRequiredServices().contains(srv)) {
-                    used = true; break;
-                }
-            }
-            if (!used) { // Collect unused services
-                unused_services.add(srv);
-            }
-        }
-        Collections.shuffle(unused_services, RandomUtils.getRandom()); // randomize the order of the services
-        
+        ArrayList<Integer> unused_services = PlatformSrvHelper.getValidServicesToRemove(graph, p);
+        unused_services.addAll(PlatformSrvHelper.getUnUsedServices(graph, p));
+                
         if(!unused_services.isEmpty()) {
              p.getProvidedServices().remove(unused_services.get(0));
             return true;
