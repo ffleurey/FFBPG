@@ -45,7 +45,7 @@ public class PlatformSrvHelper {
         // Services can be removed if their min redondancy is lower than 0
         
         Population pop = p.getProvidedServicesMinRedondancyPopulation(graph);
-        ArrayList<Integer> candidates = new ArrayList<Integer>();
+        ArrayList<Integer> candidates = getUnUsedServices(graph, p);
        
 
         int[] data = pop.getData();

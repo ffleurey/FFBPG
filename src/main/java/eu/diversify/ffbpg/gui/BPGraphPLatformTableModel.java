@@ -53,8 +53,8 @@ public class BPGraphPLatformTableModel extends AbstractTableModel {
             case 2: return p.getLinked_apps(data).size();
             case 3: return p.getProvidedServices().toString();
             case 4: return p.getProvidedServicesMinRedondancyPopulation(data).toString();
-            case 5: return p.getAll_known_services(data).toString();
-            case 6: return p.getServicesMinRedondancyPopulation(data).toString();
+            case 5: return p.getAll_known_services_not_offered(data).toString();
+            case 6: return p.getNotOfferedServicesMinRedondancyPopulation(data).toString();
             
             default: return "???";
         }

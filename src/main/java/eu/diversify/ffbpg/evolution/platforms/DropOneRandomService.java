@@ -28,10 +28,10 @@ public class DropOneRandomService extends PlatformEvolutionOperator {
     public boolean execute(BPGraph graph, Platform p) {
      
         ArrayList<Integer> unused_services = PlatformSrvHelper.getValidServicesToRemove(graph, p);
-        unused_services.addAll(PlatformSrvHelper.getUnUsedServices(graph, p));
                 
         if(!unused_services.isEmpty()) {
              p.getProvidedServices().remove(unused_services.get(0));
+             p.clearAllCachedData();
             return true;
         }
         else {

@@ -23,6 +23,11 @@ public abstract class PlatformServicesEvolutionScenario extends EvolutionScenari
             s = new NoPlatformServicesEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
             s = new GuidedPlatformServicesEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
             s = new RandomPlatformServicesEvolutionScenario1(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+            s = new ChangePlatformServicesForPopularEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+            s = new ChangePlatformServicesForSpecializedEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+            s = new ChangePlatformServicesForPopularAndSpecializedEvolutionScenario(90); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+            s = new ChangePlatformServicesForPopularAndSpecializedEvolutionScenario(75); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+            s = new ChangePlatformServicesForPopularAndSpecializedEvolutionScenario(50); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
         }
     
     public static Object[] getAllScenarioNames() {

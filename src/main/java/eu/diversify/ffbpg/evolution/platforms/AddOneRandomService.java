@@ -29,6 +29,7 @@ public class AddOneRandomService extends PlatformEvolutionOperator {
         
         if (rc.size()>0) {
             p.getProvidedServices().add(rc.get(0));
+            p.clearAllCachedData();
             return true;
         }
         

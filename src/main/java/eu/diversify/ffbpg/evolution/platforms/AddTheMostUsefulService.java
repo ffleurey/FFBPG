@@ -28,7 +28,7 @@ public class AddTheMostUsefulService extends PlatformEvolutionOperator {
     public boolean execute(BPGraph graph, Platform p) {
         
         
-        Population pop = p.getServicesMinRedondancyPopulation(graph);
+        Population pop = p.getNotOfferedServicesMinRedondancyPopulation(graph);
    
         // Fine the higest redondancy value
         int min_red = -1;
@@ -49,7 +49,7 @@ public class AddTheMostUsefulService extends PlatformEvolutionOperator {
         
         Collections.shuffle(candidates, RandomUtils.getRandom());
         
-        int selected = p.getAll_known_services(graph).get(candidates.get(0));
+        int selected = p.getAll_known_services_not_offered(graph).get(candidates.get(0));
         
               // Remove the service
         p.getProvidedServices().add(selected);
