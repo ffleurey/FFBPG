@@ -8,7 +8,7 @@ package eu.diversify.ffbpg.evolution;
 import eu.diversify.ffbpg.Application;
 import eu.diversify.ffbpg.BPGraph;
 import eu.diversify.ffbpg.evolution.applications.AddTheMostUsefulLink;
-import eu.diversify.ffbpg.evolution.applications.RemoveUnusedLinks;
+import eu.diversify.ffbpg.evolution.applications.RemoveOneUnusedLinks;
 
 /**
  *
@@ -19,7 +19,7 @@ public class GuidedCoEvolutionScenario extends EvolutionScenario {
     GuidedPlatformServicesEvolutionScenario ps = new GuidedPlatformServicesEvolutionScenario();
     GuidedApplicationLinksEvolutionScenario as = new GuidedApplicationLinksEvolutionScenario();
     AddTheMostUsefulLink add_links = new AddTheMostUsefulLink();
-    RemoveUnusedLinks rm_links = new RemoveUnusedLinks();
+    RemoveOneUnusedLinks rm_links = new RemoveOneUnusedLinks();
     
     @Override
     public String getName() {

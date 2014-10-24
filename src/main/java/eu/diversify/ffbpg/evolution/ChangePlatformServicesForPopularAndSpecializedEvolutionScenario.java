@@ -62,6 +62,10 @@ public class ChangePlatformServicesForPopularAndSpecializedEvolutionScenario ext
             if (operator.execute(graph, p)) op_count++;
        }
        
+       // Remove services on platforms which are saturated and add them on non saturated platforms
+       
+       
+       
         System.out.println("Step complete. Operator applied on " + plats.size() +" platforms and swaped " + op_count + " services for more different ones.");
        
     }

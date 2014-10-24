@@ -52,7 +52,7 @@ public class ChangeForMoreSpecializedService extends PlatformEvolutionOperator {
         
         int threshold = max_popularity / 2;
         
-        // We try to find a more popular service and swap it
+
         for(Integer toRemove : can_be_removed) {
            
             for (Integer toAdd : can_be_added) {

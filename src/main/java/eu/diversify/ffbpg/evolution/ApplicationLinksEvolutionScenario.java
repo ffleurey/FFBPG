@@ -70,7 +70,7 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
              if (remove_link_op.execute(graph, a)) removed++;
 
              if (!a.dependenciesSatisfied()) {
-                System.err.println("ERROR removing links: dependancies of " + a.toString() + " not satisfied after removing \n" );
+                System.err.println("ERROR removing links: dependancies of " + a.toString() + " not satisfied after removing" );
             }
         }
         

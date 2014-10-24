@@ -38,6 +38,17 @@ public class AppLinksHelper {
         return removable;
     }
     
+    public static ArrayList<Platform> getUnusedLinks(BPGraph graph, Application a) {
+        ArrayList<Platform> removable = new ArrayList<Platform>();
+        for(Platform p : a.getLinkedPlatforms()) {
+           
+           if (!p.getProvidedServices().containsSome(a.getRequiredServices())) {
+                removable.add(p);
+           }
+        }
+        return removable;
+    }
+    
     public static ArrayList<Platform> getValidLinksToAdd(BPGraph graph, Application a, Collection<Platform> candidates) {
         ArrayList<Platform> result = new ArrayList<Platform>();
         for(Platform p : candidates) {
