@@ -24,6 +24,8 @@ public class InitializationEvolutionScenario extends EvolutionScenario {
         s = new InitializationEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
         s = new AddExtraRandomLinksEvolutionScenario(1); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
         s = new AddExtraRandomLinksEvolutionScenario(2); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new AddExtraRandomServicesEvolutionScenario(1); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new AddExtraRandomServicesEvolutionScenario(2); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
        
     }
     
