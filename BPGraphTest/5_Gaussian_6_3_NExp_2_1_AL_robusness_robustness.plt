@@ -1,4 +1,4 @@
-set title '5_Gaussian_6_3_NExp_2_1_AL_robusness: Robustness index for 5 runs (avg = 24.877419354838707)'
+set title '5_Gaussian_6_3_NExp_2_1_AL_robusness: Robustness index for 5 runs (avg = 61.79784946236559)'
 set xlabel 'Run'
 set ylabel 'Robusness index (%)'
 set xrange [0:4]

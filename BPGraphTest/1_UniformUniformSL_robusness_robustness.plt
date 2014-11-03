@@ -1,4 +1,4 @@
-set title '1_UniformUniformSL_robusness: Robustness index for 5 runs (avg = 0.0)'
+set title '1_UniformUniformSL_robusness: Robustness index for 5 runs (avg = 50.0)'
 set xlabel 'Run'
 set ylabel 'Robusness index (%)'
 set xrange [0:4]
