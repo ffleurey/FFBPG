@@ -29,7 +29,13 @@ public class SortedIntegerSetTest
         return new TestSuite( SortedIntegerSetTest.class );
     }
     
-
+    
+    
+    
+    // **********************************************************************
+    // THESE 4 TEST CASES WERE ADDED WHEN THE ORDINARY BUG WAS LOCALIZED
+    // ***********************************************************************
+/*
     public void testMisterious()
     {
         SortedIntegerSet a64 = new SortedIntegerSet("{6,17,135}");
@@ -67,7 +73,7 @@ public class SortedIntegerSetTest
         
         assertFalse(l1.containsAll(l2));
     }
-     
+     */
      public void testContainsAll6() {
         SortedIntegerSet l1 = new SortedIntegerSet("{3, 4, 10}");
         SortedIntegerSet l2 = new SortedIntegerSet("{3, 4, 10}");

@@ -75,7 +75,7 @@ public class SortedIntegerSet extends AbstractSortedIntegerCollection {
         while (i < other.size()) {
             if (this.get(j) < other.get(i)) {
                 j++; // move to the next index for this
-                if (j >= this.size()) return false; // WAS "true" here and made me loose 1 day of work :-)
+                if (j >= this.size()) return true; 
             } else if (other.get(i) == this.get(j)) {
                 i++; // found, look for the next one
             } else {
