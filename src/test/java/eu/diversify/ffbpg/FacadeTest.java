@@ -55,7 +55,7 @@ public class FacadeTest
         
         
         BPGraph g = Facade.createRandomBPGraph(number_applications, number_platforms, number_services,
-                    sizes_generator, srv_generator, application_capacity, platforms_capacity);
+                    sizes_generator, srv_generator, application_capacity, platforms_capacity, 1);
      
         assertEquals(g.getPlatforms().size(), 100);
     }

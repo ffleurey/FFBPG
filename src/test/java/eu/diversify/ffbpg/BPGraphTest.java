@@ -62,7 +62,7 @@ public class BPGraphTest
         
         for(int i=0; i<n_run; i++) {
             g = new BPGraph(n_services);
-            SortedIntegerSet[] ssets = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_applications, app_size_generator, service_sets_generator);
+            SortedIntegerSet[] ssets = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_applications, app_size_generator, service_sets_generator, 1);
             g.createGraphWithOnePlatformPerApplicationAndSingleLink(ssets,n_applications, n_applications);
             if (all_links) g.addLinksToAllPlatformsProvidingAtLeastOneSrv();
             apps_srv[i] = g.applicationsServicesCountsDistribution();

@@ -26,11 +26,11 @@ public class RandomGenerator {
         return services;
     }
     
-    public SortedIntegerSet[] createRandomServiceSets(ArrayList<Service> services, int length, IntegerGenerator size_generator, IntegerSetGenerator sets_generator) {
+    public SortedIntegerSet[] createRandomServiceSets(ArrayList<Service> services, int length, IntegerGenerator size_generator, IntegerSetGenerator sets_generator, int min_size) {
         SortedIntegerSet[] result = new SortedIntegerSet[length];
         for (int i = 0; i < length; i++) {
             result[i] = new SortedIntegerSet();
-            int n_services = size_generator.getNextInteger(1, services.size());
+            int n_services = size_generator.getNextInteger(min_size, services.size());
             int[] ridx = sets_generator.getRandomIntegerSet(services.size(), n_services);
             for (int j = 0; j < n_services; j++) {
                 result[i].add(ridx[j]);

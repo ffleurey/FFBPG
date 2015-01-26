@@ -53,7 +53,7 @@ public class RandomGeneratorTest
         RandomGenerator f = new RandomGenerator();
         ArrayList<Service> services = f.createServices(nb_srv);
         assertEquals(services.size(), nb_srv);
-        SortedIntegerSet[] species = f.createRandomServiceSets(services, nb_pt, new UniformIntegerGenerator(), new UniformIntegerSetGenerator());
+        SortedIntegerSet[] species = f.createRandomServiceSets(services, nb_pt, new UniformIntegerGenerator(), new UniformIntegerSetGenerator(), 1);
        
         assertEquals(species.length, nb_pt);
         
@@ -75,7 +75,7 @@ public class RandomGeneratorTest
         ArrayList<Service> services = f.createServices(nb_srv);
         assertEquals(services.size(), nb_srv);
        // SortedIntegerSet[] species = f.createGaussianServiceSet(services, nb_pt, mean, variance);
-        SortedIntegerSet[] species = f.createRandomServiceSets(services, nb_pt, new GaussianIntegerGenerator(mean, variance), new UniformIntegerSetGenerator());
+        SortedIntegerSet[] species = f.createRandomServiceSets(services, nb_pt, new GaussianIntegerGenerator(mean, variance), new UniformIntegerSetGenerator(), 1);
         assertEquals(species.length, nb_pt);
         
         // basic check for the uniform distribution of nb of srv
