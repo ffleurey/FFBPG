@@ -27,7 +27,12 @@ public class BPGraphFrame extends javax.swing.JFrame {
     protected GraphBuffer nblinks = new GraphBuffer(10); // Empty graph
     protected GraphBuffer appsize = new GraphBuffer(10); // Empty graph
     protected GraphBuffer srvuse = new GraphBuffer(10); // Empty graph
+   
     protected GraphBuffer extinction = new GraphBuffer(10); // Empty graph
+    
+    protected GraphBuffer nbplatlinks = new GraphBuffer(10); // Empty graph
+    protected GraphBuffer platsize = new GraphBuffer(10); // Empty graph
+    protected GraphBuffer srvpro = new GraphBuffer(10); // Empty graph
 
     protected BPGraph graph;
 
@@ -41,7 +46,8 @@ public class BPGraphFrame extends javax.swing.JFrame {
         jTextFieldBPgraph.setText(g.toString());
         
         ((BPMatrixGraph)jPanelMatrix).setBPGraph(g);
-
+        
+        
         int max = 0;
         int[] l = g.applicationsServicesCountsDistribution();
         appsize.setGraphData(l);
@@ -58,6 +64,25 @@ public class BPGraphFrame extends javax.swing.JFrame {
         }
         ((GraphPanel) jPanel1).redrawGraph();
 
+        
+        max = 0;
+        l = g.platformsServicesCountsDistribution();
+        platsize.setGraphData(l);
+        if (scale_graphs) {
+            max = 0;
+            for (int v : l) {
+                if (v > max) {
+                    max = v;
+                }
+            }
+            ((GraphPanel) jPanel12).setYmax((max / 5 + 1) * 5);
+            ((GraphPanel) jPanel12).setYminor(((max) / 20 + 1) * 5);
+            ((GraphPanel) jPanel12).setXminor(10);
+        }
+        ((GraphPanel) jPanel12).redrawGraph();
+        
+        
+        
         l = g.servicesDistributionInApplications();
         srvuse.setGraphData(l);
         if (scale_graphs) {
@@ -73,6 +98,26 @@ public class BPGraphFrame extends javax.swing.JFrame {
         }
         ((GraphPanel) jPanel2).redrawGraph();
 
+        
+        l = g.servicesDistributionInPlatforms();
+        srvuse.setGraphData(l);
+        if (scale_graphs) {
+            max = 0;
+            for (int v : l) {
+                if (v > max) {
+                    max = v;
+                }
+            }
+            ((GraphPanel) jPanel13).setYmax((max / 5 + 1) * 5);
+            ((GraphPanel) jPanel13).setYminor(((max) / 20 + 1) * 5);
+            ((GraphPanel) jPanel13).setXminor(10);
+        }
+        ((GraphPanel) jPanel13).redrawGraph();
+        
+        
+        
+        
+        
         l = g.applicationsLinksCountsDistribution();
         nblinks.setGraphData(l);
         if (scale_graphs) {
@@ -87,15 +132,36 @@ public class BPGraphFrame extends javax.swing.JFrame {
             ((GraphPanel) jPanel3).setXminor(10);
         }
         ((GraphPanel) jPanel3).redrawGraph();
+        
+        
+        l = g.platformsLinksCountsDistribution();
+        nblinks.setGraphData(l);
+        if (scale_graphs) {
+            max = 0;
+            for (int v : l) {
+                if (v > max) {
+                    max = v;
+                }
+            }
+            ((GraphPanel) jPanel14).setYmax((max / 5 + 1) * 5);
+            ((GraphPanel) jPanel14).setYminor(((max) / 20 + 1) * 5);
+            ((GraphPanel) jPanel14).setXminor(10);
+        }
+        ((GraphPanel) jPanel14).redrawGraph();
+        
 
         extinction.resetBuffer();
         ((GraphPanel) jPanelExt).redrawGraph();
+        
+        if (simulation != null && simulation.getExtinctionSequences(g) != null) {
+            updateExtinctionSequenceGraph(simulation.getExtinctionSequences(g));
+        }
+        
 
         jLabelRIndex.setText("");
     }
-
-    public void computeExtinctionSeq(int n, int percent_ext, boolean export) {
-        ExtinctionSequence[] seqs = graph.performRandomExtinctionSequences(n, (graph.getPlatforms().size() * percent_ext) / 100 );
+    
+    public void updateExtinctionSequenceGraph(ExtinctionSequence[] seqs) {
         double[] ext = ExtinctionSequence.averageExtinctionSequences(seqs);
         double result = ExtinctionSequence.averageRobustnessIndex(ext, ext.length) * 100;
         jLabelRIndex.setText(String.format("%1$,.2f", result) + "%");
@@ -109,6 +175,12 @@ public class BPGraphFrame extends javax.swing.JFrame {
         ((GraphPanel) jPanelExt).setYminor(((graph.getApplications().size()) / 20 + 1) * 5);
         ((GraphPanel) jPanelExt).setXminor(10);
         ((GraphPanel) jPanelExt).redrawGraph();
+    }
+
+    public void computeExtinctionSeq(int n, int percent_ext, boolean export) {
+        ExtinctionSequence[] seqs = graph.performRandomExtinctionSequences(n, (graph.getPlatforms().size() * percent_ext) / 100 );
+       
+        updateExtinctionSequenceGraph(seqs);
         
         if (export) {
             File folder = getDataFolder();
@@ -116,9 +188,17 @@ public class BPGraphFrame extends javax.swing.JFrame {
         }
     }
 
+    Simulation simulation = null;
     List<BPGraph> collection = null;
     int collection_index = 0;
 
+    public void setSimulation(Simulation s) {
+        simulation = s;
+        setBPGraphCollection(s.getSteps(), 0, s.getSim_parameters());
+        jTextFieldNExt.setText(""+s.getExtinction_sequence_runs());
+        jTextFieldPercentExt.setText("" + s.getExtinction_sequence_percentage());
+    }
+    
     public void setBPGraphCollection(List<BPGraph> list, int index, String parameters) {
         collection = list;
         collection_index = index;
@@ -196,6 +276,10 @@ public class BPGraphFrame extends javax.swing.JFrame {
         jPanel1 = new BarGraphPanel(appsize, "Distribution of the application sizes (# required srv)", 0, 100, 25, Color.GREEN);
         jPanel2 = new BarGraphPanel(srvuse, "Distribution of the services usage", 0, 100, 25, Color.ORANGE);
         jPanel3 = new BarGraphPanel(nblinks, "Distribution of the number of links per application", 0, 100, 25, Color.RED);
+        jPanel11 = new javax.swing.JPanel();
+        jPanel12 = new BarGraphPanel(appsize, "Distribution of the platform sizes (# provided srv)", 0, 100, 25, Color.GREEN);
+        jPanel13 = new BarGraphPanel(srvuse, "Distribution of the services provision", 0, 100, 25, Color.ORANGE);
+        jPanel14 = new BarGraphPanel(nblinks, "Distribution of the number of links per platform", 0, 100, 25, Color.RED);
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -382,7 +466,33 @@ public class BPGraphFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Topology", jPanel5);
+        jTabbedPane1.addTab("Topology (A)", jPanel5);
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Topology (P)", jPanel11);
 
         jLabel2.setText("Number of sequences:");
 
@@ -567,21 +677,36 @@ public class BPGraphFrame extends javax.swing.JFrame {
         
         int[][] apps_srv = new int[n_run][];
         int[][] apps_link = new int[n_run][];
-        int[][] srv_dist = new int[n_run][];
+        int[][] apps_size = new int[n_run][];
+        
+        int[][] plat_srv = new int[n_run][];
+        int[][] plat_link = new int[n_run][];
+        int[][] plat_size = new int[n_run][];
+        
         double[] robusness = new double[n_run];
         
         for(int i=0; i<n_run; i++) {
             BPGraph g = collection.get(i);
             apps_srv[i] = g.applicationsServicesCountsDistribution();
             apps_link[i] = g.applicationsLinksCountsDistribution();
-            srv_dist[i] = g.servicesDistributionInApplications();
+            apps_size[i] = g.servicesDistributionInApplications();
+            
+            plat_size[i] = g.platformsServicesCountsDistribution();
+            plat_link[i] = g.platformsLinksCountsDistribution();
+            plat_srv[i] = g.servicesDistributionInPlatforms();
+            
             //ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run);
             //robusness[i] = 100 * ExtinctionSequence.averageRobustnessIndex(ExtinctionSequence.averageExtinctionSequences(seqs));
         }
         
-        BPGraph.writeGNUPlotScriptForData(srv_dist, folder, "service_usage_dist");
-        BPGraph.writeGNUPlotScriptForData(apps_link, folder, "link_per_app_dist");
-        BPGraph.writeGNUPlotScriptForData(apps_srv, folder, "app_size_dist");
+        BPGraph.writeGNUPlotScriptForData(apps_size, folder, "2A_service_usage_dist");
+        BPGraph.writeGNUPlotScriptForData(apps_link, folder, "3A_link_per_app_dist");
+        BPGraph.writeGNUPlotScriptForData(apps_srv, folder, "1A_app_size_dist");
+        
+        BPGraph.writeGNUPlotScriptForData(plat_srv, folder, "2P_service_provision_dist");
+        BPGraph.writeGNUPlotScriptForData(plat_link, folder, "3P_link_per_plat_dist");
+        BPGraph.writeGNUPlotScriptForData(plat_size, folder, "1P_plat_size_dist");
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -609,7 +734,11 @@ public class BPGraphFrame extends javax.swing.JFrame {
             for(int i=0; i<collection.size(); i++) {
                 
                 BPGraph g = collection.get(i);
-                ExtinctionSequence[] seqs = g.performRandomExtinctionSequences(n_run, (g.getPlatforms().size() * ext_percent) / 100);
+                ExtinctionSequence[] seqs = null;
+                
+                if (simulation != null && simulation.getExtinctionSequences(g) != null)  seqs = simulation.getExtinctionSequences(g);
+                else seqs = g.performRandomExtinctionSequences(n_run, (g.getPlatforms().size() * ext_percent) / 100);
+                
                 double[] res = ExtinctionSequence.averageExtinctionSequences(seqs);
                 robusness[0][i] = (int) (1000.0 * ExtinctionSequence.averageRobustnessIndex(res, res.length));
                 
@@ -674,6 +803,10 @@ public class BPGraphFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelRIndex;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

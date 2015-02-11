@@ -8,10 +8,11 @@ package eu.diversify.ffbpg.gui;
 
 import eu.diversify.ffbpg.BPGraph;
 import eu.diversify.ffbpg.Facade;
+import eu.diversify.ffbpg.Simulation;
 import eu.diversify.ffbpg.collections.SortedIntegerSet;
 import eu.diversify.ffbpg.evolution.ApplicationLinksEvolutionScenario;
 import eu.diversify.ffbpg.evolution.BalanceApplicationLinksEvolutionScenario;
-import eu.diversify.ffbpg.evolution.BalancePlatformServicesEvolutionScenario1;
+import eu.diversify.ffbpg.evolution.BalancePlatformServicesEvolutionScenario;
 import eu.diversify.ffbpg.evolution.EvolutionScenario;
 import eu.diversify.ffbpg.evolution.InitializationEvolutionScenario;
 import eu.diversify.ffbpg.evolution.PlatformServicesEvolutionScenario;
@@ -126,13 +127,17 @@ public class MainFrame extends javax.swing.JFrame {
         jComboBoxSimulAppScenario = new javax.swing.JComboBox();
         jButton2 = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
-        jTextFieldSimStepSize = new javax.swing.JTextField();
+        jTextFieldNbExtinctions = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         jComboBoxSimulPlatScenario = new javax.swing.JComboBox();
         jLabel19 = new javax.swing.JLabel();
         jComboBoxInitSimul = new javax.swing.JComboBox();
         jCheckBoxBalanceLinks = new javax.swing.JCheckBox();
         jCheckBoxBalanceServices = new javax.swing.JCheckBox();
+        jCheckBoxCalculateRobustness = new javax.swing.JCheckBox();
+        jLabel23 = new javax.swing.JLabel();
+        jTextFieldExtinctionPercentage = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Diversify Bi-Partite Graph Generator");
@@ -301,7 +306,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(jLabel20))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jRadioButtonAppBinomial)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel7)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -330,7 +335,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldAppP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldAppVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -395,7 +400,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(239, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel9)
@@ -591,31 +596,32 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jTextFieldNGraphs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBPGView)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel12)
+                        .addComponent(jTextFieldNGraphs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonBPGView)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
         );
 
         jLabel14.setText("Simulation steps: ");
 
-        jTextFieldSimulSteps.setText("50");
+        jTextFieldSimulSteps.setText("250");
 
         jLabel15.setText("Application Links Evolution: ");
 
-        jButton2.setText("RUN !");
+        jButton2.setText("RUN FOR ONE");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jLabel16.setText("Step size: ");
+        jLabel16.setText("# Extinctions:");
 
-        jTextFieldSimStepSize.setText("1");
+        jTextFieldNbExtinctions.setText("50");
 
         jLabel18.setText("Platform Services Evolution: ");
 
@@ -625,6 +631,20 @@ public class MainFrame extends javax.swing.JFrame {
 
         jCheckBoxBalanceServices.setText("Remove services for saturated platforms");
 
+        jCheckBoxCalculateRobustness.setSelected(true);
+        jCheckBoxCalculateRobustness.setText("Calculate Robusness");
+
+        jLabel23.setText("Extinction Percentage:");
+
+        jTextFieldExtinctionPercentage.setText("100");
+
+        jButton3.setText("RUN FOR ALL");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -632,14 +652,19 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
+                        .addGap(63, 63, 63)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel16)
                             .addComponent(jLabel14))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldSimulSteps)
-                            .addComponent(jTextFieldSimStepSize)))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jTextFieldNbExtinctions, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel23)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldExtinctionPercentage))
+                            .addComponent(jTextFieldSimulSteps, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -651,25 +676,36 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(jComboBoxSimulAppScenario, 0, 286, Short.MAX_VALUE)
                             .addComponent(jComboBoxSimulPlatScenario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jComboBoxInitSimul, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3))
                     .addComponent(jCheckBoxBalanceLinks)
-                    .addComponent(jCheckBoxBalanceServices))
+                    .addComponent(jCheckBoxBalanceServices)
+                    .addComponent(jCheckBoxCalculateRobustness))
                 .addGap(384, 384, 384))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(jTextFieldSimulSteps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextFieldSimulSteps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2)
+                        .addComponent(jButton3))
+                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(jTextFieldSimStepSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel16)
+                        .addComponent(jTextFieldNbExtinctions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel23)
+                        .addComponent(jTextFieldExtinctionPercentage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jCheckBoxCalculateRobustness)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
@@ -913,81 +949,51 @@ public class MainFrame extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             
-            StringBuffer simulation_parameters = new StringBuffer("# SIMULATION PARAMETERS:\n");
-            
-           
-            
-            int sim_steps = Integer.parseInt(jTextFieldSimulSteps.getText());
-            int sim_steps_size = Integer.parseInt(jTextFieldSimStepSize.getText());
-            
-            ApplicationLinksEvolutionScenario link_s = ApplicationLinksEvolutionScenario.getScenarioByName(jComboBoxSimulAppScenario.getSelectedItem().toString());
-            
-            PlatformServicesEvolutionScenario serv_s = PlatformServicesEvolutionScenario.getScenarioByName(jComboBoxSimulPlatScenario.getSelectedItem().toString());
-            
-            InitializationEvolutionScenario init_s = InitializationEvolutionScenario.getScenarioByName(jComboBoxInitSimul.getSelectedItem().toString());
-            
-            BalanceApplicationLinksEvolutionScenario balance_links = new BalanceApplicationLinksEvolutionScenario();
-            
-            BalancePlatformServicesEvolutionScenario1 balance_services = new BalancePlatformServicesEvolutionScenario1();
-            
-            simulation_parameters.append("# Steps = " + sim_steps + "\n");
-            simulation_parameters.append("# Steps Size = " + sim_steps_size + "\n");
-            simulation_parameters.append("# Applications evolution strategy : " + link_s.getName() + "\n");
-            simulation_parameters.append("# Platforms evolution strategy : " + serv_s.getName() + "\n");
-            simulation_parameters.append("# Initialization strategy : " + init_s.getName() + "\n");
-            
-            simulation_parameters.append("# Drop services from staurated platforms : ");
-            if (jCheckBoxBalanceServices.isSelected()) simulation_parameters.append("YES (" + balance_services.getName() + ")\n");
-            else simulation_parameters.append("NO\n");
-            
-            simulation_parameters.append("# Drop useless links : ");
-            if (jCheckBoxBalanceLinks.isSelected()) simulation_parameters.append("YES (" + balance_links.getName() + ")\n");
-            else simulation_parameters.append("NO\n");
-            
-            
-            if (bpgraphtable.getData().size() == 0) return;
-            int row = jTable1.getSelectedRow();
-            if (row < 0) row = 0;
-            BPGraph initial = bpgraphtable.getData().get(row);
-            
-            // run the simulation;
-            System.out.println("Starting simulations... ");
-            ArrayList<BPGraph> results = new  ArrayList<BPGraph>();
-            BPGraph current = initial;
-            results.add(current);
-            
-            System.out.println("Running initialization step...");
-            
-            current = current.deep_clone(); // Create the new bp graph
-            current.clearAllCachedData();
-            init_s.step(current);
-            results.add(current);
-            
-            for (int i = 0; i<sim_steps; i++) {
-                System.out.println("Running Simuation step #" + i);
-                current = current.deep_clone(); // Create the new bp graph
-                current.setlabel("[Simulation step " + (i+1) + "]");
-                for (int j=0; j<sim_steps_size; j++) {
-                    
-                    current.clearAllCachedData();
-                    if (serv_s != null) serv_s.step(current);
-                    current.clearAllCachedData();
-                    if (link_s != null) link_s.step(current);
-                   current.clearAllCachedData();
-                    if (jCheckBoxBalanceServices.isSelected()) balance_services.step(current);
-                    current.clearAllCachedData();
-                    if (jCheckBoxBalanceLinks.isSelected()) balance_links.step(current);
-                }
-                results.add(current);
-            }
-            System.out.println("End of simualtion.");
-            
-            BPGraphFrame f = new BPGraphFrame();
-            f.setVisible(true);
-            
-            String log = generator_parameters + "\n\n" + simulation_parameters.toString();
-            
-            f.setBPGraphCollection(results, 0, log);
+                final int sim_steps = Integer.parseInt(jTextFieldSimulSteps.getText());
+
+                if (bpgraphtable.getData().size() == 0) return;
+                int row = jTable1.getSelectedRow();
+                if (row < 0) row = 0;
+                BPGraph initial = bpgraphtable.getData().get(row);
+                
+                final Simulation s = create_simulation_for_model(initial);
+                
+                
+                final ProgressMonitor progressMonitor = new ProgressMonitor(this,
+                                      "Simulating Bi-Partite Graph Evolution",
+                                      "", 0, sim_steps);
+       
+                progressMonitor.setMillisToPopup(500);
+
+                Thread queryThread = new Thread() {
+                    public void run() {
+                        
+                        for (int i=0; i<sim_steps; i++) {
+                            BPGraph g = s.run_step();
+                            if (jCheckBoxCalculateRobustness.isSelected()) {
+                                int r = s.computeRobustnessExtinctionSequences(g);
+                                System.out.println("Robustness at step " + i + ":" + r);
+                            }
+                            final int progress = i+1;
+                            java.awt.EventQueue.invokeLater(new Runnable() {    
+                                public void run() {
+                                   progressMonitor.setProgress(progress);
+                               }});
+                            if (progressMonitor.isCanceled()) break;
+                        }
+                        
+                        if (!progressMonitor.isCanceled())
+                        java.awt.EventQueue.invokeLater(new Runnable() {    
+                                public void run() {
+                                   BPGraphFrame f = new BPGraphFrame();
+                                    f.setVisible(true);    
+                                    String log = generator_parameters + "\n\n" + s.getSim_parameters();
+                                    f.setSimulation(s);
+                               }});
+                        
+                    }
+                };
+                queryThread.start();
             
         }
         catch(Exception e) {
@@ -996,9 +1002,44 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    protected Simulation create_simulation_for_model(BPGraph initial) {
+       
+            Simulation result = new Simulation();
+            result.setInitial(initial);
+            
+            result.setApplicationLinksEvolutionScenario(ApplicationLinksEvolutionScenario.getScenarioByName(jComboBoxSimulAppScenario.getSelectedItem().toString()));
+            result.setPlatformServicesEvolutionScenario(PlatformServicesEvolutionScenario.getScenarioByName(jComboBoxSimulPlatScenario.getSelectedItem().toString()));
+            result.setInitializationEvolutionScenario(InitializationEvolutionScenario.getScenarioByName(jComboBoxInitSimul.getSelectedItem().toString()));
+            if (jCheckBoxBalanceServices.isSelected()) result.setBalancePlatformServicesEvolutionScenario(new BalancePlatformServicesEvolutionScenario());
+            if (jCheckBoxBalanceLinks.isSelected()) result.setBalanceApplicationLinksEvolutionScenario(new BalanceApplicationLinksEvolutionScenario());
+            
+            result.setExtinction_sequence_runs(Integer.parseInt(jTextFieldNbExtinctions.getText()));
+            result.setExtinction_sequence_percentage(Integer.parseInt(jTextFieldExtinctionPercentage.getText()));
+
+            result.run_init();
+            
+            return result;
+            
+    }
+    
+    
     private void jRadioButtonAppExponetialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonAppExponetialActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButtonAppExponetialActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
+        SimulationsFrame f = new SimulationsFrame();
+        
+        // Create simulations for all initial models
+        for (BPGraph g : bpgraphtable.getData()) {
+            Simulation s = create_simulation_for_model(g);
+            f.addSimulation(s);
+        }
+        
+        f.setVisible(true);
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1048,9 +1089,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupSrvDist;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonBPGView;
     private javax.swing.JCheckBox jCheckBoxBalanceLinks;
     private javax.swing.JCheckBox jCheckBoxBalanceServices;
+    private javax.swing.JCheckBox jCheckBoxCalculateRobustness;
     private javax.swing.JCheckBox jCheckBoxNeighbourhood;
     private javax.swing.JComboBox jComboBoxInitSimul;
     private javax.swing.JComboBox jComboBoxSimulAppScenario;
@@ -1070,6 +1113,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1107,13 +1151,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldAppN;
     private javax.swing.JTextField jTextFieldAppP;
     private javax.swing.JTextField jTextFieldAppVar;
+    private javax.swing.JTextField jTextFieldExtinctionPercentage;
     private javax.swing.JTextField jTextFieldMinAppSize;
     private javax.swing.JTextField jTextFieldNGraphs;
+    private javax.swing.JTextField jTextFieldNbExtinctions;
     private javax.swing.JTextField jTextFieldNeighbourhood;
     private javax.swing.JTextField jTextFieldSimNApp;
     private javax.swing.JTextField jTextFieldSimNPlats;
     private javax.swing.JTextField jTextFieldSimNSrv;
-    private javax.swing.JTextField jTextFieldSimStepSize;
     private javax.swing.JTextField jTextFieldSimulSteps;
     private javax.swing.JTextField jTextFieldSrvCapacity;
     private javax.swing.JTextField jTextFieldSrvLambda;

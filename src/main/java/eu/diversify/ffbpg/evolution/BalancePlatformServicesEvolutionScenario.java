@@ -26,10 +26,10 @@ import java.util.List;
  *
  * @author ffl
  */
-public class BalancePlatformServicesEvolutionScenario1 extends PlatformServicesEvolutionScenario {
+public class BalancePlatformServicesEvolutionScenario extends PlatformServicesEvolutionScenario {
 
   
-    public BalancePlatformServicesEvolutionScenario1() {
+    public BalancePlatformServicesEvolutionScenario() {
         super("Balance Platform services", new DropOneRandomService(), new AddOneRandomService());
         
     }

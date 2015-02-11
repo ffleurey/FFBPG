@@ -342,6 +342,14 @@ public class BPGraph {
         }
         return result;
     }
+    
+    public int[] platformsLinksCountsDistribution() {
+        int[] result = new int[applications.size()+1];
+        for (int i = 0; i < platforms.size(); i++) {
+            result[platforms.get(i).getLoad()]++;
+        }
+        return result;
+    }
 
     public int[] applicationsServicesCountsDistribution() {
         int[] result = new int[services.size()+1];
@@ -364,7 +372,8 @@ public class BPGraph {
         double[] result = new double[data[0].length];
         for (int l = 0; l < result.length; l++) {
             for (int c = 0; c < data.length; c++) {
-                result[l] += data[c][l];
+                if ( data[c].length > l) result[l] += data[c][l];
+                // counts as 0 if the array is smaller
             }
             result[l] /= data.length;
         }
@@ -379,7 +388,8 @@ public class BPGraph {
             b.append(l);
             b.append("\t");
             for (int c = 0; c < data.length; c++) {
-                b.append(data[c][l]);
+                if (data[c].length > l) b.append(data[c][l]);
+                else b.append(0);
                 b.append("\t");
             }
             b.append(average[l]);

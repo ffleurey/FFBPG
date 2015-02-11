@@ -2,7 +2,7 @@ package eu.diversify.ffbpg;
 
 import eu.diversify.ffbpg.evolution.ApplicationLinksEvolutionScenario;
 import eu.diversify.ffbpg.evolution.BalanceApplicationLinksEvolutionScenario;
-import eu.diversify.ffbpg.evolution.BalancePlatformServicesEvolutionScenario1;
+import eu.diversify.ffbpg.evolution.BalancePlatformServicesEvolutionScenario;
 import eu.diversify.ffbpg.evolution.InitializationEvolutionScenario;
 import eu.diversify.ffbpg.evolution.PlatformServicesEvolutionScenario;
 import eu.diversify.ffbpg.random.IntegerGenerator;
@@ -82,7 +82,7 @@ public class EvolutionTest
         PlatformServicesEvolutionScenario serv_s = PlatformServicesEvolutionScenario.getScenarioByName("Random Platform Service Evolution");
         InitializationEvolutionScenario init_s = InitializationEvolutionScenario.getScenarioByName("NONE");
         //BalanceApplicationLinksEvolutionScenario balance_links = new BalanceApplicationLinksEvolutionScenario();
-        //BalancePlatformServicesEvolutionScenario1 balance_services = new BalancePlatformServicesEvolutionScenario1();
+        //BalancePlatformServicesEvolutionScenario1 balance_services = new BBalancePlatformServicesEvolutionScenario);
         
         int sim_steps = 50;
         int sim_steps_size = 1;
@@ -139,7 +139,7 @@ public class EvolutionTest
         PlatformServicesEvolutionScenario serv_s = PlatformServicesEvolutionScenario.getScenarioByName("Change To Popular Services");
         InitializationEvolutionScenario init_s = InitializationEvolutionScenario.getScenarioByName("NONE");
         BalanceApplicationLinksEvolutionScenario balance_links = new BalanceApplicationLinksEvolutionScenario();
-        BalancePlatformServicesEvolutionScenario1 balance_services = new BalancePlatformServicesEvolutionScenario1();
+        BalancePlatformServicesEvolutionScenario balance_services = new BalancePlatformServicesEvolutionScenario();
         
         int sim_steps = 50;
         int sim_steps_size = 1;
