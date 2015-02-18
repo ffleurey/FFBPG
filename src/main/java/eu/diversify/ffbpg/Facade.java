@@ -69,5 +69,26 @@ public class Facade {
         return g;
     }
     
+     public static BPGraph createRandomBPGraph(int n_applications, 
+             int n_platforms, 
+             int n_services, 
+             IntegerGenerator apps_size_generator, 
+             IntegerGenerator plats_size_generator, 
+             IntegerSetGenerator service_sets_generator, 
+             int applications_capacity, 
+             int platforms_capacity, 
+             int app_min_size, 
+             int plat_min_size) {
+         
+        BPGraph g = null;
+        g = new BPGraph(n_services);
+        SortedIntegerSet[] apps = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_applications, apps_size_generator, service_sets_generator, app_min_size);
+        SortedIntegerSet[] plats = g.getRandomGenerator().createRandomServiceSets(g.getServices(), n_platforms, plats_size_generator, service_sets_generator, plat_min_size);
+        g.createRandomizedGraphWithoutLinks(apps, plats, applications_capacity, platforms_capacity);
+        g.addRandomLinksToSatisfyDeps();
+        g.purgeDeadApplications();
+        return g;
+    }
+    
     
 }

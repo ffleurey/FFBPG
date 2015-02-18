@@ -74,7 +74,6 @@ public class Simulation {
         System.out.println("Initializing simulations... ");
         steps = new  ArrayList<BPGraph>();
         BPGraph current = initial;
-        steps.add(current);
 
         System.out.println("Running initialization step...");
 
@@ -82,8 +81,10 @@ public class Simulation {
             current = current.deep_clone(); // Create the new bp graph
             current.clearAllCachedData();
             init_s.step(current);
-            steps.add(current);
+            //steps.add(current);
         }
+        
+        steps.add(current);
     }
     
     public BPGraph run_step() {
@@ -106,8 +107,11 @@ public class Simulation {
     }
     
     public int computeRobustnessExtinctionSequences(BPGraph model) {
-        ExtinctionSequence[] seq = model.performRandomExtinctionSequences(extinction_sequence_runs, (model.getPlatforms().size() * extinction_sequence_percentage) / 100);
-        extinctionSequences.put(model, seq);
+       ExtinctionSequence[] seq = extinctionSequences.get(model);
+        if (seq == null) { 
+            seq = model.performRandomExtinctionSequences(extinction_sequence_runs, (model.getPlatforms().size() * extinction_sequence_percentage) / 100);
+            extinctionSequences.put(model, seq);
+        }
         double[] res = ExtinctionSequence.averageExtinctionSequences(seq);
         int result = (int) (1000.0 * ExtinctionSequence.averageRobustnessIndex(res, res.length));
         return result;

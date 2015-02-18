@@ -133,16 +133,26 @@ public class BPGraph {
         return result/applications.size();
     }
     
-    public double getAvgSrvCountPerApp() {
-        double result = 0;
+    public int totalNumberOfSrvRequiredByApp() {
+        int result = 0;
         for (Application a : applications) result += a.getRequiredServices().size();
+        return result;
+    }
+    
+    public double getAvgSrvCountPerApp() {
+        double result = totalNumberOfSrvRequiredByApp();
         return result/applications.size();
     }
     
-    public double getAvgSrvCountPerPlatform() {
-        double result = 0;
+    public int totalNumberOfSrvProvidedByPlat() {
+        int result = 0;
         for (Platform p : platforms) result += p.getProvidedServices().size();
-        return result/applications.size();
+        return result;
+    }
+    
+    public double getAvgSrvCountPerPlatform() {
+        double result = totalNumberOfSrvProvidedByPlat();
+        return result/platforms.size();
     }
 
     public void createGraphWithOnePlatformPerApplicationAndSingleLink(SortedIntegerSet[] services_sets, int app_capacity, int srv_capacity) {

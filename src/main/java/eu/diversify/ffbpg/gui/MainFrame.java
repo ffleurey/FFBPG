@@ -62,6 +62,7 @@ public class MainFrame extends javax.swing.JFrame {
         buttonGroupInitial = new javax.swing.ButtonGroup();
         buttonGroupLinking = new javax.swing.ButtonGroup();
         buttonGroupExtinction = new javax.swing.ButtonGroup();
+        buttonGroupPlatSize = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jRadioButtonSrvUniform = new javax.swing.JRadioButton();
         jRadioButtonSrvExp = new javax.swing.JRadioButton();
@@ -138,6 +139,27 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         jTextFieldExtinctionPercentage = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jRadioButtonPlatUniform = new javax.swing.JRadioButton();
+        jRadioButtonPlatPoisson = new javax.swing.JRadioButton();
+        jRadioButtonPlatNormal = new javax.swing.JRadioButton();
+        jLabel24 = new javax.swing.JLabel();
+        jTextFieldPlatLambda = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        jTextFieldPlatMean = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        jTextFieldPlatVar = new javax.swing.JTextField();
+        jRadioButtonPlatBinomial = new javax.swing.JRadioButton();
+        jLabel27 = new javax.swing.JLabel();
+        jTextFieldPlatN = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        jTextFieldPlatP = new javax.swing.JTextField();
+        jRadioButtonPlatExponetial = new javax.swing.JRadioButton();
+        jLabel29 = new javax.swing.JLabel();
+        jTextFieldPlatExpLambda = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        jTextFieldMinPlatSize = new javax.swing.JTextField();
+        jLabel31 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Diversify Bi-Partite Graph Generator");
@@ -176,7 +198,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jRadioButtonSrvUniform)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -194,8 +216,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextFieldSrvLambda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)))
-                .addContainerGap(113, Short.MAX_VALUE))
+                        .addComponent(jLabel4))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,7 +248,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         buttonGroupAppSize.add(jRadioButtonAppPoisson);
-        jRadioButtonAppPoisson.setSelected(true);
         jRadioButtonAppPoisson.setText("Poisson");
 
         buttonGroupAppSize.add(jRadioButtonAppNormal);
@@ -267,6 +287,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTextFieldAppP.setPreferredSize(new java.awt.Dimension(60, 20));
 
         buttonGroupAppSize.add(jRadioButtonAppExponetial);
+        jRadioButtonAppExponetial.setSelected(true);
         jRadioButtonAppExponetial.setText("Exponential");
         jRadioButtonAppExponetial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -276,7 +297,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel20.setText("lambda=");
 
-        jTextFieldAppExpLambda.setText("10");
+        jTextFieldAppExpLambda.setText("15");
 
         jLabel21.setText("Min app size=");
 
@@ -596,14 +617,14 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel12)
                         .addComponent(jTextFieldNGraphs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonBPGView)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
+                        .addComponent(jButtonBPGView))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
         );
 
         jLabel14.setText("Simulation steps: ");
@@ -676,7 +697,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(jComboBoxSimulAppScenario, 0, 286, Short.MAX_VALUE)
                             .addComponent(jComboBoxSimulPlatScenario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jComboBoxInitSimul, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jButton2)
@@ -723,6 +744,164 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Platform size distribution"));
+
+        buttonGroupPlatSize.add(jRadioButtonPlatUniform);
+        jRadioButtonPlatUniform.setText("Uniform");
+        jRadioButtonPlatUniform.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonPlatUniformActionPerformed(evt);
+            }
+        });
+
+        buttonGroupPlatSize.add(jRadioButtonPlatPoisson);
+        jRadioButtonPlatPoisson.setText("Poisson");
+
+        buttonGroupPlatSize.add(jRadioButtonPlatNormal);
+        jRadioButtonPlatNormal.setText("Normal");
+
+        jLabel24.setText("lambda=");
+
+        jTextFieldPlatLambda.setText("6.0");
+        jTextFieldPlatLambda.setPreferredSize(new java.awt.Dimension(60, 20));
+
+        jLabel25.setText("mean=");
+
+        jTextFieldPlatMean.setText("8.0");
+        jTextFieldPlatMean.setPreferredSize(new java.awt.Dimension(60, 20));
+
+        jLabel26.setText("variance=");
+
+        jTextFieldPlatVar.setText("3.0");
+        jTextFieldPlatVar.setPreferredSize(new java.awt.Dimension(60, 20));
+
+        buttonGroupPlatSize.add(jRadioButtonPlatBinomial);
+        jRadioButtonPlatBinomial.setText("Binomial (does not work)");
+        jRadioButtonPlatBinomial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonPlatBinomialActionPerformed(evt);
+            }
+        });
+
+        jLabel27.setText("n=");
+
+        jTextFieldPlatN.setText("1");
+        jTextFieldPlatN.setPreferredSize(new java.awt.Dimension(60, 20));
+
+        jLabel28.setText("p=");
+
+        jTextFieldPlatP.setText("1.0");
+        jTextFieldPlatP.setPreferredSize(new java.awt.Dimension(60, 20));
+
+        buttonGroupPlatSize.add(jRadioButtonPlatExponetial);
+        jRadioButtonPlatExponetial.setSelected(true);
+        jRadioButtonPlatExponetial.setText("Exponential");
+        jRadioButtonPlatExponetial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonPlatExponetialActionPerformed(evt);
+            }
+        });
+
+        jLabel29.setText("lambda=");
+
+        jTextFieldPlatExpLambda.setText("15");
+
+        jLabel30.setText("Min plat size=");
+
+        jTextFieldMinPlatSize.setText("1");
+
+        jLabel31.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel31.setText("(used for all distributions)");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jRadioButtonPlatNormal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel25)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldPlatMean, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jRadioButtonPlatExponetial)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel29))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jRadioButtonPlatBinomial)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel27)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldPlatN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldPlatExpLambda)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButtonPlatPoisson)
+                            .addComponent(jRadioButtonPlatUniform))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldPlatLambda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldMinPlatSize))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel28)
+                            .addComponent(jLabel26))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldPlatP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldPlatVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonPlatUniform)
+                    .addComponent(jLabel30)
+                    .addComponent(jTextFieldMinPlatSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel31))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonPlatPoisson)
+                    .addComponent(jLabel24)
+                    .addComponent(jTextFieldPlatLambda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldPlatMean, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25)
+                    .addComponent(jLabel26)
+                    .addComponent(jTextFieldPlatVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jRadioButtonPlatNormal))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextFieldPlatN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel27)
+                        .addComponent(jLabel28)
+                        .addComponent(jTextFieldPlatP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jRadioButtonPlatBinomial))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonPlatExponetial)
+                    .addComponent(jLabel29)
+                    .addComponent(jTextFieldPlatExpLambda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -734,7 +913,10 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -754,8 +936,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -804,6 +987,8 @@ public class MainFrame extends javax.swing.JFrame {
         
         int min_app_size = Integer.parseInt(jTextFieldMinAppSize.getText());
         
+        int min_plat_size = Integer.parseInt(jTextFieldMinPlatSize.getText());
+        
         int app_capacity = Integer.parseInt(jTextFieldAppCapacity.getText());
         int srv_capacity = Integer.parseInt(jTextFieldSrvCapacity.getText());
         
@@ -841,6 +1026,30 @@ public class MainFrame extends javax.swing.JFrame {
         else if (jRadioButtonAppExponetial.isSelected()) {
             app_size_generator = new NegExpIntegerGenerator(Double.parseDouble(jTextFieldAppExpLambda.getText()));
             cfg.append("Neg Exponential (Lambda="+jTextFieldAppExpLambda.getText()+")"); cfg.append("\n");
+        }
+        
+        
+        cfg.append("# Dist. of platform size\t");
+        IntegerGenerator plat_size_generator = null;
+        if (jRadioButtonPlatUniform.isSelected()) {
+            plat_size_generator = new UniformIntegerGenerator();
+            cfg.append("Uniform"); cfg.append("\n");
+        }
+        else if (jRadioButtonPlatNormal.isSelected()) {
+            plat_size_generator = new GaussianIntegerGenerator(Double.parseDouble(jTextFieldPlatMean.getText()), Double.parseDouble(jTextFieldPlatVar.getText()));
+            cfg.append("Normal (mean="+jTextFieldPlatMean.getText()+", var="+jTextFieldPlatVar.getText()+")"); cfg.append("\n");
+        }
+        else if (jRadioButtonPlatPoisson.isSelected()) {
+            plat_size_generator = new PoissonIntegerGenerator(Double.parseDouble(jTextFieldPlatLambda.getText()));
+            cfg.append("Poisson (lambda="+jTextFieldPlatLambda.getText()+")"); cfg.append("\n");
+        }
+        else if (jRadioButtonPlatBinomial.isSelected()) {
+            plat_size_generator = new BinomialIntegerGenerator(Integer.parseInt(jTextFieldPlatN.getText()), Double.parseDouble(jTextFieldPlatP.getText()));
+            cfg.append("Binomial (N="+jTextFieldPlatN.getText()+", P="+jTextFieldPlatP.getText()+")"); cfg.append("\n");
+        }
+        else if (jRadioButtonPlatExponetial.isSelected()) {
+            plat_size_generator = new NegExpIntegerGenerator(Double.parseDouble(jTextFieldPlatExpLambda.getText()));
+            cfg.append("Neg Exponential (Lambda="+jTextFieldPlatExpLambda.getText()+")"); cfg.append("\n");
         }
         
         cfg.append("# Dist. of services usage\t");
@@ -897,7 +1106,7 @@ public class MainFrame extends javax.swing.JFrame {
                     cfg.append("# Adding a random set of links in order to satisfy dependencies of applications\n");
                     cfg.append("# Pruning applications for which are not alive\n");
                 }
-                g = Facade.createRandomBPGraph(n_app, n_pla, n_srv, app_size_generator, service_sets_generator, app_capacity, srv_capacity, min_app_size);
+                g = Facade.createRandomBPGraph(n_app, n_pla, n_srv, app_size_generator, plat_size_generator, service_sets_generator, app_capacity, srv_capacity, min_app_size, min_plat_size);
                 bpgraphtable.add(g);
             }
             
@@ -1034,12 +1243,25 @@ public class MainFrame extends javax.swing.JFrame {
         // Create simulations for all initial models
         for (BPGraph g : bpgraphtable.getData()) {
             Simulation s = create_simulation_for_model(g);
+            for (BPGraph step : s.getSteps()) s.computeRobustnessExtinctionSequences(step);
             f.addSimulation(s);
         }
         
         f.setVisible(true);
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jRadioButtonPlatUniformActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonPlatUniformActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonPlatUniformActionPerformed
+
+    private void jRadioButtonPlatBinomialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonPlatBinomialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonPlatBinomialActionPerformed
+
+    private void jRadioButtonPlatExponetialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonPlatExponetialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonPlatExponetialActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1086,6 +1308,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupExtinction;
     private javax.swing.ButtonGroup buttonGroupInitial;
     private javax.swing.ButtonGroup buttonGroupLinking;
+    private javax.swing.ButtonGroup buttonGroupPlatSize;
     private javax.swing.ButtonGroup buttonGroupSrvDist;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -1114,7 +1337,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1126,6 +1357,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JRadioButton jRadioButtonAppBinomial;
@@ -1138,6 +1370,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButtonLinkAAllL;
     private javax.swing.JRadioButton jRadioButtonLinkAL;
     private javax.swing.JRadioButton jRadioButtonLinkSL;
+    private javax.swing.JRadioButton jRadioButtonPlatBinomial;
+    private javax.swing.JRadioButton jRadioButtonPlatExponetial;
+    private javax.swing.JRadioButton jRadioButtonPlatNormal;
+    private javax.swing.JRadioButton jRadioButtonPlatPoisson;
+    private javax.swing.JRadioButton jRadioButtonPlatUniform;
     private javax.swing.JRadioButton jRadioButtonSrvComb;
     private javax.swing.JRadioButton jRadioButtonSrvExp;
     private javax.swing.JRadioButton jRadioButtonSrvUniform;
@@ -1153,9 +1390,16 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldAppVar;
     private javax.swing.JTextField jTextFieldExtinctionPercentage;
     private javax.swing.JTextField jTextFieldMinAppSize;
+    private javax.swing.JTextField jTextFieldMinPlatSize;
     private javax.swing.JTextField jTextFieldNGraphs;
     private javax.swing.JTextField jTextFieldNbExtinctions;
     private javax.swing.JTextField jTextFieldNeighbourhood;
+    private javax.swing.JTextField jTextFieldPlatExpLambda;
+    private javax.swing.JTextField jTextFieldPlatLambda;
+    private javax.swing.JTextField jTextFieldPlatMean;
+    private javax.swing.JTextField jTextFieldPlatN;
+    private javax.swing.JTextField jTextFieldPlatP;
+    private javax.swing.JTextField jTextFieldPlatVar;
     private javax.swing.JTextField jTextFieldSimNApp;
     private javax.swing.JTextField jTextFieldSimNPlats;
     private javax.swing.JTextField jTextFieldSimNSrv;

@@ -46,7 +46,7 @@ public class BPGraphTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 8;
+        return 10;
     }
 
     public Object getValueAt(int l, int c) {
@@ -58,9 +58,11 @@ public class BPGraphTableModel extends AbstractTableModel {
             case 2: return new Integer(g.getPlatforms().size());
             case 3: return new Integer(g.getAllUsedServices().size());
             case 4: return new Integer(g.getLinkCount());
-            case 5: return new Double(g.getAvgSrvCountPerApp());
-            case 6: return new Double(g.getAvgSrvCountPerPlatform());
-            case 7: return new Double(g.getAvgLinkCountPerApp());
+            case 5: return new Integer(g.totalNumberOfSrvRequiredByApp());
+            case 6: return new Integer(g.totalNumberOfSrvProvidedByPlat());
+            case 7: return new Double(g.getAvgSrvCountPerApp());
+            case 8: return new Double(g.getAvgSrvCountPerPlatform());
+            case 9: return new Double(g.getAvgLinkCountPerApp());
             default: return "???";
         }
         
@@ -86,10 +88,12 @@ public class BPGraphTableModel extends AbstractTableModel {
             case 1: return "#APP";
             case 2: return "#PLA";
             case 3: return "#SRV";
-            case 4: return "#LINK";    
-            case 5: return "#SRV/APP";
-            case 6: return "#SRV/PLA";
-            case 7: return "#LINK/APP";
+            case 4: return "#LINK";   
+            case 5: return "#TOT_REQ";
+            case 6: return "#TOT_PRO";
+            case 7: return "#SRV/APP";
+            case 8: return "#SRV/PLA";
+            case 9: return "#LINK/APP";
             default: return "???";
         }
     }

@@ -277,7 +277,7 @@ public class BPGraphFrame extends javax.swing.JFrame {
         jPanel2 = new BarGraphPanel(srvuse, "Distribution of the services usage", 0, 100, 25, Color.ORANGE);
         jPanel3 = new BarGraphPanel(nblinks, "Distribution of the number of links per application", 0, 100, 25, Color.RED);
         jPanel11 = new javax.swing.JPanel();
-        jPanel12 = new BarGraphPanel(appsize, "Distribution of the platform sizes (# provided srv)", 0, 100, 25, Color.GREEN);
+        jPanel12 = new BarGraphPanel(platsize, "Distribution of the platform sizes (# provided srv)", 0, 100, 25, Color.GREEN);
         jPanel13 = new BarGraphPanel(srvuse, "Distribution of the services provision", 0, 100, 25, Color.ORANGE);
         jPanel14 = new BarGraphPanel(nblinks, "Distribution of the number of links per platform", 0, 100, 25, Color.RED);
         jPanel6 = new javax.swing.JPanel();
