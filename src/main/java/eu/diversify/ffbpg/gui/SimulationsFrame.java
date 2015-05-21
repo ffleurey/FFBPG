@@ -92,6 +92,7 @@ public class SimulationsFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextFieldSelectedStep = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -153,6 +154,13 @@ public class SimulationsFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton6.setText("Export All Graphs");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -180,6 +188,8 @@ public class SimulationsFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -210,7 +220,6 @@ public class SimulationsFrame extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
                         .addComponent(jTextFieldFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -225,7 +234,7 @@ public class SimulationsFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanelGraphRobustness, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                        .addComponent(jPanelGraphRobustness, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
                         .addGap(29, 29, 29))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -233,7 +242,8 @@ public class SimulationsFrame extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jTextFieldSelectedStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton5)
-                            .addComponent(jButton2))))
+                            .addComponent(jButton2)
+                            .addComponent(jButton6))))
                 .addContainerGap())
         );
 
@@ -413,6 +423,23 @@ public class SimulationsFrame extends javax.swing.JFrame {
         f.setBPGraphCollection(models, 0, log);
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        
+        final File folder = getDataFolder();
+        if (folder == null) return;
+        
+        // For each simulation
+        for ( int si=0; si < simulations.getData().size(); si++) {
+            Simulation s = simulations.getData().get(si);
+            // Get the graph for each step
+            for (int gi=0; gi < s.getSteps().size(); gi++) {
+                BPGraph g = s.getSteps().get(gi);
+                // Export the graph in a text file
+                FileUtils.writeTextFile(folder, "Graph_" + si + "_" + gi, g.serialize_txt());
+            }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     public class ExecuteOneSimulationStep implements Callable<Integer> {
 
         Simulation simulation;
@@ -443,6 +470,7 @@ public class SimulationsFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
