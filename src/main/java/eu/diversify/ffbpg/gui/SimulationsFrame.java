@@ -434,8 +434,9 @@ public class SimulationsFrame extends javax.swing.JFrame {
             // Get the graph for each step
             for (int gi=0; gi < s.getSteps().size(); gi++) {
                 BPGraph g = s.getSteps().get(gi);
+                String line = "# Robustness = " + s.computeRobustnessExtinctionSequences(g) + "\n";
                 // Export the graph in a text file
-                FileUtils.writeTextFile(folder, "Graph_" + si + "_" + gi, g.serialize_txt());
+                FileUtils.writeTextFile(folder, "Graph_" + si + "_" + gi, line + g.serialize_txt());
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
