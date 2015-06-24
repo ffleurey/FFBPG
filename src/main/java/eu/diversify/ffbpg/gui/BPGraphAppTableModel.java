@@ -56,8 +56,8 @@ public class BPGraphAppTableModel extends AbstractTableModel {
             case 6: return df.format(a.getServicesPopulation().getShannonEquitability());
             case 7: return df.format(a.getServicesPopulation().getPopulationMeanSize());
             case 8: return df.format(a.getServicesPopulation().getPopulationMedianSize());
-            case 9: return a.getApplicationNeighborhoods(data).size();
-            case 10: return a.getPlatformNeighborhoods(data).size();
+            case 9: return -1; //a.getApplicationNeighborhoods(data).size();
+            case 10: return -1; //a.getPlatformNeighborhoods(data).size();
             default: return "???";
         }
         

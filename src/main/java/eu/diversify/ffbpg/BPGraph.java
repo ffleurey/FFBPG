@@ -8,8 +8,11 @@ import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -17,6 +20,21 @@ import java.util.Hashtable;
  */
 public class BPGraph {
 
+    
+    Map<Application, Set<Platform>> neighborhood_cache;
+    
+    public Set<Platform> getNeighborhoodForApplication(Application a) {
+        if (neighborhood_cache != null && neighborhood_cache.containsKey(a)) {
+            return neighborhood_cache.get(a);
+        }
+        else return null;
+    }
+    
+    public void setNeighborhoodForApplication(Application a, Set<Platform> n) {
+        if (neighborhood_cache == null) neighborhood_cache = new HashMap<Application, Set<Platform>>();
+        neighborhood_cache.put(a, n);
+    }
+    
     ArrayList<Service> services;
     ArrayList<Application> applications;
     ArrayList<Platform> platforms;
@@ -420,6 +438,7 @@ public class BPGraph {
             buf.append(a.name + ";" + a.capacity + "\n");
             buf.append(a.getRequiredServices().toString()+"\n");
             buf.append(a.getLinkedPlatformNames()+"\n");
+            buf.append(a.getNeighborhoodPlatformNames(this)+"\n");
         }
         return buf.toString();
     }

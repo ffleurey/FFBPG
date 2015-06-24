@@ -9,6 +9,7 @@ import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -22,7 +23,7 @@ public class ChangeForBetterShannon extends ApplicationEvolutionOperator {
     @Override
     public boolean execute(BPGraph graph, Application a) {
         
-        ArrayList<Platform> environment = AppLinksHelper.getRandomNeighborhood(graph, 10);      
+        Set<Platform> environment = AppLinksHelper.getRandomNeighborhoodForApp(graph,a,  10); 
         ArrayList<Platform> can_be_removed = AppLinksHelper.getValidLinksToRemove(graph, a);
         ArrayList<Platform> can_be_added = AppLinksHelper.getValidLinksToAdd(graph, a, environment);
         

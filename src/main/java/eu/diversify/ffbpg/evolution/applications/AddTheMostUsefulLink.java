@@ -7,6 +7,7 @@ import eu.diversify.ffbpg.collections.Population;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  *
@@ -19,7 +20,7 @@ public class AddTheMostUsefulLink extends ApplicationEvolutionOperator {
         
         if (a.getCapacity() <= a.getLinkedPlatforms().size()) return false; // do not exeed app capacity
         
-         ArrayList<Platform> environment = AppLinksHelper.getRandomNeighborhood(graph, 10);
+        Set<Platform> environment = AppLinksHelper.getRandomNeighborhoodForApp(graph,a,  10);
         ArrayList<Platform> valids = AppLinksHelper.getValidLinksToAdd(graph, a, environment);
         
         Hashtable<Platform, Population> candidates = new Hashtable<Platform, Population>();

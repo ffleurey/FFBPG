@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  *
@@ -17,6 +18,8 @@ public class Application {
     protected SortedIntegerSet requiredServices;
     
     protected HashSet<Platform> platforms;
+    
+    /*
     
     protected HashSet<Platform> __neighborhood_platforms;
     protected HashSet<Application> __neighborhood_applications;
@@ -78,6 +81,18 @@ public class Application {
     public String getLinkedPlatformNames() {
         StringBuffer result = new StringBuffer("{");
         for(Platform p : platforms) {
+            result.append(p.getName());
+            result.append(" "); 
+        }
+        result.append("}");
+        return result.toString();
+    }
+    
+    public String getNeighborhoodPlatformNames(BPGraph graph) {
+        Set<Platform> n = graph.getNeighborhoodForApplication(this);
+        if (n == null) return ""; // No neigborhood has been calculated and used
+        StringBuffer result = new StringBuffer("{");
+        for(Platform p : n) {
             result.append(p.getName());
             result.append(" "); 
         }

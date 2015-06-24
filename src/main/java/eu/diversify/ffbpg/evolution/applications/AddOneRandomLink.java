@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  *
@@ -23,7 +24,7 @@ public class AddOneRandomLink extends ApplicationEvolutionOperator {
         if (a.getCapacity() <= a.getLinkedPlatforms().size()) return false; // do not exeed app capacity
         
         // Create the candidate applications
-        ArrayList<Platform> environment = AppLinksHelper.getRandomNeighborhood(graph, 10);
+        Set<Platform> environment = AppLinksHelper.getRandomNeighborhoodForApp(graph,a,  10);
         ArrayList<Platform> candidates = AppLinksHelper.getValidLinksToAdd(graph, a, environment);
      
         Collections.shuffle(candidates, RandomUtils.getRandom());

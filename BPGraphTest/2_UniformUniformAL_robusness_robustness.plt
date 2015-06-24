@@ -1,4 +1,4 @@
-set title '2_UniformUniformAL_robusness: Robustness index for 5 runs (avg = 87.15698924731183)'
+set title '2_UniformUniformAL_robusness: Robustness index for 5 runs (avg = 86.7010752688172)'
 set xlabel 'Run'
 set ylabel 'Robusness index (%)'
 set xrange [0:4]

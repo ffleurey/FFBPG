@@ -7,6 +7,7 @@ import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -16,14 +17,23 @@ public class AppLinksHelper {
 
     private static UniformIntegerSetGenerator random_set_generator = new UniformIntegerSetGenerator();
     
-    public static ArrayList<Platform> getRandomNeighborhood(BPGraph graph, int ratio) {
+    public static Set<Platform> getRandomNeighborhoodForApp(BPGraph graph, Application a, int ratio) {
+        
+        // Check if the graph already contains the Neighborhood for that application
+        Set<Platform> platforms = graph.getNeighborhoodForApplication(a);
+        if (platforms != null) return platforms;
+        
+        // Create a new random Neighborhood  
         int nb_plat = graph.getPlatforms().size() * ratio / 100;
         // pick randomly the set of platforms to consider
         int[] ids = random_set_generator.getRandomIntegerSet(graph.getPlatforms().size(), nb_plat);
-        ArrayList<Platform> platforms = new ArrayList<Platform>();
+        platforms = new HashSet<Platform>();
         for (int i=0; i<ids.length; i++) {
             platforms.add(graph.getPlatforms().get(ids[i]));
         }
+        
+        // Store the Neighborhood in the graph
+        graph.setNeighborhoodForApplication(a, platforms);
         return platforms;
     }
     

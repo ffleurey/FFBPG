@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  *
@@ -24,7 +25,7 @@ public class AddAUsefulLink extends ApplicationEvolutionOperator {
         Population init_pop = a.getServicesPopulation();
         double base_equitability = init_pop.getShannonEquitability();
         
-        ArrayList<Platform> environment = AppLinksHelper.getRandomNeighborhood(graph, 10);
+        Set<Platform> environment = AppLinksHelper.getRandomNeighborhoodForApp(graph,a,  10);
         ArrayList<Platform> candidates = AppLinksHelper.getValidLinksToAdd(graph, a, environment);
      
         Collections.shuffle(candidates, RandomUtils.getRandom());
