@@ -25,6 +25,8 @@ import eu.diversify.ffbpg.random.NegExpIntegerSetGenerator;
 import eu.diversify.ffbpg.random.PoissonIntegerGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
+import eu.diversify.ffbpg.sgh.SGHGenerator;
+import eu.diversify.ffbpg.sgh.VariationPoint;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -121,6 +123,7 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButtonBPGView = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jTextFieldSimulSteps = new javax.swing.JTextField();
@@ -248,6 +251,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         buttonGroupAppSize.add(jRadioButtonAppPoisson);
+        jRadioButtonAppPoisson.setSelected(true);
         jRadioButtonAppPoisson.setText("Poisson");
 
         buttonGroupAppSize.add(jRadioButtonAppNormal);
@@ -287,7 +291,6 @@ public class MainFrame extends javax.swing.JFrame {
         jTextFieldAppP.setPreferredSize(new java.awt.Dimension(60, 20));
 
         buttonGroupAppSize.add(jRadioButtonAppExponetial);
-        jRadioButtonAppExponetial.setSelected(true);
         jRadioButtonAppExponetial.setText("Exponential");
         jRadioButtonAppExponetial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -597,6 +600,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Generate Smart Graph Hopper Models");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -609,9 +619,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonBPGView)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1068, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -622,7 +634,9 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jLabel12)
                         .addComponent(jTextFieldNGraphs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButtonBPGView))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
         );
@@ -755,6 +769,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         buttonGroupPlatSize.add(jRadioButtonPlatPoisson);
+        jRadioButtonPlatPoisson.setSelected(true);
         jRadioButtonPlatPoisson.setText("Poisson");
 
         buttonGroupPlatSize.add(jRadioButtonPlatNormal);
@@ -794,7 +809,6 @@ public class MainFrame extends javax.swing.JFrame {
         jTextFieldPlatP.setPreferredSize(new java.awt.Dimension(60, 20));
 
         buttonGroupPlatSize.add(jRadioButtonPlatExponetial);
-        jRadioButtonPlatExponetial.setSelected(true);
         jRadioButtonPlatExponetial.setText("Exponential");
         jRadioButtonPlatExponetial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1263,6 +1277,26 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButtonPlatExponetialActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+        bpgraphtable.clear();
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(200);
+        int n_run = Integer.parseInt(jTextFieldNGraphs.getText());
+        
+        int n_app = Integer.parseInt(jTextFieldSimNApp.getText());
+        int n_pla = Integer.parseInt(jTextFieldSimNPlats.getText());
+        
+        SGHGenerator gen = new SGHGenerator();
+        
+        ArrayList<VariationPoint> model = gen.getSGHUrbanVariants();
+        
+        for (int i=0; i<n_run; i++) {
+            BPGraph g = gen.buildBPGraph(model, n_app, n_pla);
+            bpgraphtable.add(g);
+        }
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1313,6 +1347,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonBPGView;
     private javax.swing.JCheckBox jCheckBoxBalanceLinks;
     private javax.swing.JCheckBox jCheckBoxBalanceServices;

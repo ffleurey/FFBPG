@@ -25,14 +25,15 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
         ApplicationLinksEvolutionScenario s;
         s = new NoApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
         s = new RandomApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
-        s = new GuidedRemoveApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
-        s = new GuidedAddApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
-        s = new GuidedApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
-        s = new GuidedAddApplicationLinksEvolutionScenarioCheating(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
-        s = new GuidedApplicationLinksEvolutionScenarioCheats(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        //s = new GuidedRemoveApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        //s = new GuidedAddApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        //s = new GuidedApplicationLinksEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        //s = new GuidedAddApplicationLinksEvolutionScenarioCheating(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        //s = new GuidedApplicationLinksEvolutionScenarioCheats(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
         s = new ChangeLinksForEquitabilityEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
-        s = new ChangeLinksForShannonEvolutionScenario1(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
-        s = new ChangeLinksForShannonWithNoiseEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        s = new ChangeLinksForEquitabilityAndLowerLoadEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        //s = new ChangeLinksForShannonEvolutionScenario1(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
+        //s = new ChangeLinksForShannonWithNoiseEvolutionScenario(); prototypes.put(s.getName(), s);prototypes_names.add(s.getName());
         
     }
     

@@ -15,6 +15,7 @@ import java.util.Set;
 public class Application {
     
     protected String name;
+    
     protected SortedIntegerSet requiredServices;
     
     protected HashSet<Platform> platforms;

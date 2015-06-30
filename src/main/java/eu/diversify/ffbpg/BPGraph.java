@@ -37,6 +37,14 @@ public class BPGraph {
     
     ArrayList<Service> services;
     ArrayList<Application> applications;
+
+    public void setApplications(ArrayList<Application> applications) {
+        this.applications = applications;
+    }
+
+    public void setPlatforms(ArrayList<Platform> platforms) {
+        this.platforms = platforms;
+    }
     ArrayList<Platform> platforms;
     
     private static long graph_counter = 0;
@@ -94,6 +102,11 @@ public class BPGraph {
 
     public BPGraph(int n_services) {
         services = randomGenerator.createServices(n_services);
+        id = graph_counter++;
+    }
+    
+    public BPGraph(ArrayList<Service> srvs) {
+        services = srvs;
         id = graph_counter++;
     }
     
