@@ -14,6 +14,10 @@ public class PoissonIntegerGenerator implements IntegerGenerator {
 
     private double lambda = 5.0;
     
+    public String toString() {
+        return "(Poisson l = " + lambda + ")";
+    }
+    
     public PoissonIntegerGenerator(double lambda) {
         this.lambda = lambda;
     }

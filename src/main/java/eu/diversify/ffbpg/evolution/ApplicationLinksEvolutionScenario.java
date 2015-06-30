@@ -2,6 +2,7 @@ package eu.diversify.ffbpg.evolution;
 
 import eu.diversify.ffbpg.Application;
 import eu.diversify.ffbpg.BPGraph;
+import eu.diversify.ffbpg.Platform;
 import eu.diversify.ffbpg.evolution.applications.AddTheMostUsefulLink;
 import eu.diversify.ffbpg.evolution.applications.ApplicationEvolutionOperator;
 import eu.diversify.ffbpg.evolution.applications.EvolveAppNeighborhood;
@@ -98,6 +99,8 @@ public abstract class ApplicationLinksEvolutionScenario extends EvolutionScenari
                         }
                     }
             }
+            // We were not able to add a "useful link" so just add any link to the first app
+            
         }
         System.out.println("Step complete removed links = " + removed + " added links = " + added);
         

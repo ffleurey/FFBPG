@@ -20,7 +20,7 @@ public class BalanceApplicationLinksEvolutionScenario extends ApplicationLinksEv
 
     public BalanceApplicationLinksEvolutionScenario() {
         super("Balance applications links", 
-                    new RemoveOneUnusedLinks(), new AddAUsefulLink());
+                    new RemoveOneUnusedLinks(), new AddOneRandomLink(false));
     }
 
     

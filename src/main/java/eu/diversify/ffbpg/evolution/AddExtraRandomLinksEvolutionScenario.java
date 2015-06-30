@@ -19,7 +19,7 @@ import java.util.Collections;
 public class AddExtraRandomLinksEvolutionScenario extends InitializationEvolutionScenario {
 
     int nb_link_per_app = 0;
-    AddOneRandomLink add_link = new AddOneRandomLink();
+    AddOneRandomLink add_link = new AddOneRandomLink(false);
     
     public AddExtraRandomLinksEvolutionScenario(int l) {
         nb_link_per_app = l;

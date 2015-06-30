@@ -16,6 +16,30 @@ import java.util.Iterator;
  */
 public class SGHGenerator {
     
+    
+    public String getSGHDescription(ArrayList<VariationPoint> model) {
+        StringBuilder b = new StringBuilder();
+        for (VariationPoint v : model) {
+            b.append("> " + v.getName() + " [");
+            if (v.optional) b.append("0..");
+            else b.append("1..");
+            
+            if (v.multiplicityGenerator == null) {
+                b.append("1]");
+            }
+            else {
+                b.append("*] " + v.multiplicityGenerator.toString());
+            }
+            b.append("\n");
+            
+            for (Alternative a : v.alternatives) {
+                b.append("    -> " + a.getName() + " (" + a.weight + ")\n");
+            }
+            b.append("\n");
+        }
+        
+        return b.toString();
+    }
      
     public ArrayList<VariationPoint> getSGHUrbanVariants() {
         

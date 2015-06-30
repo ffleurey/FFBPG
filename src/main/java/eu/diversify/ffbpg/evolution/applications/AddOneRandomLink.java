@@ -18,13 +18,25 @@ import java.util.Set;
  */
 public class AddOneRandomLink extends ApplicationEvolutionOperator {
 
+    boolean restricted_to_neighborhood = true;
+    
+    public AddOneRandomLink(boolean restricted_to_neighborhood) {
+        this.restricted_to_neighborhood = restricted_to_neighborhood;
+    }
+    public AddOneRandomLink() {
+        
+    }
+    
+    
     @Override
     public boolean execute(BPGraph graph, Application a) {
         
         if (a.getCapacity() <= a.getLinkedPlatforms().size()) return false; // do not exeed app capacity
         
         // Create the candidate applications
-        Set<Platform> environment = AppLinksHelper.getRandomNeighborhoodForApp(graph,a,  10);
+        Set<Platform> environment = null;
+        if (restricted_to_neighborhood) environment = AppLinksHelper.getRandomNeighborhoodForApp(graph,a,  10);
+        else environment = new HashSet(graph.getPlatforms());
         ArrayList<Platform> candidates = AppLinksHelper.getValidLinksToAdd(graph, a, environment);
      
         Collections.shuffle(candidates, RandomUtils.getRandom());

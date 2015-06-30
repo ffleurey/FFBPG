@@ -1295,6 +1295,8 @@ public class MainFrame extends javax.swing.JFrame {
             bpgraphtable.add(g);
         }
         
+        generator_parameters = gen.getSGHDescription(model);
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
