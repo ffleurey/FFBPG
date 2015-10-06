@@ -1,5 +1,5 @@
 
-package eu.diversify.ffbpg.sgh;
+package eu.diversify.ffbpg.sgh.model;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author ffl
  */
-public class Alternative implements Comparable<Alternative>{
+public class SGHFeature implements Comparable<SGHFeature>{
     
     String name;
     Integer weight;
@@ -16,13 +16,13 @@ public class Alternative implements Comparable<Alternative>{
         return name;
     }
     
-    public Alternative(String name, int weight) {
+    public SGHFeature(String name, int weight) {
         this.name = name;
         this.weight = weight;
     }
 
     @Override
-    public int compareTo(Alternative o) {
+    public int compareTo(SGHFeature o) {
         return weight.compareTo(o.weight);
     }
 }

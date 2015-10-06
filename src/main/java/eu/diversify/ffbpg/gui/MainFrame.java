@@ -26,7 +26,7 @@ import eu.diversify.ffbpg.random.PoissonIntegerGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
 import eu.diversify.ffbpg.sgh.SGHGenerator;
-import eu.diversify.ffbpg.sgh.VariationPoint;
+import eu.diversify.ffbpg.sgh.model.SGHVariationPoint;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -1288,7 +1288,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         SGHGenerator gen = new SGHGenerator();
         
-        ArrayList<VariationPoint> model = gen.getSGHUrbanVariants();
+        ArrayList<SGHVariationPoint> model = gen.getSGHUrbanVariants();
         
         for (int i=0; i<n_run; i++) {
             BPGraph g = gen.buildBPGraph(model, n_app, n_pla);

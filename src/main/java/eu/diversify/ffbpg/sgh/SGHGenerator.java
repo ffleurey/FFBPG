@@ -1,5 +1,7 @@
 package eu.diversify.ffbpg.sgh;
 
+import eu.diversify.ffbpg.sgh.model.SGHVariationPoint;
+import eu.diversify.ffbpg.sgh.model.SGHFeature;
 import eu.diversify.ffbpg.Application;
 import eu.diversify.ffbpg.BPGraph;
 import eu.diversify.ffbpg.Platform;
@@ -17,9 +19,9 @@ import java.util.Iterator;
 public class SGHGenerator {
     
     
-    public String getSGHDescription(ArrayList<VariationPoint> model) {
+    public String getSGHDescription(ArrayList<SGHVariationPoint> model) {
         StringBuilder b = new StringBuilder();
-        for (VariationPoint v : model) {
+        for (SGHVariationPoint v : model) {
             b.append("> " + v.getName() + " [");
             if (v.optional) b.append("0..");
             else b.append("1..");
@@ -32,7 +34,7 @@ public class SGHGenerator {
             }
             b.append("\n");
             
-            for (Alternative a : v.alternatives) {
+            for (SGHFeature a : v.alternatives) {
                 b.append("    -> " + a.getName() + " (" + a.weight + ")\n");
             }
             b.append("\n");
@@ -41,73 +43,121 @@ public class SGHGenerator {
         return b.toString();
     }
      
-    public ArrayList<VariationPoint> getSGHUrbanVariants() {
+    public ArrayList<SGHVariationPoint> getSGHUrbanVariants() {
         
-        ArrayList<VariationPoint> result = new ArrayList<VariationPoint>();
+        ArrayList<SGHVariationPoint> result = new ArrayList<SGHVariationPoint>();
         
-        VariationPoint v = new VariationPoint("Map", null, false);
-        v.addAlternative(new Alternative("Dublin", 200));
-        v.addAlternative(new Alternative("Rennes", 200));
-        v.addAlternative(new Alternative("Oslo", 200));
-        v.addAlternative(new Alternative("La Rochelle", 20));
-        v.addAlternative(new Alternative("Thouars", 5));
-        v.addAlternative(new Alternative("Sandvika", 5));
-        v.addAlternative(new Alternative("Trondheim", 20));
-        v.addAlternative(new Alternative("Cesson", 20));
-        v.addAlternative(new Alternative("Redon", 5));
-        v.addAlternative(new Alternative("Aytre", 5));
-        v.addAlternative(new Alternative("Sanzay", 5));
+        SGHVariationPoint v = new SGHVariationPoint("Map", null, false);
+        v.addAlternative(new SGHFeature("Dublin", 200));
+        v.addAlternative(new SGHFeature("Rennes", 200));
+        v.addAlternative(new SGHFeature("Oslo", 200));
+        v.addAlternative(new SGHFeature("La Rochelle", 20));
+        v.addAlternative(new SGHFeature("Thouars", 5));
+        v.addAlternative(new SGHFeature("Sandvika", 5));
+        v.addAlternative(new SGHFeature("Trondheim", 20));
+        v.addAlternative(new SGHFeature("Cesson", 20));
+        v.addAlternative(new SGHFeature("Redon", 5));
+        v.addAlternative(new SGHFeature("Aytre", 5));
+        v.addAlternative(new SGHFeature("Sanzay", 5));
         result.add(v);
         
-        v = new VariationPoint("Vehicule", new PoissonIntegerGenerator(2), false);
-        v.addAlternative(new Alternative("Car", 200));
-        v.addAlternative(new Alternative("Bike", 200));
-        v.addAlternative(new Alternative("Walk", 100));
-        v.addAlternative(new Alternative("Motorcycle", 20));
-        v.addAlternative(new Alternative("Scooter", 5));
-        v.addAlternative(new Alternative("Monocycle", 5));
+        v = new SGHVariationPoint("Vehicule", new PoissonIntegerGenerator(2), false);
+        v.addAlternative(new SGHFeature("Car", 200));
+        v.addAlternative(new SGHFeature("Bike", 200));
+        v.addAlternative(new SGHFeature("Walk", 100));
+        v.addAlternative(new SGHFeature("Motorcycle", 20));
+        v.addAlternative(new SGHFeature("Scooter", 5));
+        v.addAlternative(new SGHFeature("Monocycle", 5));
         result.add(v);
         
-        v = new VariationPoint("Algorithm", null, false);
-        v.addAlternative(new Alternative("Diksjtra", 200));
-        v.addAlternative(new Alternative("A*", 20));
+        v = new SGHVariationPoint("Algorithm", null, false);
+        v.addAlternative(new SGHFeature("Diksjtra", 200));
+        v.addAlternative(new SGHFeature("A*", 20));
         result.add(v);
         
-        v = new VariationPoint("Traffic", new PoissonIntegerGenerator(2), true);
-        v.addAlternative(new Alternative("Google", 200));
-        v.addAlternative(new Alternative("Waze", 200));
-        v.addAlternative(new Alternative("PublicService", 20));
-        v.addAlternative(new Alternative("TrafficApp", 20));
+        v = new SGHVariationPoint("Traffic", new PoissonIntegerGenerator(2), true);
+        v.addAlternative(new SGHFeature("Google", 200));
+        v.addAlternative(new SGHFeature("Waze", 200));
+        v.addAlternative(new SGHFeature("PublicService", 20));
+        v.addAlternative(new SGHFeature("TrafficApp", 20));
         result.add(v);
         
-        v = new VariationPoint("Polution", new PoissonIntegerGenerator(2), true);
-        v.addAlternative(new Alternative("Air_AVG", 200));
-        v.addAlternative(new Alternative("Air_RT", 50));
-        v.addAlternative(new Alternative("Noize_AVG", 200));
-        v.addAlternative(new Alternative("Noize_RT", 200));
-        v.addAlternative(new Alternative("Polen", 20));
-        v.addAlternative(new Alternative("Particules", 20));
-        v.addAlternative(new Alternative("Ozone", 20));
+        v = new SGHVariationPoint("Polution", new PoissonIntegerGenerator(2), true);
+        v.addAlternative(new SGHFeature("Air_AVG", 200));
+        v.addAlternative(new SGHFeature("Air_RT", 50));
+        v.addAlternative(new SGHFeature("Noize_AVG", 200));
+        v.addAlternative(new SGHFeature("Noize_RT", 200));
+        v.addAlternative(new SGHFeature("Polen", 20));
+        v.addAlternative(new SGHFeature("Particules", 20));
+        v.addAlternative(new SGHFeature("Ozone", 20));
         result.add(v);
         
-        v = new VariationPoint("Road", new PoissonIntegerGenerator(2), true);
-        v.addAlternative(new Alternative("POI", 200));
-        v.addAlternative(new Alternative("Toll", 50));
-        v.addAlternative(new Alternative("Slope", 50));
-        v.addAlternative(new Alternative("Scenic", 50));
-        v.addAlternative(new Alternative("Cost", 50));
+        v = new SGHVariationPoint("Road", new PoissonIntegerGenerator(2), true);
+        v.addAlternative(new SGHFeature("POI", 200));
+        v.addAlternative(new SGHFeature("Toll", 50));
+        v.addAlternative(new SGHFeature("Slope", 50));
+        v.addAlternative(new SGHFeature("Scenic", 50));
+        v.addAlternative(new SGHFeature("Cost", 50));
         result.add(v);
         
         return result;
         
     }
     
-    public BPGraph buildBPGraph(ArrayList<VariationPoint> model, int nb_apps, int nb_plats) {
-
-        Hashtable<Alternative, Service> services = new Hashtable<Alternative, Service>();
+    
+    public ArrayList<SGHVariationPoint> getSGHValidCombinations() {
         
-        for (VariationPoint v : model) {
-            for(Alternative a : v.alternatives) {
+        ArrayList<SGHVariationPoint> result = new ArrayList<SGHVariationPoint>();
+        
+        SGHVariationPoint v = new SGHVariationPoint("0", new PoissonIntegerGenerator(2), false);
+        v.addAlternative(new SGHFeature("Car", 200));
+        v.addAlternative(new SGHFeature("Bike", 200));
+        v.addAlternative(new SGHFeature("Walk", 100));
+        v.addAlternative(new SGHFeature("Motorcycle", 20));
+        v.addAlternative(new SGHFeature("Scooter", 5));
+        v.addAlternative(new SGHFeature("Monocycle", 5));
+        result.add(v);
+        
+        v = new SGHVariationPoint("Algorithm", null, false);
+        v.addAlternative(new SGHFeature("Diksjtra", 200));
+        v.addAlternative(new SGHFeature("A*", 20));
+        result.add(v);
+        
+        v = new SGHVariationPoint("Traffic", new PoissonIntegerGenerator(2), true);
+        v.addAlternative(new SGHFeature("Google", 200));
+        v.addAlternative(new SGHFeature("Waze", 200));
+        v.addAlternative(new SGHFeature("PublicService", 20));
+        v.addAlternative(new SGHFeature("TrafficApp", 20));
+        result.add(v);
+        
+        v = new SGHVariationPoint("Polution", new PoissonIntegerGenerator(2), true);
+        v.addAlternative(new SGHFeature("Air_AVG", 200));
+        v.addAlternative(new SGHFeature("Air_RT", 50));
+        v.addAlternative(new SGHFeature("Noize_AVG", 200));
+        v.addAlternative(new SGHFeature("Noize_RT", 200));
+        v.addAlternative(new SGHFeature("Polen", 20));
+        v.addAlternative(new SGHFeature("Particules", 20));
+        v.addAlternative(new SGHFeature("Ozone", 20));
+        result.add(v);
+        
+        v = new SGHVariationPoint("Road", new PoissonIntegerGenerator(2), true);
+        v.addAlternative(new SGHFeature("POI", 200));
+        v.addAlternative(new SGHFeature("Toll", 50));
+        v.addAlternative(new SGHFeature("Slope", 50));
+        v.addAlternative(new SGHFeature("Scenic", 50));
+        v.addAlternative(new SGHFeature("Cost", 50));
+        result.add(v);
+        
+        return result;
+        
+    }
+    
+    public BPGraph buildBPGraph(ArrayList<SGHVariationPoint> model, int nb_apps, int nb_plats) {
+
+        Hashtable<SGHFeature, Service> services = new Hashtable<SGHFeature, Service>();
+        
+        for (SGHVariationPoint v : model) {
+            for(SGHFeature a : v.alternatives) {
                 services.put(a, new Service(v.getName() + "_" + a.getName()));
             }
         }
@@ -116,8 +166,8 @@ public class SGHGenerator {
         
         for (int i=0; i<nb_apps + nb_plats; i++) {
             ArrayList<Service> selection = new ArrayList<Service>();
-            for (VariationPoint v : model) {
-                for (Alternative a : v.chooseAlternatives()) {
+            for (SGHVariationPoint v : model) {
+                for (SGHFeature a : v.chooseAlternatives()) {
                     selection.add(services.get(a));
                     services.get(a).incrementUsage();
                 }
