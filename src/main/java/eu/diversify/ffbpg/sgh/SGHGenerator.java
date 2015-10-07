@@ -23,19 +23,19 @@ public class SGHGenerator {
         StringBuilder b = new StringBuilder();
         for (SGHVariationPoint v : model) {
             b.append("> " + v.getName() + " [");
-            if (v.optional) b.append("0..");
+            if (v.isOptional()) b.append("0..");
             else b.append("1..");
             
-            if (v.multiplicityGenerator == null) {
+            if (!v.isMultiple()) {
                 b.append("1]");
             }
             else {
-                b.append("*] " + v.multiplicityGenerator.toString());
+                b.append("*] C:" + v.getClientMultGenerator().toString() + " / S:" + v.getServerMultGenerator());
             }
             b.append("\n");
             
-            for (SGHFeature a : v.alternatives) {
-                b.append("    -> " + a.getName() + " (" + a.weight + ")\n");
+            for (SGHFeature a : v.getAlternatives()) {
+                b.append("    -> " + a.getName() + " (" + a.getWeight() + ")\n");
             }
             b.append("\n");
         }
@@ -153,7 +153,7 @@ public class SGHGenerator {
     }
     
     public BPGraph buildBPGraph(ArrayList<SGHVariationPoint> model, int nb_apps, int nb_plats) {
-
+/*
         Hashtable<SGHFeature, Service> services = new Hashtable<SGHFeature, Service>();
         
         for (SGHVariationPoint v : model) {
@@ -214,6 +214,9 @@ public class SGHGenerator {
         result.addRandomLinksToSatisfyDeps();
         result.purgeDeadApplications();
         return result;
+        
+        */
+        return null;
     }
     
     

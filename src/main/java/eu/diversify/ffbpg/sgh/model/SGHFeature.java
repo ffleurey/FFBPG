@@ -15,6 +15,10 @@ public class SGHFeature implements Comparable<SGHFeature>{
     public String getName() {
         return name;
     }
+
+    public Integer getWeight() {
+        return weight;
+    }
     
     public SGHFeature(String name, int weight) {
         this.name = name;

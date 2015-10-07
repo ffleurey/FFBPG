@@ -4,7 +4,9 @@ package eu.diversify.ffbpg.sgh.model;
 import eu.diversify.ffbpg.random.IntegerGenerator;
 import eu.diversify.ffbpg.random.RandomUtils;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Hashtable;
 
 /**
  *
@@ -14,11 +16,34 @@ public class SGHVariationPoint {
     
     String name;
     
-    ArrayList<SGHFeature> alternatives = new ArrayList<SGHFeature>();
+    Hashtable<String, SGHFeature> alternatives = new Hashtable<String, SGHFeature>();
     IntegerGenerator serverMultGenerator = null;
+
+    public Collection<SGHFeature> getAlternatives() {
+        return alternatives.values();
+    }
+    
+    public SGHFeature getAlternative(String name) {
+        return alternatives.get(name);
+    }
+
+    public IntegerGenerator getServerMultGenerator() {
+        return serverMultGenerator;
+    }
+
+    public IntegerGenerator getClientMultGenerator() {
+        return clientMultGenerator;
+    }
     IntegerGenerator clientMultGenerator = null;
     boolean optional = true;
     
+    public boolean isOptional() {
+        return optional;
+    }
+    
+    public boolean isMultiple() {
+        return serverMultGenerator != null;
+    }
     
     public String getName() {
         return name;
@@ -43,7 +68,7 @@ public class SGHVariationPoint {
     }
     
     public void addAlternative(SGHFeature a) {
-        alternatives.add(a);
+        alternatives.put(a.getName(), a);
     }
     
     public ArrayList<SGHFeature> chooseAlternatives(IntegerGenerator multiplicityGenerator) {
@@ -63,7 +88,8 @@ public class SGHVariationPoint {
     public ArrayList<SGHFeature> chooseASetOfNRandomAlternative(int n) {
         ArrayList<SGHFeature> result = new ArrayList<SGHFeature>();
         
-        ArrayList<SGHFeature> options = (ArrayList<SGHFeature>)alternatives.clone();
+        ArrayList<SGHFeature> options = new ArrayList<SGHFeature>();
+        options.addAll(alternatives.values());
         
         for (int i=0; i<n; i++) {
             int total = 0;
