@@ -2,6 +2,7 @@ package eu.diversify.ffbpg.sgh.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,16 +33,30 @@ public class SGHClientApp extends SGHNode {
     
     public SGHClientApp(HashMap<SGHVariationPoint, ArrayList<SGHFeature>> features) {
         this.features = features;
+        computeFeatureSet();
         initializeResquests();
     }
     
+    
     public String getOneLineString() {
         StringBuilder b = new StringBuilder();
-        b.append(hashCode()); b.append("\t");
+        b.append(getName()); b.append("\t");
+        b.append(featureSet.size());b.append("\t");
         b.append(requests.size());b.append("\t");
         b.append(links.size());b.append("\t");
         b.append(isAlive());b.append("\t");
+        b.append("{");b.append(featuresAsString());b.append("}");b.append("\t");
+        b.append("[");b.append(linksAsString());b.append("]");b.append("\t");
         return b.toString();
+    }
+    
+    public String linksAsString() {
+        ArrayList<String> strs = new ArrayList<String>();
+        for(SGHServer s : links) strs.add(s.getName());
+        Collections.sort(strs);
+        StringBuilder b = new StringBuilder();
+        for (String s : strs) {b.append(s); b.append(" ");}
+        return b.toString().trim();
     }
     
     public String getStringDump() {
@@ -100,30 +115,6 @@ public class SGHClientApp extends SGHNode {
             }
         }
         requests = preqs;
-    }
-    
-    public static Set<Set<SGHFeature>> cartesianProduct(Set<SGHFeature>... sets) {
-    if (sets.length < 2)
-        throw new IllegalArgumentException(
-                "Can't have a product of fewer than two sets (got " +
-                sets.length + ")");
-
-    return _cartesianProduct(0, sets);
-}
-
-    private static Set<Set<SGHFeature>> _cartesianProduct(int index, Set<SGHFeature>... sets) {
-        Set<Set<SGHFeature>> ret = new HashSet<Set<SGHFeature>>();
-        if (index == sets.length) {
-            ret.add(new HashSet<SGHFeature>());
-        } else {
-            for (SGHFeature obj : sets[index]) {
-                for (Set<SGHFeature> set : _cartesianProduct(index+1, sets)) {
-                    set.add(obj);
-                    ret.add(set);
-                }
-            }
-        }
-        return ret;
     }
     
     public boolean hasAllRequestsSatisfied(Collection<SGHServer> srvs) {

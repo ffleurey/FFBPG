@@ -10,18 +10,23 @@ import java.util.HashSet;
  */
 public class SGHServer extends SGHNode {
     
-    HashSet<SGHFeature> featureSet;
+    
     
     public SGHServer(HashMap<SGHVariationPoint, ArrayList<SGHFeature>> features) {
         this.features = features;
         computeFeatureSet();
     }
     
-    public void computeFeatureSet() {
-        featureSet = new HashSet<SGHFeature>();
-        for(ArrayList<SGHFeature> fs : features.values()) {
-            featureSet.addAll(fs);
-        }
+     public String getOneLineString() {
+        StringBuilder b = new StringBuilder();
+        b.append(getName()); b.append("\t");
+        b.append(featureSet.size());b.append("\t");
+        //b.append(requests.size());b.append("\t");
+        //b.append(links.size());b.append("\t");
+        //b.append(isAlive());b.append("\t");
+        b.append("{");b.append(featuresAsString());b.append("}");b.append("\t");
+        //b.append("[");b.append(linksAsString());b.append("]");b.append("\t");
+        return b.toString();
     }
     
     public ArrayList<SGHRequest> filterRequestsWhichCanHandle(ArrayList<SGHRequest> reqs) {

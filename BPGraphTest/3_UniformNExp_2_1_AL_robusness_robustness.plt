@@ -1,4 +1,4 @@
-set title '3_UniformNExp_2_1_AL_robusness: Robustness index for 5 runs (avg = 86.78279569892473)'
+set title '3_UniformNExp_2_1_AL_robusness: Robustness index for 5 runs (avg = 87.53978494623655)'
 set xlabel 'Run'
 set ylabel 'Robusness index (%)'
 set xrange [0:4]

@@ -41,7 +41,7 @@ public class SGHModel {
         
         Hashtable<String, SGHVariationPoint> result = new Hashtable<String, SGHVariationPoint>();
         
-        SGHVariationPoint v = new SGHVariationPoint("Vehicule", new PoissonIntegerGenerator(2), false);
+        SGHVariationPoint v = new SGHVariationPoint("Vehicule", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(1), false);
         v.addAlternative(new SGHFeature("Car", 200));
         v.addAlternative(new SGHFeature("Bike", 200));
         v.addAlternative(new SGHFeature("Walk", 100));
@@ -55,14 +55,14 @@ public class SGHModel {
         v.addAlternative(new SGHFeature("A*", 20));
         result.put(v.getName(), v);
         
-        v = new SGHVariationPoint("Traffic", new PoissonIntegerGenerator(2), true);
+        v = new SGHVariationPoint("Traffic", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(1), true);
         v.addAlternative(new SGHFeature("Google", 200));
         v.addAlternative(new SGHFeature("Waze", 200));
         v.addAlternative(new SGHFeature("PublicService", 20));
         v.addAlternative(new SGHFeature("TrafficApp", 20));
         result.put(v.getName(), v);
         
-        v = new SGHVariationPoint("Polution", new PoissonIntegerGenerator(2), true);
+        v = new SGHVariationPoint("Polution", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(1), true);
         v.addAlternative(new SGHFeature("Air_AVG", 200));
         v.addAlternative(new SGHFeature("Air_RT", 50));
         v.addAlternative(new SGHFeature("Noize_AVG", 200));
@@ -72,7 +72,7 @@ public class SGHModel {
         v.addAlternative(new SGHFeature("Ozone", 20));
         result.put(v.getName(), v);
         
-        v = new SGHVariationPoint("Road", new PoissonIntegerGenerator(2), true);
+        v = new SGHVariationPoint("Road", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(1), true);
         v.addAlternative(new SGHFeature("POI", 200));
         v.addAlternative(new SGHFeature("Toll", 50));
         v.addAlternative(new SGHFeature("Slope", 50));
