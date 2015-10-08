@@ -37,6 +37,17 @@ public class SGHClientApp extends SGHNode {
         initializeResquests();
     }
     
+    public SGHClientApp deep_clone(HashMap<SGHServer, SGHServer> old_new_map) {
+        HashMap<SGHVariationPoint, ArrayList<SGHFeature>> clone = new HashMap<SGHVariationPoint, ArrayList<SGHFeature>>();
+        for(SGHVariationPoint vp : features.keySet()) {
+            clone.put(vp, (ArrayList<SGHFeature>)features.get(vp).clone());
+        }
+        SGHClientApp result = new SGHClientApp(clone);
+        for (SGHServer s : links) {
+            result.getLinks().add(old_new_map.get(s));
+        }
+        return result;
+    }
     
     public String getOneLineString() {
         StringBuilder b = new StringBuilder();
@@ -134,4 +145,77 @@ public class SGHClientApp extends SGHNode {
         return result;
     }
     
+    
+    
+    public ArrayList<SGHClientAdaptation> all_valid_swap_link_adaptations(ArrayList<SGHServer> neighbors) {
+        ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
+        
+        ArrayList<SGHServer> valid_candidates = new ArrayList<SGHServer>();
+        
+        for (SGHServer s : neighbors) {
+            if (links.contains(s)) continue;
+            // the new link has to be useful for something
+            if (s.filterRequestsWhichCanHandle(requests).size() == requests.size()) continue;
+            valid_candidates.add(s);
+        }
+        
+        if (valid_candidates.isEmpty()) return result; // do not go further if there are no candidates
+        
+        for (SGHServer old_link : links) {
+            
+            ArrayList<SGHRequest> remaining_reqs = getRequests();
+            for (SGHServer s : links) {
+                if (s != old_link) remaining_reqs = s.filterRequestsWhichCanHandle(remaining_reqs);
+            }
+            
+            for(SGHServer new_link : neighbors) {
+                if (new_link.filterRequestsWhichCanHandle(remaining_reqs).isEmpty()) {
+                    result.add(new SGHClientAdaptation(this, old_link, new_link));
+                }
+            }
+        }
+        return result;
+    }
+    
+     public ArrayList<SGHClientAdaptation> all_valid_add_link_adaptations(ArrayList<SGHServer> neighbors) {
+        ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
+        
+        ArrayList<SGHServer> valid_candidates = new ArrayList<SGHServer>();
+        
+        for (SGHServer s : neighbors) {
+            if (links.contains(s)) continue;
+            // the new link has to be useful for something
+            if (s.filterRequestsWhichCanHandle(requests).size() == requests.size()) continue;
+            result.add(new SGHClientAdaptation(this, null, s));
+        }
+        
+        return result; // do not go further if there are no candidates
+     }
+     
+     public ArrayList<SGHClientAdaptation> all_valid_remove_link_adaptations() {
+        ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
+        
+       for (SGHServer old_link : links) {
+            
+            ArrayList<SGHRequest> remaining_reqs = getRequests();
+            for (SGHServer s : links) {
+                if (s != old_link) remaining_reqs = s.filterRequestsWhichCanHandle(remaining_reqs);
+            }
+            
+            if (remaining_reqs.isEmpty()) result.add(new SGHClientAdaptation(this, old_link, null));
+        }
+        
+        return result; // do not go further if there are no candidates
+     }
+     
+     public boolean is_server_adaption_acceptable(SGHServer current, SGHServer new_candidate) {
+         
+        ArrayList<SGHRequest> remaining_reqs = getRequests();
+        for (SGHServer s : links) {
+            if (s != current) remaining_reqs = s.filterRequestsWhichCanHandle(remaining_reqs);
+        }
+        remaining_reqs = new_candidate.filterRequestsWhichCanHandle(remaining_reqs);
+        return remaining_reqs.isEmpty();
+    }
+     
 }

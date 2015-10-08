@@ -3,6 +3,7 @@ package eu.diversify.ffbpg.sgh.model;
 import eu.diversify.ffbpg.random.RandomUtils;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 
@@ -51,6 +52,28 @@ public class SGHSystem {
     
     
     private SGHSystem() {}
+    
+    public SGHSystem deep_clone() {
+        SGHSystem result = new SGHSystem();
+        result.clients = new ArrayList<SGHClientApp>();
+        result.servers = new ArrayList<SGHServer>();
+        
+        HashMap<SGHServer, SGHServer> old_new_map = new HashMap<SGHServer, SGHServer>();
+        
+        for (SGHServer s : servers) {
+            SGHServer cs = s.deep_clone();
+            old_new_map.put(s, cs);
+            result.servers.add(s);
+        }
+        
+        for (SGHClientApp c : clients) {
+            SGHClientApp cc = c.deep_clone(old_new_map);
+            result.clients.add(cc);
+        }
+         
+        return result;
+        
+    }
     
     private void createRandomLinks() {
         // Clone the server list to randomize its order for each client

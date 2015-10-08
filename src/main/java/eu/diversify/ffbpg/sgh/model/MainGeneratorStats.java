@@ -5,6 +5,7 @@
  */
 package eu.diversify.ffbpg.sgh.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -15,11 +16,11 @@ import java.util.Arrays;
 public class MainGeneratorStats {
     
     public static void main(String[] args) {
-        SGHSystem graph = SGHSystem.generateSGHSystem(100, 100);
+        SGHSystem graph = SGHSystem.generateSGHSystem(500, 50);
         
         System.out.println(graph.dumpData());
         
-        SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(200);
+        SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(50);
         
         double[] avg_seq = SGHExtinctionSequence.averageExtinctionSequences(eseqs);
         
@@ -27,7 +28,17 @@ public class MainGeneratorStats {
         
         double robustness = SGHExtinctionSequence.averageRobustnessIndex(avg_seq);
         
+        File outdir = new File("./sgh_out/");
+        
+        System.out.println("Output Folder: " + outdir.getAbsolutePath());
+        SGHExtinctionSequence.writeGNUPlotScriptForAll(eseqs, outdir, "Extinctions");
+        
+        
         System.out.println("Robustness = " + robustness);
+        
+        SGHSimulation sim = new SGHSimulation(graph);
+        sim.startSimulation(100);
+        
     }
     
     

@@ -114,7 +114,7 @@ public class SGHExtinctionSequence {
             b.append("\"" + filename + "\" using " + (i + 2) + " notitle with lines lc rgb 'grey', \\\n");
         }
         b.append("\"" + filename + "\" using " + (sequences.length + 2) + " title 'Average' with lines lw 2 lc rgb 'red', \\\n");
-        b.append("\"" + filename + "\" using " + (sequences.length + 3) + " title 'Reference' with line lt 'dashed' lw 2 lc rgb 'black'");
+        //b.append("\"" + filename + "\" using " + (sequences.length + 3) + " title 'Reference' with line lt 'dashed' lw 2 lc rgb 'black'");
         return b.toString();
     }
 

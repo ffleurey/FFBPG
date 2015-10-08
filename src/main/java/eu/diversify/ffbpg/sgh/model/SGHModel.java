@@ -41,43 +41,43 @@ public class SGHModel {
         
         Hashtable<String, SGHVariationPoint> result = new Hashtable<String, SGHVariationPoint>();
         
-        SGHVariationPoint v = new SGHVariationPoint("Vehicule", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(1), false);
-        v.addAlternative(new SGHFeature("Car", 200));
-        v.addAlternative(new SGHFeature("Bike", 200));
-        v.addAlternative(new SGHFeature("Walk", 100));
-        v.addAlternative(new SGHFeature("Motorcycle", 20));
-        v.addAlternative(new SGHFeature("Scooter", 5));
-        v.addAlternative(new SGHFeature("Monocycle", 5));
+        SGHVariationPoint v = new SGHVariationPoint("Vehicule", new PoissonIntegerGenerator(3), new PoissonIntegerGenerator(1), false);
+        v.addAlternative(new SGHFeature("Car", 200, v));
+        v.addAlternative(new SGHFeature("Bike", 200, v));
+        v.addAlternative(new SGHFeature("Walk", 100, v));
+        v.addAlternative(new SGHFeature("Motorcycle", 20, v));
+        v.addAlternative(new SGHFeature("Scooter", 5, v));
+        v.addAlternative(new SGHFeature("Monocycle", 5, v));
         result.put(v.getName(), v);
         
         v = new SGHVariationPoint("Algorithm", null, false);
-        v.addAlternative(new SGHFeature("Diksjtra", 200));
-        v.addAlternative(new SGHFeature("A*", 20));
+        v.addAlternative(new SGHFeature("Diksjtra", 200, v));
+        v.addAlternative(new SGHFeature("A*", 20, v));
         result.put(v.getName(), v);
         
         v = new SGHVariationPoint("Traffic", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(1), true);
-        v.addAlternative(new SGHFeature("Google", 200));
-        v.addAlternative(new SGHFeature("Waze", 200));
-        v.addAlternative(new SGHFeature("PublicService", 20));
-        v.addAlternative(new SGHFeature("TrafficApp", 20));
+        v.addAlternative(new SGHFeature("Google", 200, v));
+        v.addAlternative(new SGHFeature("Waze", 200, v));
+        v.addAlternative(new SGHFeature("PublicService", 20, v));
+        v.addAlternative(new SGHFeature("TrafficApp", 20, v));
         result.put(v.getName(), v);
         
-        v = new SGHVariationPoint("Polution", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(1), true);
-        v.addAlternative(new SGHFeature("Air_AVG", 200));
-        v.addAlternative(new SGHFeature("Air_RT", 50));
-        v.addAlternative(new SGHFeature("Noize_AVG", 200));
-        v.addAlternative(new SGHFeature("Noize_RT", 200));
-        v.addAlternative(new SGHFeature("Polen", 20));
-        v.addAlternative(new SGHFeature("Particules", 20));
-        v.addAlternative(new SGHFeature("Ozone", 20));
+        v = new SGHVariationPoint("Polution", new PoissonIntegerGenerator(4), new PoissonIntegerGenerator(1), true);
+        v.addAlternative(new SGHFeature("Air_AVG", 200, v));
+        v.addAlternative(new SGHFeature("Air_RT", 50, v));
+        v.addAlternative(new SGHFeature("Noize_AVG", 200, v));
+        v.addAlternative(new SGHFeature("Noize_RT", 200, v));
+        v.addAlternative(new SGHFeature("Polen", 20, v));
+        v.addAlternative(new SGHFeature("Particules", 20, v));
+        v.addAlternative(new SGHFeature("Ozone", 20, v));
         result.put(v.getName(), v);
         
         v = new SGHVariationPoint("Road", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(1), true);
-        v.addAlternative(new SGHFeature("POI", 200));
-        v.addAlternative(new SGHFeature("Toll", 50));
-        v.addAlternative(new SGHFeature("Slope", 50));
-        v.addAlternative(new SGHFeature("Scenic", 50));
-        v.addAlternative(new SGHFeature("Cost", 50));
+        v.addAlternative(new SGHFeature("POI", 200, v));
+        v.addAlternative(new SGHFeature("Toll", 50, v));
+        v.addAlternative(new SGHFeature("Slope", 50, v));
+        v.addAlternative(new SGHFeature("Scenic", 50, v));
+        v.addAlternative(new SGHFeature("Cost", 50, v));
         result.put(v.getName(), v);
         
         return result;

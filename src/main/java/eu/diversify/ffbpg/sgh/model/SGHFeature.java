@@ -11,6 +11,11 @@ public class SGHFeature implements Comparable<SGHFeature>{
     
     String name;
     Integer weight;
+    SGHVariationPoint variationPoint;
+
+    public SGHVariationPoint getVariationPoint() {
+        return variationPoint;
+    }
     
     public String getName() {
         return name;
@@ -20,9 +25,10 @@ public class SGHFeature implements Comparable<SGHFeature>{
         return weight;
     }
     
-    public SGHFeature(String name, int weight) {
+    public SGHFeature(String name, int weight, SGHVariationPoint variationPoint) {
         this.name = name;
         this.weight = weight;
+        this.variationPoint = variationPoint;
     }
 
     @Override
