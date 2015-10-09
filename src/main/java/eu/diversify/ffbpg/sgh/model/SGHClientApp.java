@@ -1,5 +1,6 @@
 package eu.diversify.ffbpg.sgh.model;
 
+import eu.diversify.ffbpg.collections.Population;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,6 +47,7 @@ public class SGHClientApp extends SGHNode {
         for (SGHServer s : links) {
             result.getLinks().add(old_new_map.get(s));
         }
+        result.setName("c" + this.name);
         return result;
     }
     
@@ -149,7 +151,7 @@ public class SGHClientApp extends SGHNode {
     
     public ArrayList<SGHClientAdaptation> all_valid_swap_link_adaptations(ArrayList<SGHServer> neighbors) {
         ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
-        
+        double fitness = computeRequestsPopulation().getShannonEquitability();
         ArrayList<SGHServer> valid_candidates = new ArrayList<SGHServer>();
         
         for (SGHServer s : neighbors) {
@@ -170,7 +172,7 @@ public class SGHClientApp extends SGHNode {
             
             for(SGHServer new_link : neighbors) {
                 if (new_link.filterRequestsWhichCanHandle(remaining_reqs).isEmpty()) {
-                    result.add(new SGHClientAdaptation(this, old_link, new_link));
+                    result.add(new SGHClientAdaptation(this, old_link, new_link, fitness));
                 }
             }
         }
@@ -179,14 +181,14 @@ public class SGHClientApp extends SGHNode {
     
      public ArrayList<SGHClientAdaptation> all_valid_add_link_adaptations(ArrayList<SGHServer> neighbors) {
         ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
-        
+        double fitness = computeRequestsPopulation().getShannonEquitability();
         ArrayList<SGHServer> valid_candidates = new ArrayList<SGHServer>();
         
         for (SGHServer s : neighbors) {
             if (links.contains(s)) continue;
             // the new link has to be useful for something
             if (s.filterRequestsWhichCanHandle(requests).size() == requests.size()) continue;
-            result.add(new SGHClientAdaptation(this, null, s));
+            result.add(new SGHClientAdaptation(this, null, s, fitness));
         }
         
         return result; // do not go further if there are no candidates
@@ -194,7 +196,7 @@ public class SGHClientApp extends SGHNode {
      
      public ArrayList<SGHClientAdaptation> all_valid_remove_link_adaptations() {
         ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
-        
+        double fitness = computeRequestsPopulation().getShannonEquitability();
        for (SGHServer old_link : links) {
             
             ArrayList<SGHRequest> remaining_reqs = getRequests();
@@ -202,7 +204,7 @@ public class SGHClientApp extends SGHNode {
                 if (s != old_link) remaining_reqs = s.filterRequestsWhichCanHandle(remaining_reqs);
             }
             
-            if (remaining_reqs.isEmpty()) result.add(new SGHClientAdaptation(this, old_link, null));
+            if (remaining_reqs.isEmpty()) result.add(new SGHClientAdaptation(this, old_link, null, fitness));
         }
         
         return result; // do not go further if there are no candidates
@@ -216,6 +218,20 @@ public class SGHClientApp extends SGHNode {
         }
         remaining_reqs = new_candidate.filterRequestsWhichCanHandle(remaining_reqs);
         return remaining_reqs.isEmpty();
+    }
+     
+    private Population computeRequestsPopulation() {
+        int[] p = new int[getRequests().size()];
+        int i=0;
+        for (SGHRequest r : getRequests()) {
+            int nserv = 0;
+            for(SGHServer s : getLinks()) {
+                if (s.canHandle(r)) nserv++;
+            }
+            p[i] = nserv;
+            i++;
+        }
+        return new Population(p);
     }
      
 }

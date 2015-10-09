@@ -421,23 +421,7 @@ public class BPGraph {
         return result;
     }
 
-    public static String dataFileWithAverage(int[][] data) {
-        StringBuilder b = new StringBuilder();
-        b.append("# Data for " + data.length + " runs. Last column is the average.\n");
-        double[] average = average(data);
-        for (int l = 0; l < average.length; l++) {
-            b.append(l);
-            b.append("\t");
-            for (int c = 0; c < data.length; c++) {
-                if (data[c].length > l) b.append(data[c][l]);
-                else b.append(0);
-                b.append("\t");
-            }
-            b.append(average[l]);
-            b.append("\n");
-        }
-        return b.toString();
-    }
+
     
     public String serialize_txt() {
         StringBuffer buf = new StringBuffer();
@@ -475,6 +459,24 @@ public class BPGraph {
         return b.toString();
     }
 
+    public static String dataFileWithAverage(int[][] data) {
+        StringBuilder b = new StringBuilder();
+        b.append("# Data for " + data.length + " runs. Last column is the average.\n");
+        double[] average = average(data);
+        for (int l = 0; l < average.length; l++) {
+            b.append(l);
+            b.append("\t");
+            for (int c = 0; c < data.length; c++) {
+                if (data[c].length > l) b.append(data[c][l]);
+                else b.append(0);
+                b.append("\t");
+            }
+            b.append(average[l]);
+            b.append("\n");
+        }
+        return b.toString();
+    }
+    
     public static String gnuPlotScriptForData(int[][] data, String filename) {
 
         StringBuilder b = new StringBuilder();

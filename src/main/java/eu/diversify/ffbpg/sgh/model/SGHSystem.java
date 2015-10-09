@@ -63,7 +63,7 @@ public class SGHSystem {
         for (SGHServer s : servers) {
             SGHServer cs = s.deep_clone();
             old_new_map.put(s, cs);
-            result.servers.add(s);
+            result.servers.add(cs);
         }
         
         for (SGHClientApp c : clients) {

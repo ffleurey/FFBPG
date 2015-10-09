@@ -3,6 +3,7 @@ package eu.diversify.ffbpg.sgh.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 
 /**
  *
@@ -22,7 +23,9 @@ public class SGHServer extends SGHNode {
         for(SGHVariationPoint vp : features.keySet()) {
             clone.put(vp, (ArrayList<SGHFeature>)features.get(vp).clone());
         }
-        return new SGHServer(clone);
+        SGHServer result = new SGHServer(clone);
+        result.setName("c" + this.name);
+        return result;
     }
     
      public String getOneLineString() {
@@ -64,7 +67,7 @@ public class SGHServer extends SGHNode {
     public ArrayList<SGHServerAdaptation> all_valid_add_feature_adaptations(ArrayList<SGHClientApp> connected_clients) {
         
         ArrayList<SGHServerAdaptation> result = new ArrayList<SGHServerAdaptation>();
-        
+        Hashtable<SGHFeature, Integer> popularities = computePopularities(connected_clients);
         // Find any features which may be added
         for(SGHVariationPoint vp : features.keySet()) {
             
@@ -72,7 +75,7 @@ public class SGHServer extends SGHNode {
             
             for (SGHFeature candidate : vp.getAlternatives()) {
                 if (!featureSet.contains(candidate)) {
-                    result.add(new SGHServerAdaptation(this, null, candidate));
+                    result.add(new SGHServerAdaptation(this, null, candidate, popularities));
                 }
             }
             
@@ -80,9 +83,22 @@ public class SGHServer extends SGHNode {
         return result;
     }
     
+    public Hashtable<SGHFeature, Integer> computePopularities(ArrayList<SGHClientApp> connected_clients) {
+        Hashtable<SGHFeature, Integer> result = new Hashtable<SGHFeature, Integer>();
+        for (SGHClientApp c : connected_clients) {
+            for (SGHFeature f : c.featureSet) {
+                if (!result.containsKey(f)) result.put(f, 1);
+                else result.put(f, result.get(f)+1);
+            }
+        }
+        return result;
+    }
+    
+    
     public ArrayList<SGHServerAdaptation> all_valid_remove_feature_adaptations(ArrayList<SGHClientApp> connected_clients) {
         
         ArrayList<SGHServerAdaptation> result = new ArrayList<SGHServerAdaptation>();
+        Hashtable<SGHFeature, Integer> popularities = computePopularities(connected_clients);
         
         // Compute the set of feature which cannot be removed because of clients
         HashSet<SGHFeature> critical_features = new HashSet<SGHFeature>();
@@ -106,13 +122,13 @@ public class SGHServer extends SGHNode {
             if (features.get(vp).size() == 0) continue; // nothing can be removed
             else if (features.get(vp).size() == 1) {
                 if (vp.isOptional() && !critical_features.contains(features.get(vp).get(0))) {
-                    result.add(new SGHServerAdaptation(this, features.get(vp).get(0), null));
+                    result.add(new SGHServerAdaptation(this, features.get(vp).get(0), null, popularities));
                 }
             }
             else { // we have more than 1 elements to work with. 
                 for(SGHFeature candidate: features.get(vp)) {
                     if (!critical_features.contains(candidate)) {
-                        result.add(new SGHServerAdaptation(this, candidate, null));
+                        result.add(new SGHServerAdaptation(this, candidate, null, popularities));
                     }
                 }
             }

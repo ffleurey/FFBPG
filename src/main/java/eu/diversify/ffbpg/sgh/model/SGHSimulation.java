@@ -2,6 +2,7 @@
 package eu.diversify.ffbpg.sgh.model;
 
 import eu.diversify.ffbpg.Simulation;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -14,7 +15,14 @@ public class SGHSimulation {
     
     public final int NEIGHBORHOOD_SIZE = 15; // 15% of the servers are randomly visible to clients at each simulation step
     
-    public final int NB_EXTINCTIONS = 50; // Number of random extinction sequences to calculate robustness at each steps
+    public final int NB_EXTINCTIONS = 100; // Number of random extinction sequences to calculate robustness at each steps
+    
+    boolean smart_servers;
+    boolean smart_clients;
+    
+    boolean evolve_servers;
+    boolean evolve_clients;
+    
     
     SGHSystem system;
     ArrayList<SGHSimulationStep> steps;
@@ -23,9 +31,12 @@ public class SGHSimulation {
     int delta_links = 0;
     int delta_features = 0;
     
-    public SGHSimulation(SGHSystem system) {
+    public SGHSimulation(SGHSystem system, boolean evolve_servers, boolean evolve_clients, boolean smart_servers, boolean smart_clients) {
         this.system = system.deep_clone();
-        
+        this.smart_clients = smart_clients;
+        this.smart_servers = smart_servers;
+        this.evolve_servers = evolve_servers;
+        this.evolve_clients = evolve_clients;
     }
     
     
@@ -45,6 +56,8 @@ public class SGHSimulation {
         step.extinctions = system.computeRandomExtinctionSequence(NB_EXTINCTIONS);
         step.avg_seq = SGHExtinctionSequence.averageExtinctionSequences(step.extinctions);
         step.robustness = SGHExtinctionSequence.averageRobustnessIndex(step.avg_seq);
+        steps.add(step);
+        System.out.println(step.toString());
     }
     
     
@@ -83,6 +96,10 @@ public class SGHSimulation {
                 links.get(s).add(client);
             }
         }
+        // Add some empty lists for servers with no connections
+        for (SGHServer s : system.servers) {
+            if (!links.containsKey(s)) links.put(s, new ArrayList<SGHClientApp>());
+        }
         
         // First adaptation step for servers: Drop features (consider servers in a random order)
         Collections.shuffle(randomized_servers);
@@ -116,33 +133,38 @@ public class SGHSimulation {
     }
     
     private int run_step1_for_server(SGHSimulationStep step, SGHServer server, ArrayList<SGHClientApp> connections) {
-        
+        if (!evolve_servers) return 0;
         ArrayList<SGHServerAdaptation> candidates = server.all_valid_remove_feature_adaptations(connections);
         step.server_adaptation_space += candidates.size();
-         // select a random adaptation
-         Collections.shuffle(candidates);
-         if (!candidates.isEmpty()) {
+
+         if (!candidates.isEmpty()) {             
              step.removed_features++;
-             return candidates.get(0).execute();
+             SGHServerAdaptation selected;
+             if (smart_servers) selected =SGHServerAdaptation.pickAdaptationWeightedByFeaturesPopularity(candidates);
+             else selected =SGHServerAdaptation.pickRandomAdaptation(candidates);
+             return selected.execute();
          }
          return 0;
     }
     
     private int run_step2_for_server(SGHSimulationStep step, SGHServer server, ArrayList<SGHClientApp> connections) {
-        
+        if (!evolve_servers) return 0;
         ArrayList<SGHServerAdaptation> candidates = server.all_valid_add_feature_adaptations(connections);
         step.server_adaptation_space += candidates.size();
          // select a random adaptation
-         Collections.shuffle(candidates);
+         Collections.sort(candidates);
          if (!candidates.isEmpty()) {
              step.added_features++;
-             return candidates.get(0).execute();
+             SGHServerAdaptation selected;
+             if (smart_servers) selected =SGHServerAdaptation.pickAdaptationWeightedByFeaturesPopularity(candidates);
+             else selected =SGHServerAdaptation.pickRandomAdaptation(candidates);
+             return selected.execute();
          }
          return 0;
     }
     
     private int run_step1_for_client(SGHSimulationStep step, SGHClientApp client, ArrayList<SGHServer> neigbors) {
-        
+        if (!evolve_clients) return 0;
         // consider only adaptationw which do not increase the number of links
         ArrayList<SGHClientAdaptation> candidates = client.all_valid_swap_link_adaptations(neigbors);
         candidates.addAll(client.all_valid_remove_link_adaptations());
@@ -150,28 +172,53 @@ public class SGHSimulation {
         // select a random adaptation
          Collections.shuffle(candidates);
          if (!candidates.isEmpty()) {
-             int result = candidates.get(0).execute();
-             step.added_links += result+1;
-             step.removed_links += 1;
+             
+             SGHClientAdaptation selected;
+             if (smart_clients) selected = SGHClientAdaptation.pickAdaptationWeightedByFitness(candidates);
+             else selected =SGHClientAdaptation.pickRandomAdaptation(candidates);
+             int result = 0;
+             if (selected != null) {
+                 result = selected.execute();
+                 step.added_links += result+1;
+                 step.removed_links += 1;
+             }
+
              return result;
+
          }
          
         return 0;
     }
     
     private int run_step2_for_client(SGHSimulationStep step, SGHClientApp client, ArrayList<SGHServer> neigbors) {
-        
+        if (!evolve_clients) return 0;
         // consider only adaptationw which do not increase the number of links
         ArrayList<SGHClientAdaptation> candidates = client.all_valid_add_link_adaptations(neigbors);
         step.client_adaptation_space += candidates.size();
         // select a random adaptation
          Collections.shuffle(candidates);
          if (!candidates.isEmpty()) {
-             step.added_links += 1;
-             return candidates.get(0).execute();
+             SGHClientAdaptation selected;
+             if (smart_clients) selected = SGHClientAdaptation.pickAdaptationWeightedByFitness(candidates);
+             else selected =SGHClientAdaptation.pickRandomAdaptation(candidates);
+             int result = 0;
+             if (selected != null) {
+                 result = selected.execute();
+                 step.added_links += 1;
+             }
+             return result;
          }
          
         return 0;
     }
+    
+    public void exportRobustnessData(String name, File folder) {
+        double[] robustness = new double[steps.size()];
+        for(int i=0; i<steps.size(); i++) {
+            robustness[i] = steps.get(i).robustness*100;
+        }
+        DataExportUtils.writeGNUPlotScriptForDouble(robustness, folder, name);
+    }
+    
     
 }
