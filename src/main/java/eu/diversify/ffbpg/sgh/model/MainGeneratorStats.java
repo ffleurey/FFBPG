@@ -24,8 +24,9 @@ public class MainGeneratorStats extends Thread {
         outdir.mkdirs();
         System.out.println("Output Folder: " + outdir.getAbsolutePath());
         
-        SGHSystem graph = SGHSystem.generateSGHSystem(200, 50);
+        SGHSystem graph = SGHSystem.generateSGHSystem(250, 50);
         FileUtils.writeTextFile(outdir, "InitialGraph.txt", graph.dumpData());
+        graph.exportGraphStatistics(outdir);
         System.out.println(graph.dumpData());
         
         {
@@ -36,6 +37,8 @@ public class MainGeneratorStats extends Thread {
             SGHExtinctionSequence.writeGNUPlotScriptForAll(eseqs, outdir, "Extinctions_Initial");
             System.out.println("Robustness = " + robustness);
         }
+        
+       // System.exit(0);
         
         SGHSimulation sim_CR_SR = new SGHSimulation(graph, true, true, false, false);
         SGHSimulation sim_CS_SS = new SGHSimulation(graph, true, true, true, true);
@@ -91,6 +94,7 @@ public class MainGeneratorStats extends Thread {
             double robustness = SGHExtinctionSequence.averageRobustnessIndex(avg_seq);
             SGHExtinctionSequence.writeGNUPlotScriptForAll(eseqs, outdir, "Extinctions_Final");
             System.out.println("Robustness = " + robustness);
+            graph.exportGraphStatistics(outdir);
         }
     }
     

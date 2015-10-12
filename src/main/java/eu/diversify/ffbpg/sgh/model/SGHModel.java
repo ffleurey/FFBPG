@@ -37,6 +37,12 @@ public class SGHModel {
         variationPoints = createSGHVariationPoints();
     }
     
+    public int totalNbFeatures() {
+        int result = 0;
+        for (SGHVariationPoint vp : variationPoints.values()) result += vp.alternatives.size();
+        return result;
+    }
+    
     private Hashtable<String, SGHVariationPoint> createSGHVariationPoints() {
         
         Hashtable<String, SGHVariationPoint> result = new Hashtable<String, SGHVariationPoint>();
@@ -55,14 +61,14 @@ public class SGHModel {
         v.addAlternative(new SGHFeature("A*", 20, v));
         result.put(v.getName(), v);
         
-        v = new SGHVariationPoint("Traffic", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(1), true);
+        v = new SGHVariationPoint("Traffic", new PoissonIntegerGenerator(3), new PoissonIntegerGenerator(1), true);
         v.addAlternative(new SGHFeature("Google", 200, v));
         v.addAlternative(new SGHFeature("Waze", 200, v));
         v.addAlternative(new SGHFeature("PublicService", 20, v));
         v.addAlternative(new SGHFeature("TrafficApp", 20, v));
         result.put(v.getName(), v);
         
-        v = new SGHVariationPoint("Polution", new PoissonIntegerGenerator(4), new PoissonIntegerGenerator(1), true);
+        v = new SGHVariationPoint("Polution", new PoissonIntegerGenerator(2), new PoissonIntegerGenerator(2), true);
         v.addAlternative(new SGHFeature("Air_AVG", 200, v));
         v.addAlternative(new SGHFeature("Air_RT", 50, v));
         v.addAlternative(new SGHFeature("Noize_AVG", 200, v));
@@ -85,13 +91,15 @@ public class SGHModel {
     }
     
     public SGHClientApp createRandomClient() {
-        
-        HashMap<SGHVariationPoint, ArrayList<SGHFeature>> selection = new HashMap<SGHVariationPoint, ArrayList<SGHFeature>>();
-        for (SGHVariationPoint vp : getAllVariationPoints()) {
-            selection.put(vp, vp.chooseAlternatives(vp.getClientMultGenerator()));
+        SGHClientApp result = null;
+        while (result==null || result.requests.size()<2){
+            HashMap<SGHVariationPoint, ArrayList<SGHFeature>> selection = new HashMap<SGHVariationPoint, ArrayList<SGHFeature>>();
+            for (SGHVariationPoint vp : getAllVariationPoints()) {
+                selection.put(vp, vp.chooseAlternatives(vp.getClientMultGenerator()));
+            }
+            result =  new SGHClientApp(selection);
         }
-        return new SGHClientApp(selection);
-        
+        return result;
     }
     
     public SGHServer createRandomServer() {

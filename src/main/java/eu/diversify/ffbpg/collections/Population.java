@@ -109,4 +109,8 @@ public class Population {
     }
     
     
+    public double getSGHSimulationFitness() {
+        return getShannonIndex();
+    }
+    
 }

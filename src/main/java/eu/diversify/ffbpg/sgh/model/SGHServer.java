@@ -11,7 +11,30 @@ import java.util.Hashtable;
  */
 public class SGHServer extends SGHNode {
     
+    int CAPACITY = 15;
+    int load = 0;
     
+    public int getCapacity() {
+        return CAPACITY;
+    }
+    
+    public int getLoad() {
+        return load;
+    }
+    
+    public void increaseLoad() {
+        assert hasCapacity();
+        load++;
+    }
+    
+    public void decreaseLoad() {
+        assert load > 0;
+        load--;
+    }
+    
+    public boolean hasCapacity() {
+        return load < CAPACITY;
+    }
     
     public SGHServer(HashMap<SGHVariationPoint, ArrayList<SGHFeature>> features) {
         this.features = features;
@@ -25,6 +48,7 @@ public class SGHServer extends SGHNode {
         }
         SGHServer result = new SGHServer(clone);
         result.setName("c" + this.name);
+        result.load = load;
         return result;
     }
     

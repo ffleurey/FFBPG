@@ -31,10 +31,15 @@ public class SGHClientAdaptation implements Comparable<SGHClientAdaptation>{
         double best_fitness = list.get(0).adaptation_fitness;
         double current_fitness = list.get(0).client_fitness;
         // Do not adapt to somthing worse
+        
+        
         if(current_fitness > best_fitness) return null;
+        
+        /*
         else if (current_fitness == best_fitness) {
             if (RandomUtils.getUniform(100) < 75) return null;
         }
+        */
         
         int[] weights = new int[list.size()];
         
@@ -88,7 +93,7 @@ public class SGHClientAdaptation implements Comparable<SGHClientAdaptation>{
             i++;
         }
         pop = new Population(p);
-        adaptation_fitness = pop.getShannonEquitability();
+        adaptation_fitness = pop.getSGHSimulationFitness();
     }
 
     public SGHClientApp getClient() {
@@ -116,6 +121,11 @@ public class SGHClientAdaptation implements Comparable<SGHClientAdaptation>{
     }
     
     public SGHClientAdaptation(SGHClientApp client, SGHServer link_to_remove, SGHServer link_to_add, double client_fit) {
+        
+        if (link_to_add != null && !link_to_add.hasCapacity()) {
+            throw new Error("NO CAPACITY!");
+        }
+        
         this.client = client;
         this.link_to_add = link_to_add;
         this.link_to_remove = link_to_remove;
@@ -125,8 +135,14 @@ public class SGHClientAdaptation implements Comparable<SGHClientAdaptation>{
     
     public int execute() {
         int size = client.getLinks().size();
-        if (link_to_remove != null) client.getLinks().remove(link_to_remove);
-        if (link_to_add != null) client.getLinks().add(link_to_add);
+        if (link_to_remove != null) {
+            client.getLinks().remove(link_to_remove);
+            link_to_remove.decreaseLoad();
+        }
+        if (link_to_add != null) {
+            client.getLinks().add(link_to_add);
+            link_to_add.increaseLoad();
+        }
         return client.getLinks().size() - size;
     }
 

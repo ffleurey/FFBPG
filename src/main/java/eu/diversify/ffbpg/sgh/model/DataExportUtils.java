@@ -9,25 +9,22 @@ import java.io.File;
  * @author ffl
  */
 public class DataExportUtils {
+
+
     
-    public static String dataFileWithAverage(int[][] data) {
-        StringBuilder b = new StringBuilder();
-        b.append("# Data for " + data.length + " runs. Last column is the average.\n");
-        double[] average = average(data);
-        for (int l = 0; l < average.length; l++) {
-            b.append(l);
-            b.append("\t");
+    public static double[] average(int[][] data) {
+        assert data.length > 0 && data[0].length > 0;
+        double[] result = new double[data[0].length];
+        for (int l = 0; l < result.length; l++) {
             for (int c = 0; c < data.length; c++) {
-                if (data[c].length > l) b.append(data[c][l]);
-                else b.append(0);
-                b.append("\t");
+                if ( data[c].length > l) result[l] += data[c][l];
+                // counts as 0 if the array is smaller
             }
-            b.append(average[l]);
-            b.append("\n");
+            result[l] /= data.length;
         }
-        return b.toString();
+        return result;
     }
-    
+
     public static String gnuPlotScriptForData(int[][] data, String filename) {
 
         StringBuilder b = new StringBuilder();
@@ -46,6 +43,24 @@ public class DataExportUtils {
         FileUtils.writeTextFile(out_dir, filename + ".dat", dataFileWithAverage(data));
         FileUtils.writeTextFile(out_dir, filename + ".plt", gnuPlotScriptForData(data, filename + ".dat"));
 
+    }
+    
+    public static String dataFileWithAverage(int[][] data) {
+        StringBuilder b = new StringBuilder();
+        b.append("# Data for " + data.length + " runs. Last column is the average.\n");
+        double[] average = average(data);
+        for (int l = 0; l < average.length; l++) {
+            b.append(l);
+            b.append("\t");
+            for (int c = 0; c < data.length; c++) {
+                if (data[c].length > l) b.append(data[c][l]);
+                else b.append(0);
+                b.append("\t");
+            }
+            b.append(average[l]);
+            b.append("\n");
+        }
+        return b.toString();
     }
     
     public static void writeGNUPlotScriptForDouble(double[] data, File out_dir, String filename) {
@@ -73,4 +88,31 @@ public class DataExportUtils {
         FileUtils.writeTextFile(out_dir, filename + "_robustness.plt", b.toString());
         
     }
+    
+    public static void writeGNUPlotScriptForIntArray(int[] data, File out_dir, String filename, String x_label, String y_label) {
+        if (!(out_dir != null && out_dir.exists() && out_dir.isDirectory())) {
+            out_dir = FileUtils.createTempDirectory();
+        }
+        double avg = 0;
+        // Write the data to a file
+        StringBuilder b = new StringBuilder();
+        for (int d : data) {
+            b.append(d); b.append("\n");
+            avg += d;
+        }
+        avg /= data.length;
+        FileUtils.writeTextFile(out_dir, filename + ".dat" , b.toString());
+        
+        // Write the gnuplot to a file
+        b = new StringBuilder();
+        b.append("set title '" + filename + " (AVG = "+ avg + ")'\n");
+        b.append("set xlabel '"+x_label+"'\n");
+        b.append("set ylabel '"+y_label+"'\n");
+        b.append("set xrange [0:"+ (data.length-1) +"]\n");
+        //b.append("set yrange [0:100]\n");
+        b.append("plot " + "\"" + filename + ".dat\" using 1 notitle with line\n" );
+        FileUtils.writeTextFile(out_dir, filename + ".plt", b.toString());
+        
+    }
+    
 }

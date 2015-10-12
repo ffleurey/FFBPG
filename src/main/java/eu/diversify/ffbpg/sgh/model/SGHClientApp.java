@@ -151,7 +151,8 @@ public class SGHClientApp extends SGHNode {
     
     public ArrayList<SGHClientAdaptation> all_valid_swap_link_adaptations(ArrayList<SGHServer> neighbors) {
         ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
-        double fitness = computeRequestsPopulation().getShannonEquitability();
+        Population p = computeRequestsPopulation();
+        double fitness = p.getSGHSimulationFitness();
         ArrayList<SGHServer> valid_candidates = new ArrayList<SGHServer>();
         
         for (SGHServer s : neighbors) {
@@ -171,6 +172,7 @@ public class SGHClientApp extends SGHNode {
             }
             
             for(SGHServer new_link : neighbors) {
+                if (!new_link.hasCapacity()) continue;
                 if (new_link.filterRequestsWhichCanHandle(remaining_reqs).isEmpty()) {
                     result.add(new SGHClientAdaptation(this, old_link, new_link, fitness));
                 }
@@ -181,11 +183,12 @@ public class SGHClientApp extends SGHNode {
     
      public ArrayList<SGHClientAdaptation> all_valid_add_link_adaptations(ArrayList<SGHServer> neighbors) {
         ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
-        double fitness = computeRequestsPopulation().getShannonEquitability();
+        double fitness = computeRequestsPopulation().getSGHSimulationFitness();
         ArrayList<SGHServer> valid_candidates = new ArrayList<SGHServer>();
         
         for (SGHServer s : neighbors) {
             if (links.contains(s)) continue;
+            if (!s.hasCapacity()) continue;
             // the new link has to be useful for something
             if (s.filterRequestsWhichCanHandle(requests).size() == requests.size()) continue;
             result.add(new SGHClientAdaptation(this, null, s, fitness));
@@ -196,7 +199,7 @@ public class SGHClientApp extends SGHNode {
      
      public ArrayList<SGHClientAdaptation> all_valid_remove_link_adaptations() {
         ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
-        double fitness = computeRequestsPopulation().getShannonEquitability();
+        double fitness = computeRequestsPopulation().getSGHSimulationFitness();
        for (SGHServer old_link : links) {
             
             ArrayList<SGHRequest> remaining_reqs = getRequests();

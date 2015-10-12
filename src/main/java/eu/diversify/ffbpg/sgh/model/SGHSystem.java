@@ -1,6 +1,10 @@
 package eu.diversify.ffbpg.sgh.model;
 
+import static eu.diversify.ffbpg.BPGraph.average;
+import static eu.diversify.ffbpg.BPGraph.dataFileWithAverage;
 import eu.diversify.ffbpg.random.RandomUtils;
+import eu.diversify.ffbpg.utils.FileUtils;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -86,13 +90,21 @@ public class SGHSystem {
             
             ArrayList reqs = c.getRequests();
             for (SGHServer s : _servers) {
+                if (!s.hasCapacity()) continue;
                 ArrayList nreqs = s.filterRequestsWhichCanHandle(reqs);
                 if (nreqs.size() < reqs.size()) {
                     // the server is useful
                     c.getLinks().add(s);
+                    s.increaseLoad();
                     reqs = nreqs;
                 }
                 if (reqs.isEmpty()) break;
+            }
+            if(!reqs.isEmpty()) {
+                for (SGHServer s : c.getLinks()) {
+                    s.decreaseLoad();
+                }
+                c.getLinks().clear();
             }
         }
     }
@@ -100,6 +112,7 @@ public class SGHSystem {
     private void removedDeadClients() {
         for (SGHClientApp c : (ArrayList<SGHClientApp>)clients.clone()) {
             if (!c.isAlive()) {
+                for (SGHServer s : c.getLinks()) s.decreaseLoad(); // clear the load on the servers
                 clients.remove(c);
             }
         }
@@ -212,6 +225,102 @@ public class SGHSystem {
         b.append("ALIVE: " + s_alive +", DEAD: " + s_dead + "\n");
         return b.toString();
     }
+    
+    
+    public int[] distLinksPerClients() {
+        int[] result = new int[servers.size()];
+        for(SGHClientApp c : clients) {
+            result[c.links.size()]++;
+        }
+        return result;
+    }
+    
+    public int[] distLinksPerServers() {
+        int[] result = new int[clients.size()];
+        
+        // Calulate server connections
+        Hashtable<SGHServer, ArrayList<SGHClientApp>> links = new Hashtable<SGHServer, ArrayList<SGHClientApp>>();
+        for (SGHClientApp client : clients) {
+            for (SGHServer s : client.getLinks()) {
+                if (!links.containsKey(s)) {
+                    links.put(s, new ArrayList<SGHClientApp>());
+                }
+                links.get(s).add(client);
+            }
+        }
+        
+        for(SGHServer s : servers) {
+            if (!links.containsKey(s)) result[0]++;
+            else result[links.get(s).size()]++;
+        }
+        return result;
+    }
+    
+    public int[] distNbFeaturesPerClients() {
+        int[] result = new int[SGHModel.getInstance().totalNbFeatures()];
+        for(SGHClientApp c : clients) {
+            result[c.featureSet.size()]++;
+        }
+        return result;
+    }
+    
+    public int[] distNbFeaturesPerServers() {
+        int[] result = new int[SGHModel.getInstance().totalNbFeatures()];
+        for(SGHServer s : servers) {
+            result[s.featureSet.size()]++;
+        }
+        return result;
+    }
+    
+    public int[] distFeaturesOnClients() {
+        Hashtable<SGHFeature, Integer> count = new Hashtable<SGHFeature, Integer>();
+        for (SGHClientApp c : clients) {
+            for (SGHFeature f : c.featureSet) {
+                if (!count.containsKey(f)) {
+                    count.put(f, 1);
+                }
+                else {
+                    count.put(f, count.get(f) + 1);
+                }
+            }
+        }
+        ArrayList<Integer> counts = new ArrayList<Integer>(count.values());
+        Collections.sort(counts);
+        int[] result = new int[counts.size()];
+        for (int i=0; i<counts.size(); i++) result[counts.size()-i-1] = counts.get(i);
+        return result;
+    }
+    
+    public int[] distFeaturesOnServers() {
+        Hashtable<SGHFeature, Integer> count = new Hashtable<SGHFeature, Integer>();
+        for (SGHServer s : servers) {
+            for (SGHFeature f : s.featureSet) {
+                if (!count.containsKey(f)) {
+                    count.put(f, 1);
+                }
+                else {
+                    count.put(f, count.get(f) + 1);
+                }
+            }
+        }
+        ArrayList<Integer> counts = new ArrayList<Integer>(count.values());
+        Collections.sort(counts);
+        int[] result = new int[counts.size()];
+        for (int i=0; i<counts.size(); i++) result[counts.size()-i-1] = counts.get(i);
+        return result;
+    }
+    
+    public void exportGraphStatistics(File folder) {
+        DataExportUtils.writeGNUPlotScriptForIntArray(distNbFeaturesPerClients(), folder, "dist_nb_features_per_clients", "Size (in Features)", "# Clients");
+        DataExportUtils.writeGNUPlotScriptForIntArray(distNbFeaturesPerServers(), folder, "dist_nb_features_per_servers", "Size (in Features)", "# Servers");
+        
+        DataExportUtils.writeGNUPlotScriptForIntArray(distFeaturesOnClients(), folder, "dist_feature_use_on_clients", "Feature", "# of usages in clients");
+        DataExportUtils.writeGNUPlotScriptForIntArray(distFeaturesOnServers(), folder, "dist_feature_use_on_servers", "Feature", "# of usages in servers");
+        
+        DataExportUtils.writeGNUPlotScriptForIntArray(distLinksPerClients(), folder, "dist_nb_links_per_clients", "# Links (to Servers)", "# Clients");
+        DataExportUtils.writeGNUPlotScriptForIntArray(distLinksPerServers(), folder, "dist_nb_links_per_servers", "# Links (from Clients)", "# Servers");
+    }
+    
     
     
 }
