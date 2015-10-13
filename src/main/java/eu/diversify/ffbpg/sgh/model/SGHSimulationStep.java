@@ -26,6 +26,9 @@ public class SGHSimulationStep {
     public int added_features = 0;
     public int removed_features = 0;
     
+    public int useless_links = 0;
+    public int useless_features = 0;
+    
     public int delta_features = 0;
     public int delta_links = 0;
     
@@ -40,10 +43,12 @@ public class SGHSimulationStep {
         b.append("C ");b.append(client_adaptation_space);b.append("\t");
         b.append(added_links);b.append("\t");
         b.append(removed_links);b.append("\t");
+        b.append(useless_links);b.append("\t");
         b.append(delta_links);b.append("\t");
         b.append("S "); b.append(server_adaptation_space);b.append("\t");
         b.append(added_features);b.append("\t");
         b.append(removed_features);b.append("\t");
+        b.append(useless_features);b.append("\t");
         b.append(delta_features);b.append("\t");
         return b.toString();
     }

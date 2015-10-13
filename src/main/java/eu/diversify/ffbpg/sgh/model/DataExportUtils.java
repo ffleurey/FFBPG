@@ -83,7 +83,7 @@ public class DataExportUtils {
         b.append("set xlabel 'Run'\n");
         b.append("set ylabel 'Robusness index (%)'\n");
         b.append("set xrange [0:"+ (data.length-1) +"]\n");
-        b.append("set yrange [0:100]\n");
+        b.append("set yrange [45:75]\n");
         b.append("plot " + "\"" + filename + "_robustness.dat\" using 1 notitle with line\n" );
         FileUtils.writeTextFile(out_dir, filename + "_robustness.plt", b.toString());
         

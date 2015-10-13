@@ -36,6 +36,15 @@ public class SGHServer extends SGHNode {
         return load < CAPACITY;
     }
     
+    public int loadPercentage() {
+        return (load*100)/CAPACITY;
+    }
+    
+    public int probabilityToAdapt() {
+        if (!hasCapacity()) return 5;
+        else return 50;
+    }
+    
     public SGHServer(HashMap<SGHVariationPoint, ArrayList<SGHFeature>> features) {
         this.features = features;
         computeFeatureSet();
@@ -88,21 +97,58 @@ public class SGHServer extends SGHNode {
         features.get(f.getVariationPoint()).add(f);
     } 
     
-    public ArrayList<SGHServerAdaptation> all_valid_add_feature_adaptations(ArrayList<SGHClientApp> connected_clients) {
+    public ArrayList<SGHServerAdaptation> all_valid_add_feature_adaptations(ArrayList<SGHClientApp> connected_clients, boolean smart) {
         
         ArrayList<SGHServerAdaptation> result = new ArrayList<SGHServerAdaptation>();
         Hashtable<SGHFeature, Integer> popularities = computePopularities(connected_clients);
         // Find any features which may be added
-        for(SGHVariationPoint vp : features.keySet()) {
-            
-            if (!vp.isMultiple() && features.get(vp).size() == 1) continue; // nothing can be added
-            
-            for (SGHFeature candidate : vp.getAlternatives()) {
+        
+        if (!connected_clients.isEmpty() && smart) { // Li,it features to be added to the ones used by the clients
+        
+            for (SGHFeature candidate : popularities.keySet()) {
+                SGHVariationPoint vp = candidate.getVariationPoint();
+                if (!vp.isMultiple() && features.get(vp).size() == 1) continue; // nothing can be added
                 if (!featureSet.contains(candidate)) {
-                    result.add(new SGHServerAdaptation(this, null, candidate, popularities));
-                }
+                        result.add(new SGHServerAdaptation(this, null, candidate, popularities));
+                    }
             }
+        }
+        else {  // Find any features which may be added
+           
+            for(SGHVariationPoint vp : features.keySet()) {
+
+                if (!vp.isMultiple() && features.get(vp).size() == 1) continue; // nothing can be added
+
+                for (SGHFeature candidate : vp.getAlternatives()) {
+                    if (!featureSet.contains(candidate)) {
+                        result.add(new SGHServerAdaptation(this, null, candidate, popularities));
+                    }
+                }
             
+            }
+        }
+        return result;
+    }
+    
+    public int removeUselessFeatures(ArrayList<SGHClientApp> connected_clients) {
+        int result = 0;
+        
+        // Keep the same if there are no connected clients
+        if (connected_clients.isEmpty()) return result;
+        
+        // if a features is in none of the clients it is totally useless
+        for (SGHFeature f : (HashSet<SGHFeature>)featureSet.clone()) {
+            boolean found = false;
+            for (SGHClientApp c : connected_clients) {
+                if (c.featureSet.contains(f)) {
+                    found = true;
+                    break;
+                }   
+            }
+            if (!found) {
+                removeFeature(f);
+                result++;
+            }
         }
         return result;
     }
@@ -122,6 +168,10 @@ public class SGHServer extends SGHNode {
     public ArrayList<SGHServerAdaptation> all_valid_remove_feature_adaptations(ArrayList<SGHClientApp> connected_clients) {
         
         ArrayList<SGHServerAdaptation> result = new ArrayList<SGHServerAdaptation>();
+        
+        // Keep the same if there are no connected clients
+        if (connected_clients.isEmpty()) return result;
+        
         Hashtable<SGHFeature, Integer> popularities = computePopularities(connected_clients);
         
         // Compute the set of feature which cannot be removed because of clients

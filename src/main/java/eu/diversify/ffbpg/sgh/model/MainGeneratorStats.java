@@ -30,7 +30,7 @@ public class MainGeneratorStats extends Thread {
         System.out.println(graph.dumpData());
         
         {
-            SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(50);
+            SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(250);
             double[] avg_seq = SGHExtinctionSequence.averageExtinctionSequences(eseqs);
             System.out.println(Arrays.toString(avg_seq));
             double robustness = SGHExtinctionSequence.averageRobustnessIndex(avg_seq);
@@ -38,7 +38,7 @@ public class MainGeneratorStats extends Thread {
             System.out.println("Robustness = " + robustness);
         }
         
-       // System.exit(0);
+        //System.exit(0);
         
         SGHSimulation sim_CR_SR = new SGHSimulation(graph, true, true, false, false);
         SGHSimulation sim_CS_SS = new SGHSimulation(graph, true, true, true, true);
@@ -46,11 +46,11 @@ public class MainGeneratorStats extends Thread {
         SGHSimulation sim_CR_SS = new SGHSimulation(graph, true, true, true, false);
         SGHSimulation sim_CS_SR = new SGHSimulation(graph, true, true, false, true);
         
-        //new MainGeneratorStats("CR_SR", sim_CR_SR, outdir).start();
+        new MainGeneratorStats("CR_SR", sim_CR_SR, outdir).start();
         new MainGeneratorStats("CS_SS", sim_CS_SS, outdir).start();
         
-        //new MainGeneratorStats("CR_SS", sim_CR_SS, outdir).start();
-        //new MainGeneratorStats("CS_SR", sim_CS_SR, outdir).start();
+        new MainGeneratorStats("CR_SS", sim_CR_SS, outdir).start();
+        new MainGeneratorStats("CS_SR", sim_CS_SR, outdir).start();
         
         SGHSimulation sim_CR_SN = new SGHSimulation(graph, false, true, false, false);
         SGHSimulation sim_CN_SR = new SGHSimulation(graph, true, false, false, false);
@@ -88,7 +88,7 @@ public class MainGeneratorStats extends Thread {
         FileUtils.writeTextFile(outdir, "FinalGraph.txt", graph.dumpData());
         
         {
-            SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(50);
+            SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(250);
             double[] avg_seq = SGHExtinctionSequence.averageExtinctionSequences(eseqs);
             System.out.println(Arrays.toString(avg_seq));
             double robustness = SGHExtinctionSequence.averageRobustnessIndex(avg_seq);

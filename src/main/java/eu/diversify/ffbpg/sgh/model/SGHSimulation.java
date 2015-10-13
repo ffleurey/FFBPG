@@ -2,10 +2,12 @@
 package eu.diversify.ffbpg.sgh.model;
 
 import eu.diversify.ffbpg.Simulation;
+import eu.diversify.ffbpg.random.RandomUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.Random;
 
 /**
  *
@@ -103,23 +105,53 @@ public class SGHSimulation {
         
         // First adaptation step for servers: Drop features (consider servers in a random order)
         Collections.shuffle(randomized_servers);
+        
         for (SGHServer s : randomized_servers) {
             delta_features += run_step1_for_server(step, s, links.get(s));
         }
         
-         // Second adaptation step for servers: Add features (consider servers in a random order)
-        Collections.shuffle(randomized_servers);
+        
         for (SGHServer s : randomized_servers) {
-            if(delta_features >= 0) break; // only add as many features as we have removed (keep cost constant)
-            delta_features += run_step2_for_server(step, s, links.get(s));
+            int uf = s.removeUselessFeatures(links.get(s));
+             delta_features -= uf;
+             step.useless_features += uf;
+         }
+        
+        
+         // Second adaptation step for servers: Add features (consider servers in a random order)
+        int i=0;
+        while(delta_features < 0) {
+            Collections.shuffle(randomized_servers);
+            for (SGHServer s : randomized_servers) {
+                if(delta_features >= 0) break; // only add as many features as we have removed (keep cost constant)
+                delta_features += run_step2_for_server(step, s, links.get(s));
+            }
+            i++; if (i > 5) break;
         }
         
+        //Remove any clients useless links
+         for (SGHClientApp client : randomized_clients) {
+             int ul = client.dropUselessLinks();
+             delta_links -= ul;
+             step.useless_links += ul;
+         }
         // Second adaptation step for clients: Add as many links as we have removed earlier (keep cost constant)
+        i=0;
+        while(delta_links < 0) {
+        Collections.shuffle(randomized_clients);
+            for (SGHClientApp client : randomized_clients) {
+                if(delta_links >= 0) break; 
+                delta_links += run_step2_for_client(step, client, neighborhood.get(client));
+            }
+            i++; if (i > 5) break;
+        }
+        //Loop a second time in a random order if more links can be added
         Collections.shuffle(randomized_clients);
         for (SGHClientApp client : randomized_clients) {
             if(delta_links >= 0) break; 
             delta_links += run_step2_for_client(step, client, neighborhood.get(client));
         }
+        
         
         step.delta_features = delta_features;
         step.delta_links = delta_links;
@@ -134,6 +166,16 @@ public class SGHSimulation {
     
     private int run_step1_for_server(SGHSimulationStep step, SGHServer server, ArrayList<SGHClientApp> connections) {
         if (!evolve_servers) return 0;
+        
+        if (smart_servers) {
+            // Probablyly to loose a service is based on the load. high load -> loose a service
+            if (RandomUtils.getUniform(100) > server.probabilityToAdapt()) return 0;
+        }
+        else {
+            if (RandomUtils.getUniform(100) > 50) return 0;
+        }
+        
+        
         ArrayList<SGHServerAdaptation> candidates = server.all_valid_remove_feature_adaptations(connections);
         step.server_adaptation_space += candidates.size();
 
@@ -149,7 +191,16 @@ public class SGHSimulation {
     
     private int run_step2_for_server(SGHSimulationStep step, SGHServer server, ArrayList<SGHClientApp> connections) {
         if (!evolve_servers) return 0;
-        ArrayList<SGHServerAdaptation> candidates = server.all_valid_add_feature_adaptations(connections);
+        
+        if (smart_servers) {
+            // Probablyly to gain a service is based on the load. low load -> gain a service
+            if (RandomUtils.getUniform(100) > server.probabilityToAdapt()) return 0;
+        }
+        else {
+            if (RandomUtils.getUniform(100) > 50) return 0;
+        }
+        
+        ArrayList<SGHServerAdaptation> candidates = server.all_valid_add_feature_adaptations(connections, smart_servers);
         step.server_adaptation_space += candidates.size();
          // select a random adaptation
          Collections.sort(candidates);
@@ -165,9 +216,18 @@ public class SGHSimulation {
     
     private int run_step1_for_client(SGHSimulationStep step, SGHClientApp client, ArrayList<SGHServer> neigbors) {
         if (!evolve_clients) return 0;
+        
+        if (smart_clients) {
+            //if (RandomUtils.getUniform(10) > client.getLinks().size()) return 0;
+            if (RandomUtils.getUniform(100) > client.probabilityToAdapt()) return 0;
+        }
+        else {
+            if (RandomUtils.getUniform(100) > 25) return 0;
+        }
+        
         // consider only adaptationw which do not increase the number of links
         ArrayList<SGHClientAdaptation> candidates = client.all_valid_swap_link_adaptations(neigbors);
-        candidates.addAll(client.all_valid_remove_link_adaptations());
+        candidates.addAll(client.all_valid_remove_link_adaptations(smart_clients));
         step.client_adaptation_space += candidates.size();
         // select a random adaptation
          Collections.shuffle(candidates);
@@ -192,6 +252,15 @@ public class SGHSimulation {
     
     private int run_step2_for_client(SGHSimulationStep step, SGHClientApp client, ArrayList<SGHServer> neigbors) {
         if (!evolve_clients) return 0;
+        
+        if (smart_clients) {
+            //if (RandomUtils.getUniform(10) < client.getLinks().size()) return 0;
+            if (RandomUtils.getUniform(100) > client.probabilityToAdapt()) return 0;
+        }
+        else {
+            if (RandomUtils.getUniform(100) > 25) return 0;
+        }
+        
         // consider only adaptationw which do not increase the number of links
         ArrayList<SGHClientAdaptation> candidates = client.all_valid_add_link_adaptations(neigbors);
         step.client_adaptation_space += candidates.size();
@@ -219,6 +288,5 @@ public class SGHSimulation {
         }
         DataExportUtils.writeGNUPlotScriptForDouble(robustness, folder, name);
     }
-    
     
 }

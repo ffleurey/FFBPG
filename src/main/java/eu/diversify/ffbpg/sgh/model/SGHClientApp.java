@@ -147,7 +147,21 @@ public class SGHClientApp extends SGHNode {
         return result;
     }
     
+    public int probabilityToAdapt() {
+        return 50;
+    }
     
+    public int dropUselessLinks() {
+        int result = 0;
+        for (SGHServer s : (ArrayList<SGHServer>)links.clone()) {
+            if (s.filterRequestsWhichCanHandle(requests).size() == requests.size()) {
+                result++;
+                links.remove(s);
+                s.decreaseLoad();
+            }
+        }
+        return result;
+    }
     
     public ArrayList<SGHClientAdaptation> all_valid_swap_link_adaptations(ArrayList<SGHServer> neighbors) {
         ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
@@ -157,6 +171,7 @@ public class SGHClientApp extends SGHNode {
         
         for (SGHServer s : neighbors) {
             if (links.contains(s)) continue;
+            if (!s.hasCapacity()) continue;
             // the new link has to be useful for something
             if (s.filterRequestsWhichCanHandle(requests).size() == requests.size()) continue;
             valid_candidates.add(s);
@@ -171,7 +186,7 @@ public class SGHClientApp extends SGHNode {
                 if (s != old_link) remaining_reqs = s.filterRequestsWhichCanHandle(remaining_reqs);
             }
             
-            for(SGHServer new_link : neighbors) {
+            for(SGHServer new_link : valid_candidates) {
                 if (!new_link.hasCapacity()) continue;
                 if (new_link.filterRequestsWhichCanHandle(remaining_reqs).isEmpty()) {
                     result.add(new SGHClientAdaptation(this, old_link, new_link, fitness));
@@ -197,8 +212,12 @@ public class SGHClientApp extends SGHNode {
         return result; // do not go further if there are no candidates
      }
      
-     public ArrayList<SGHClientAdaptation> all_valid_remove_link_adaptations() {
+     public ArrayList<SGHClientAdaptation> all_valid_remove_link_adaptations(boolean smart) {
         ArrayList<SGHClientAdaptation> result = new ArrayList<SGHClientAdaptation>();
+        
+        // Refuse to have less that 2 links
+        if (getLinks().size()<3 && smart) return result;
+        
         double fitness = computeRequestsPopulation().getSGHSimulationFitness();
        for (SGHServer old_link : links) {
             
