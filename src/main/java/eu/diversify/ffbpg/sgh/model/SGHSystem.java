@@ -2,6 +2,7 @@ package eu.diversify.ffbpg.sgh.model;
 
 import static eu.diversify.ffbpg.BPGraph.average;
 import static eu.diversify.ffbpg.BPGraph.dataFileWithAverage;
+import eu.diversify.ffbpg.collections.Population;
 import eu.diversify.ffbpg.random.RandomUtils;
 import eu.diversify.ffbpg.utils.FileUtils;
 import java.io.File;
@@ -223,6 +224,18 @@ public class SGHSystem {
             }
         }
         b.append("ALIVE: " + s_alive +", DEAD: " + s_dead + "\n");
+        
+        // Calculate some metrics on the network
+        HashMap<String, ArrayList<SGHNode>> srv_pop = SGHNode.getPopulation(servers);
+        Population srv_pop_stats = SGHNode.getPopulationStats(srv_pop);
+        b.append("   SERVER POPULATION : "); b.append(srv_pop_stats.toString());b.append("\n");
+        b.append("SERVER SPECIES COUNT : ");b.append(srv_pop_stats.getSpeciesCount());b.append("\n");
+        b.append("   SERVER POPULATION : ");b.append(servers.size());b.append("\n");
+        b.append("  SERVER SHANNON DIV : ");b.append(srv_pop_stats.getShannonIndex());b.append("\n");
+        b.append(" SERVER EQUITABILITY : ");b.append(srv_pop_stats.getShannonEquitability());b.append("\n");
+        b.append("    SERVER DISPARITY : ");b.append(SGHNode.disparityOfSpercies(srv_pop));b.append("\n");
+        
+        
         return b.toString();
     }
     
@@ -380,6 +393,15 @@ public class SGHSystem {
                 b.append("]}\n");
             }
             b.append("]\n");
+    }
+    
+    
+    public void getServerPopulation() {
+        
+        
+        
+        
+        
     }
     
 }

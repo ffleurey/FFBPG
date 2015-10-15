@@ -24,7 +24,7 @@ public class MainGeneratorStats extends Thread {
         outdir.mkdirs();
         System.out.println("Output Folder: " + outdir.getAbsolutePath());
         
-        SGHSystem graph = SGHSystem.generateSGHSystem(2000,120);
+        SGHSystem graph = SGHSystem.generateSGHSystem(200,40);
         FileUtils.writeTextFile(outdir, "InitialGraph.txt", graph.dumpData());
         graph.exportGraphStatistics(outdir);
         System.out.println(graph.dumpData());

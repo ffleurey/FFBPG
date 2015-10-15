@@ -5,7 +5,9 @@
  */
 package eu.diversify.ffbpg.sgh.model;
 
+import eu.diversify.ffbpg.collections.Population;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +17,44 @@ public abstract class SGHNode {
     
     HashMap<SGHVariationPoint, ArrayList<SGHFeature>> features;
     HashSet<SGHFeature> featureSet;
+    
+    public static HashMap<String, ArrayList<SGHNode>> getPopulation(ArrayList nodes) {
+        HashMap<String, ArrayList<SGHNode>> result = new HashMap<String, ArrayList<SGHNode>>();
+        for (int i=0; i<nodes.size(); i++) {
+            SGHNode  n = (SGHNode)nodes.get(i);
+            String sig = n.getSpeciesSignature();
+            if (!result.containsKey(sig)) {
+                result.put(sig, new ArrayList<SGHNode>());
+            }
+            result.get(sig).add(n);
+        }
+        return result;
+    }
+    
+    public static int disparityOfSpercies(HashMap<String, ArrayList<SGHNode>> pop) {
+        ArrayList<SGHNode> species = new ArrayList<SGHNode>();
+        for (ArrayList<SGHNode> ind : pop.values()) {
+            species.add(ind.get(0));
+        }
+        int result = 0;
+        for (SGHNode s1 : species) {
+            for (SGHNode s2 : species) {
+                if (s2 == s1) break;
+                result += s1.distance(s2);
+            }
+        }
+        return result;
+    }
+    
+    public static Population getPopulationStats(HashMap<String, ArrayList<SGHNode>> pop) {
+        int[] res = new int[pop.size()];
+        int i = 0;
+        for (String k : pop.keySet()) {
+            res[i] = pop.get(k).size();
+            i++;
+        }
+        return new Population(res);
+    }
     
     public void computeFeatureSet() {
         featureSet = new HashSet<SGHFeature>();
@@ -46,4 +86,33 @@ public abstract class SGHNode {
         for (String s : strs) {b.append(s); b.append(" ");}
         return b.toString().trim();
     }
+    
+    public String getSpeciesSignature() {
+        ArrayList<String> fea = new ArrayList<String>();
+        for (SGHFeature f : featureSet) {
+            fea.add(f.getName());
+        }
+        Collections.sort(fea);
+        StringBuilder b = new StringBuilder();
+        for (String s : fea) {
+            b.append(s);
+        }
+        return b.toString();
+    }
+    
+    public int distance(SGHNode other) {
+        int result = 0;
+        
+        for (SGHFeature f : featureSet) {
+            if (!other.featureSet.contains(f)) result++;
+        }
+        
+        for (SGHFeature f : other.featureSet) {
+            if (!featureSet.contains(f)) result++;
+        }
+        
+        return result;
+    }
+    
+    
 }
