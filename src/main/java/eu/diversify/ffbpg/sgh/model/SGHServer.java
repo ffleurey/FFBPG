@@ -56,7 +56,7 @@ public class SGHServer extends SGHNode {
             clone.put(vp, (ArrayList<SGHFeature>)features.get(vp).clone());
         }
         SGHServer result = new SGHServer(clone);
-        result.setName("c" + this.name);
+        result.setName(this.name);
         result.load = load;
         return result;
     }

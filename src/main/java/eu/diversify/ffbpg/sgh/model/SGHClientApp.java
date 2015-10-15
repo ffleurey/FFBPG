@@ -47,7 +47,7 @@ public class SGHClientApp extends SGHNode {
         for (SGHServer s : links) {
             result.getLinks().add(old_new_map.get(s));
         }
-        result.setName("c" + this.name);
+        result.setName(this.name);
         return result;
     }
     

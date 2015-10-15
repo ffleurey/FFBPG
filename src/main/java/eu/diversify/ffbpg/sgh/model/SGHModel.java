@@ -47,7 +47,7 @@ public class SGHModel {
         
         Hashtable<String, SGHVariationPoint> result = new Hashtable<String, SGHVariationPoint>();
         
-        SGHVariationPoint v = new SGHVariationPoint("Vehicule", new PoissonIntegerGenerator(1), new PoissonIntegerGenerator(2), false);
+        SGHVariationPoint v = new SGHVariationPoint("Vehicle", new PoissonIntegerGenerator(1), new PoissonIntegerGenerator(2), false);
         v.addAlternative(new SGHFeature("Car", 500, v));
         v.addAlternative(new SGHFeature("Bike", 100, v));
         v.addAlternative(new SGHFeature("Walk", 50, v));
@@ -68,7 +68,7 @@ public class SGHModel {
         v.addAlternative(new SGHFeature("TrafficApp", 5, v));
         result.put(v.getName(), v);
         
-        v = new SGHVariationPoint("Polution", new PoissonIntegerGenerator(3), new PoissonIntegerGenerator(1), true);
+        v = new SGHVariationPoint("Pollution", new PoissonIntegerGenerator(3), new PoissonIntegerGenerator(1), true);
         v.addAlternative(new SGHFeature("Air_AVG", 500, v));
         v.addAlternative(new SGHFeature("Air_RT", 50, v));
         v.addAlternative(new SGHFeature("Noize_AVG", 20, v));

@@ -321,6 +321,65 @@ public class SGHSystem {
         DataExportUtils.writeGNUPlotScriptForIntArray(distLinksPerServers(), folder, "dist_nb_links_per_servers", "# Links (from Clients)", "# Servers");
     }
     
+    public void exportClientsToJSONFiles(File base_folder, String name) {
+        File outdir = new File(base_folder, name);
+        outdir.mkdir();
+        
+        int srvid = 0;
+        HashMap<SGHServer, Integer> serverids = new HashMap<SGHServer, Integer>();
+        for(SGHServer s : servers) {
+            serverids.put(s, srvid);
+            srvid++;
+        }
+        
+        
+        int clientid = 0;
+        // Export 1 JSON file per client
+        for (SGHClientApp c : clients) {
+            
+            StringBuilder b = new StringBuilder();
+            b.append("{\n");
+            b.append("\"id\":\""+c.getName()+"\", \n");
+            writeJSONForServices(c, b);
+            
+            b.append(",\n");
+            b.append("\"platforms\":[\n");
+            boolean first = true;
+            for (SGHServer s : c.getLinks()) {
+                if (first) { first = false; } else b.append(", ");
+                b.append("{\n");
+                b.append("\"id\":\""+s.getName()+"\", \n");
+                b.append("\"host\":\"http://coreff3:153"+serverids.get(s)+"/\",\n");
+                
+                writeJSONForServices(s, b);
+                
+                b.append("}\n");
+            }
+            b.append("]\n");
+            b.append("}\n");
+            
+            FileUtils.writeTextFile(outdir, "client" + clientid + ".json", b.toString());
+            clientid++;
+        }
+        
+    }
     
+    public void writeJSONForServices(SGHNode n, StringBuilder b) {
+        
+         b.append("\"services\":[\n");
+            boolean vfirst = true;
+            for (SGHVariationPoint v : n.features.keySet()) {
+                if (n.features.get(v).isEmpty()) continue;
+                if (vfirst) { vfirst = false; } else b.append(", ");
+                b.append("{\"name\":\"");b.append(v.getName());b.append("\",\"alternatives\":[");
+                boolean first = true;
+                for (SGHFeature f : n.features.get(v)) {
+                    if (first) { first = false; } else b.append(", ");
+                    b.append("\"");b.append(f.getName());b.append("\"");
+                }
+                b.append("]}\n");
+            }
+            b.append("]\n");
+    }
     
 }
