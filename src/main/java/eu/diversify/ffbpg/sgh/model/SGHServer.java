@@ -11,7 +11,7 @@ import java.util.Hashtable;
  */
 public class SGHServer extends SGHNode {
     
-    int CAPACITY = 15;
+    int CAPACITY = 20;
     int load = 0;
     
     public int getCapacity() {

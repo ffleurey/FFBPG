@@ -47,6 +47,40 @@ public class SGHModel {
         
         Hashtable<String, SGHVariationPoint> result = new Hashtable<String, SGHVariationPoint>();
         
+        SGHVariationPoint v = new SGHVariationPoint("vehicle", new PoissonIntegerGenerator(1), new PoissonIntegerGenerator(2), false);
+        v.addAlternative(new SGHFeature("car", 500, v));
+        v.addAlternative(new SGHFeature("bike", 100, v));
+        v.addAlternative(new SGHFeature("foot", 50, v));
+        v.addAlternative(new SGHFeature("motorcycle", 20, v));
+        v.addAlternative(new SGHFeature("scooter", 5, v));
+        result.put(v.getName(), v);
+        
+        v = new SGHVariationPoint("algorithm", null, false);
+        v.addAlternative(new SGHFeature("diksjtra", 200, v));
+        v.addAlternative(new SGHFeature("astar", 20, v));
+        result.put(v.getName(), v);
+        
+        v = new SGHVariationPoint("weighting", new PoissonIntegerGenerator(4), new PoissonIntegerGenerator(2), false);
+        v.addAlternative(new SGHFeature("default", 250, v));
+        v.addAlternative(new SGHFeature("fastest", 500, v));
+        v.addAlternative(new SGHFeature("shortest", 100, v));
+        v.addAlternative(new SGHFeature("least_polluted", 50, v));
+        v.addAlternative(new SGHFeature("least_noisy", 50, v));
+        v.addAlternative(new SGHFeature("least_pollen", 10, v));
+        v.addAlternative(new SGHFeature("most_ozonic", 10, v));
+        v.addAlternative(new SGHFeature("most_scenic", 5, v));
+        v.addAlternative(new SGHFeature("least_congested", 100, v));
+        result.put(v.getName(), v);
+        
+        
+        return result;
+        
+    }
+    /*
+        private Hashtable<String, SGHVariationPoint> createSGHVariationPoints() {
+        
+        Hashtable<String, SGHVariationPoint> result = new Hashtable<String, SGHVariationPoint>();
+        
         SGHVariationPoint v = new SGHVariationPoint("Vehicle", new PoissonIntegerGenerator(1), new PoissonIntegerGenerator(2), false);
         v.addAlternative(new SGHFeature("Car", 500, v));
         v.addAlternative(new SGHFeature("Bike", 100, v));
@@ -89,6 +123,7 @@ public class SGHModel {
         return result;
         
     }
+    */
     
     public SGHClientApp createRandomClient() {
         SGHClientApp result = null;
