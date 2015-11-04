@@ -382,7 +382,7 @@ public class SGHSystem {
          b.append("\"services\":[\n");
             boolean vfirst = true;
             for (SGHVariationPoint v : n.features.keySet()) {
-                if (n.features.get(v).isEmpty()) continue;
+                //if (n.features.get(v).isEmpty()) continue;
                 if (vfirst) { vfirst = false; } else b.append(", ");
                 b.append("{\"name\":\"");b.append(v.getName());b.append("\",\"alternatives\":[");
                 boolean first = true;
