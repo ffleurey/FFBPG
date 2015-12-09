@@ -25,7 +25,6 @@ import eu.diversify.ffbpg.random.NegExpIntegerSetGenerator;
 import eu.diversify.ffbpg.random.PoissonIntegerGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerGenerator;
 import eu.diversify.ffbpg.random.UniformIntegerSetGenerator;
-import eu.diversify.ffbpg.sgh.SGHGenerator;
 import eu.diversify.ffbpg.sgh.model.SGHVariationPoint;
 import java.util.ArrayList;
 import java.util.List;
@@ -1278,7 +1277,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButtonPlatExponetialActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+        /*
         bpgraphtable.clear();
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(200);
         int n_run = Integer.parseInt(jTextFieldNGraphs.getText());
@@ -1296,7 +1295,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
         generator_parameters = gen.getSGHDescription(model);
-        
+        */
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
