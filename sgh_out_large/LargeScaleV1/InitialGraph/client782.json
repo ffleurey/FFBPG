@@ -1,0 +1,30 @@
+{
+"id":"C865", 
+"services":[
+{"name":"algorithm","alternatives":["astar"]}
+, {"name":"weighting","alternatives":["default", "fastest"]}
+, {"name":"vehicle","alternatives":["bike", "car"]}
+]
+,
+"platforms":[
+{
+"id":"S431", 
+"host":"http://d020m01.istic.univ-rennes1.fr:1531/",
+"services":[
+{"name":"algorithm","alternatives":["astar"]}
+, {"name":"weighting","alternatives":["fastest", "least_pollen", "least_congested", "shortest", "default"]}
+, {"name":"vehicle","alternatives":["car", "foot"]}
+]
+}
+, {
+"id":"S295", 
+"host":"http://e105m05.istic.univ-rennes1.fr:1535/",
+"services":[
+{"name":"algorithm","alternatives":["astar"]}
+, {"name":"weighting","alternatives":["fastest", "least_noisy", "default", "least_polluted"]}
+, {"name":"vehicle","alternatives":["car", "motorcycle", "bike"]}
+]
+}
+]
+}
+

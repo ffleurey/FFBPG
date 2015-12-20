@@ -1,16 +1,30 @@
 package eu.diversify.ffbpg.sgh.model;
 
+import eu.diversify.ffbpg.Application;
+import eu.diversify.ffbpg.BPGraph;
 import static eu.diversify.ffbpg.BPGraph.average;
 import static eu.diversify.ffbpg.BPGraph.dataFileWithAverage;
+import eu.diversify.ffbpg.Platform;
+import eu.diversify.ffbpg.Service;
 import eu.diversify.ffbpg.collections.Population;
 import eu.diversify.ffbpg.random.RandomUtils;
 import eu.diversify.ffbpg.utils.FileUtils;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -133,6 +147,55 @@ public class SGHSystem {
         }
     }
     
+    class ExecExtinctionSeq implements Callable<SGHExtinctionSequence[]> {
+        
+        int nb_seq = 10;
+        
+        public ExecExtinctionSeq(int nb_seq) {
+            this.nb_seq = nb_seq;
+        }
+        
+        public SGHExtinctionSequence[] call() {
+            SGHExtinctionSequence[] result = computeRandomExtinctionSequence(nb_seq);
+            return result;
+        }
+    }
+    
+    
+    public SGHExtinctionSequence[] computeRandomExtinctionSequence(int seq, int threads) {
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threads);
+        LinkedList<Future<?>> futures = new LinkedList<Future<?>>();
+        SGHExtinctionSequence[] eseqs = new SGHExtinctionSequence[seq];
+        
+        for (int i = 0; i < threads; i++)
+        {
+            ExecExtinctionSeq task = new ExecExtinctionSeq(seq/threads);
+            futures.add(executor.submit(task));
+        }
+        
+        int idx = 0;
+        
+        for (Future<?> future:futures) {
+            try {
+                SGHExtinctionSequence[] res = (SGHExtinctionSequence[])future.get();
+                
+                for (int i=0; i<res.length; i++) {
+                    eseqs[idx++] = res[i];
+                }
+                
+                
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SGHSystem.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ExecutionException ex) {
+                Logger.getLogger(SGHSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        executor.shutdown();
+        return eseqs;
+    }
+    
+    
     public SGHExtinctionSequence[] computeRandomExtinctionSequence(int seq) {
         
         ArrayList<SGHServer> all_servers = (ArrayList<SGHServer>)servers.clone();
@@ -169,7 +232,7 @@ public class SGHSystem {
     
     
     
-    public String dumpData() {
+    public String dumpData(boolean details) {
         StringBuffer b = new StringBuffer();
         
         Hashtable<SGHServer, Integer> srvs = new Hashtable<SGHServer, Integer>();
@@ -179,8 +242,8 @@ public class SGHSystem {
         int dead = 0;
         for (SGHClientApp c : clients) {
             if (c.isAlive()) {
-                b.append(c.getOneLineString());
-                b.append("\n");
+                if (details) b.append(c.getOneLineString());
+                if (details) b.append("\n");
                 alive++;
                 for (SGHServer s : c.getLinks()) {
                     if (srvs.containsKey(s)) {
@@ -196,34 +259,34 @@ public class SGHSystem {
         
         for (SGHClientApp c : clients) {
             if (!c.isAlive()) {
-                b.append(c.getOneLineString());
-                b.append("\n");
+                if (details)b.append(c.getOneLineString());
+                if (details)b.append("\n");
                 dead++;
             }
             
         }
         
-        b.append("ALIVE: " + alive +", DEAD: " + dead + "\n");
+        b.append("ALIVE CLIENTS: " + alive +", DEAD: " + dead + "\n");
         
         int s_alive = 0;
         int s_dead = 0;
         
         for (SGHServer s : servers) {
             if (srvs.containsKey(s)) {
-                b.append("#"); b.append(srvs.get(s)); b.append("->"); b.append(s.getOneLineString());
-                b.append("\n");
+                if (details) { b.append("#"); b.append(srvs.get(s)); b.append("->"); b.append(s.getOneLineString());
+                b.append("\n"); }
                 s_alive++;
             }
         }
         
         for (SGHServer s : servers) {
             if (!srvs.containsKey(s)) {
-                b.append("0 ->"); b.append(s.getOneLineString());
-                b.append("\n");
+                if (details) { b.append("0 ->"); b.append(s.getOneLineString());
+                b.append("\n");}
                 s_dead++;
             }
         }
-        b.append("ALIVE: " + s_alive +", DEAD: " + s_dead + "\n");
+        b.append("ALIVE SERVERS: " + s_alive +", DEAD: " + s_dead + "\n");
         
         // Calculate some metrics on the network
         HashMap<String, ArrayList<SGHNode>> srv_pop = SGHNode.getPopulation(servers);
@@ -334,18 +397,28 @@ public class SGHSystem {
         DataExportUtils.writeGNUPlotScriptForIntArray(distLinksPerServers(), folder, "dist_nb_links_per_servers", "# Links (from Clients)", "# Servers");
     }
     
-    public void exportClientsToJSONFiles(File base_folder, String name) {
+    public void exportClientsToJSONFiles(File base_folder, String name, File hostlist) throws Exception {
         File outdir = new File(base_folder, name);
         outdir.mkdir();
+        BufferedReader br = null;
         
-        int srvid = 0;
-        HashMap<SGHServer, Integer> serverids = new HashMap<SGHServer, Integer>();
-        for(SGHServer s : servers) {
-            serverids.put(s, srvid);
-            srvid++;
+        HashMap<SGHServer, String> serverids = new HashMap<SGHServer, String>();
+        
+        if (hostlist != null) {
+            br = new BufferedReader(new FileReader(hostlist));
+            for(SGHServer s : servers) {
+                serverids.put(s, br.readLine());
+            }
         }
+        else {
+            int srvid = 0;
         
-        
+            for(SGHServer s : servers) {
+                serverids.put(s, "coreff3:153" + srvid);
+                srvid++;
+            }
+        }
+
         int clientid = 0;
         // Export 1 JSON file per client
         for (SGHClientApp c : clients) {
@@ -362,7 +435,7 @@ public class SGHSystem {
                 if (first) { first = false; } else b.append(", ");
                 b.append("{\n");
                 b.append("\"id\":\""+s.getName()+"\", \n");
-                b.append("\"host\":\"http://coreff3:153"+serverids.get(s)+"/\",\n");
+                b.append("\"host\":\"http://"+serverids.get(s)+"/\",\n");
                 
                 writeJSONForServices(s, b);
                 
@@ -395,13 +468,73 @@ public class SGHSystem {
             b.append("]\n");
     }
     
-    
-    public void getServerPopulation() {
+    public BPGraph toBPGraph() {
+        
+        // Create all the services and collect their indexes
+        ArrayList<Service> services = new ArrayList<Service>();
+        Hashtable<String, Integer> srvidx = new Hashtable<String, Integer>();
+        Hashtable<String, SGHRequest> reqs = new Hashtable<String, SGHRequest>();
+        
+        for (SGHClientApp c : clients) {
+            for (SGHRequest r : c.getRequests()) {
+                String s = r.toString();
+                if (!srvidx.containsKey(s)) {
+                    srvidx.put(s, services.size());
+                    reqs.put(s, r);
+                    Service ns = new Service(s);
+                    ns.incrementUsage();
+                    services.add(ns);
+                } else {
+                    Service ns = services.get(srvidx.get(s));
+                    ns.incrementUsage();
+                }
+            }
+        }
+        // Sort the list of services and update indexes
+        Collections.sort(services);
+        for (int i=0; i<services.size(); i++) {
+            String s = services.get(i).getName();
+            srvidx.put(s, i);
+        }
         
         
         
+        // Create all platforms
+        Hashtable<SGHServer, Platform> platmap = new Hashtable<SGHServer, Platform>();
+        ArrayList<Platform> plats= new ArrayList<Platform>();
         
+        for (SGHServer s : servers) {
+            Platform p = new Platform(s.getName(), s.getCapacity());
+            for (String str : reqs.keySet()) {
+                SGHRequest req = reqs.get(str);
+                if (s.canHandle(req)) {
+                    p.getProvidedServices().add(srvidx.get(str));
+                }
+            }
+            platmap.put(s, p);
+            plats.add(p);
+        }
         
+        // Create applications
+        ArrayList<Application> apps= new ArrayList<Application>();
+        for (SGHClientApp c : clients) {
+            Application a = new Application(c.getName(), plats.size());
+            for (SGHRequest req : c.getRequests()) {
+                a.getRequiredServices().add(srvidx.get(req.toString()));
+            }
+            for (SGHServer s : c.getLinks()) {
+                Platform p = platmap.get(s);
+                p.incrementLoad();
+                a.getLinkedPlatforms().add(p);
+            }
+            apps.add(a);
+        }
+        
+        BPGraph result = new BPGraph(services);
+        result.setPlatforms(plats);
+        result.setApplications(apps);
+        
+        return result;
     }
     
 }

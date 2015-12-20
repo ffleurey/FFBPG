@@ -19,6 +19,8 @@ public class SGHSimulation {
     
     public final int NB_EXTINCTIONS = 100; // Number of random extinction sequences to calculate robustness at each steps
     
+    boolean compute_extinctions = false;
+    
     boolean smart_servers;
     boolean smart_clients;
     
@@ -33,12 +35,13 @@ public class SGHSimulation {
     int delta_links = 0;
     int delta_features = 0;
     
-    public SGHSimulation(SGHSystem system, boolean evolve_servers, boolean evolve_clients, boolean smart_servers, boolean smart_clients) {
+    public SGHSimulation(SGHSystem system, boolean evolve_servers, boolean evolve_clients, boolean smart_servers, boolean smart_clients, boolean compute_robustness) {
         this.system = system.deep_clone();
         this.smart_clients = smart_clients;
         this.smart_servers = smart_servers;
         this.evolve_servers = evolve_servers;
         this.evolve_clients = evolve_clients;
+        compute_extinctions = compute_robustness;
     }
     
     
@@ -55,9 +58,11 @@ public class SGHSimulation {
         steps = new ArrayList<SGHSimulationStep>();
         current_step = 0;
         SGHSimulationStep step = new SGHSimulationStep(current_step);
-        step.extinctions = system.computeRandomExtinctionSequence(NB_EXTINCTIONS);
-        step.avg_seq = SGHExtinctionSequence.averageExtinctionSequences(step.extinctions);
-        step.robustness = SGHExtinctionSequence.averageRobustnessIndex(step.avg_seq);
+        if (compute_extinctions) {
+            step.extinctions = system.computeRandomExtinctionSequence(NB_EXTINCTIONS);
+            step.avg_seq = SGHExtinctionSequence.averageExtinctionSequences(step.extinctions);
+            step.robustness = SGHExtinctionSequence.averageRobustnessIndex(step.avg_seq);
+        }
         steps.add(step);
         System.out.println(step.toString());
     }
@@ -157,10 +162,11 @@ public class SGHSimulation {
         step.delta_links = delta_links;
         
         // Caluculate the robustness of the graph
-        step.extinctions = system.computeRandomExtinctionSequence(NB_EXTINCTIONS);
-        step.avg_seq = SGHExtinctionSequence.averageExtinctionSequences(step.extinctions);
-        step.robustness = SGHExtinctionSequence.averageRobustnessIndex(step.avg_seq);
-     
+        if (compute_extinctions) {
+            step.extinctions = system.computeRandomExtinctionSequence(NB_EXTINCTIONS);
+            step.avg_seq = SGHExtinctionSequence.averageExtinctionSequences(step.extinctions);
+            step.robustness = SGHExtinctionSequence.averageRobustnessIndex(step.avg_seq);
+        }
         return step;
     }
     
