@@ -36,12 +36,12 @@ public class GenerateForFullScaleExperiment extends Thread {
         outdir.mkdirs();
         System.out.println("Output Folder: " + outdir.getAbsolutePath());
         
-        SGHSystem graph = SGHSystem.generateSGHSystem(5000,750);
+        SGHSystem graph = SGHSystem.generateSGHSystem(3000,500);
         FileUtils.writeTextFile(outdir, "InitialGraph.txt", graph.dumpData(true));
         graph.exportGraphStatistics(outdir);
         System.out.println(graph.dumpData(false));
         try {
-            graph.exportClientsToJSONFiles(outdir, "InitialGraph", new File("host_ip_list_wide.txt"));
+            graph.exportClientsToJSONFiles(outdir, "InitialGraph", new File("host_ip_list_wide"));
         } catch (Exception ex) {
             Logger.getLogger(GenerateForFullScaleExperiment.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -125,7 +125,7 @@ public class GenerateForFullScaleExperiment extends Thread {
             SGHExtinctionSequence.writeGNUPlotScriptForAll(eseqs, outdir, "Extinctions_Final");
             System.out.println("Robustness = " + robustness);
             try {
-                graph.exportClientsToJSONFiles(outdir, "FinalGraph", new File("host_ip_list_wide.txt"));
+                graph.exportClientsToJSONFiles(outdir, "FinalGraph", new File("host_ip_list_wide"));
             } catch (Exception ex) {
                 Logger.getLogger(GenerateForFullScaleExperiment.class.getName()).log(Level.SEVERE, null, ex);
             }
