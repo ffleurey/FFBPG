@@ -50,12 +50,12 @@ public class SGHModel {
         SGHVariationPoint v = new SGHVariationPoint("vehicle", new PoissonIntegerGenerator(1), new PoissonIntegerGenerator(2), false);
         v.addAlternative(new SGHFeature("car", 500, v));
         v.addAlternative(new SGHFeature("bike", 100, v));
-        //v.addAlternative(new SGHFeature("foot", 50, v));
-        //v.addAlternative(new SGHFeature("motorcycle", 20, v));
-        //v.addAlternative(new SGHFeature("scooter", 5, v));
-        v.addAlternative(new SGHFeature("car", 50, v));
-        v.addAlternative(new SGHFeature("bike", 20, v));
-        v.addAlternative(new SGHFeature("bike", 5, v));
+        v.addAlternative(new SGHFeature("foot", 50, v));
+        v.addAlternative(new SGHFeature("motorcycle", 20, v));
+        v.addAlternative(new SGHFeature("scooter", 5, v));
+        //v.addAlternative(new SGHFeature("car", 50, v));
+        //v.addAlternative(new SGHFeature("bike", 20, v));
+        //v.addAlternative(new SGHFeature("bike", 5, v));
         result.put(v.getName(), v);
         
         v = new SGHVariationPoint("algorithm", null, false);
@@ -70,12 +70,12 @@ public class SGHModel {
         v.addAlternative(new SGHFeature("least_polluted", 50, v));
         v.addAlternative(new SGHFeature("least_noisy", 50, v));
         v.addAlternative(new SGHFeature("least_pollen", 10, v));
-        //v.addAlternative(new SGHFeature("most_ozonic", 10, v));
-        //v.addAlternative(new SGHFeature("most_scenic", 5, v));
-        //v.addAlternative(new SGHFeature("least_congested", 100, v));
-        v.addAlternative(new SGHFeature("least_polluted", 10, v));
-        v.addAlternative(new SGHFeature("least_noisy", 5, v));
-        v.addAlternative(new SGHFeature("least_pollen", 100, v));
+        v.addAlternative(new SGHFeature("most_ozonic", 10, v));
+        v.addAlternative(new SGHFeature("most_scenic", 5, v));
+        v.addAlternative(new SGHFeature("least_congested", 100, v));
+        //v.addAlternative(new SGHFeature("least_polluted", 10, v));
+        //v.addAlternative(new SGHFeature("least_noisy", 5, v));
+        //v.addAlternative(new SGHFeature("least_pollen", 100, v));
         result.put(v.getName(), v);
         
         
