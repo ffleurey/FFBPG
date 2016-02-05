@@ -8,6 +8,8 @@ package eu.diversify.ffbpg.sgh.model;
 import eu.diversify.ffbpg.BPGraph;
 import eu.diversify.ffbpg.ExtinctionSequence;
 import eu.diversify.ffbpg.gui.BPGraphFrame;
+import static eu.diversify.ffbpg.sgh.model.MainGeneratorStats.NB_EXTINCTIONS;
+import static eu.diversify.ffbpg.sgh.model.MainGeneratorStats.NB_EXTINCTIONS_THREADS;
 import eu.diversify.ffbpg.utils.FileUtils;
 import java.io.File;
 import java.lang.management.ManagementFactory;
@@ -28,7 +30,12 @@ public class GenerateForFullScaleExperiment extends Thread {
     public static int NB_EXTINCTIONS_THREADS = 4;
     
     public static void main(String[] args) {
-        
+
+        if(NB_EXTINCTIONS % NB_EXTINCTIONS_THREADS != 0) {
+            System.err.println("Error: NB_EXTINCTIONS_THREADS must be a multiple of NB_EXTINCTIONS !");
+            System.exit(-1);
+        }
+                
          System.out.println( "Max Heap memory: "+
                  ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getMax()
     );

@@ -25,9 +25,14 @@ import java.util.logging.Logger;
 public class MainGeneratorStats extends Thread {
     
     public static int NB_EXTINCTIONS = 100; // Number of random extinction sequences to calculate robustness at each steps
-    public static int NB_EXTINCTIONS_THREADS = 4;
+    public static int NB_EXTINCTIONS_THREADS = 6;
     
     public static void main(String[] args) {
+    
+        if(NB_EXTINCTIONS % NB_EXTINCTIONS_THREADS != 0) {
+            System.err.println("Error: NB_EXTINCTIONS_THREADS must be a multiple of NB_EXTINCTIONS !");
+            System.exit(-1);
+        }
         
          System.out.println( "Max Heap memory: "+
                  ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getMax()
