@@ -24,6 +24,9 @@ import java.util.logging.Logger;
  */
 public class GenerateForFullScaleExperiment extends Thread {
     
+    public static int NB_EXTINCTIONS = 100;
+    public static int NB_EXTINCTIONS_THREADS = 4;
+    
     public static void main(String[] args) {
         
          System.out.println( "Max Heap memory: "+
@@ -74,7 +77,7 @@ public class GenerateForFullScaleExperiment extends Thread {
         
         Long before_time = System.currentTimeMillis();
         {
-            SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(100, 10);
+            SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(NB_EXTINCTIONS, NB_EXTINCTIONS_THREADS);
             double[] avg_seq = SGHExtinctionSequence.averageExtinctionSequences(eseqs);
             //System.out.println(Arrays.toString(avg_seq));
             double robustness = SGHExtinctionSequence.averageRobustnessIndex(avg_seq);
@@ -118,7 +121,7 @@ public class GenerateForFullScaleExperiment extends Thread {
         FileUtils.writeTextFile(outdir, "FinalGraph.txt", graph.dumpData(true));
         
         {
-            SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(100, 10);
+            SGHExtinctionSequence[] eseqs = graph.computeRandomExtinctionSequence(NB_EXTINCTIONS, NB_EXTINCTIONS_THREADS);
             double[] avg_seq = SGHExtinctionSequence.averageExtinctionSequences(eseqs);
             System.out.println(Arrays.toString(avg_seq));
             double robustness = SGHExtinctionSequence.averageRobustnessIndex(avg_seq);

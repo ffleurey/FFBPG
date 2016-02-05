@@ -17,7 +17,8 @@ public class SGHSimulation {
     
     public final int NEIGHBORHOOD_SIZE = 15; // 15% of the servers are randomly visible to clients at each simulation step
     
-    public final int NB_EXTINCTIONS = 100; // Number of random extinction sequences to calculate robustness at each steps
+    public int NB_EXTINCTIONS = 100; // Number of random extinction sequences to calculate robustness at each steps
+    public int NB_EXTINCTIONS_THREADS = 4;
     
     boolean compute_extinctions = false;
     
@@ -26,6 +27,8 @@ public class SGHSimulation {
     
     boolean evolve_servers;
     boolean evolve_clients;
+    
+    
     
     
     SGHSystem system;
@@ -59,7 +62,7 @@ public class SGHSimulation {
         current_step = 0;
         SGHSimulationStep step = new SGHSimulationStep(current_step);
         if (compute_extinctions) {
-            step.extinctions = system.computeRandomExtinctionSequence(NB_EXTINCTIONS);
+            step.extinctions = system.computeRandomExtinctionSequence(NB_EXTINCTIONS, NB_EXTINCTIONS_THREADS);
             step.avg_seq = SGHExtinctionSequence.averageExtinctionSequences(step.extinctions);
             step.robustness = SGHExtinctionSequence.averageRobustnessIndex(step.avg_seq);
         }
@@ -163,7 +166,7 @@ public class SGHSimulation {
         
         // Caluculate the robustness of the graph
         if (compute_extinctions) {
-            step.extinctions = system.computeRandomExtinctionSequence(NB_EXTINCTIONS);
+            step.extinctions = system.computeRandomExtinctionSequence(NB_EXTINCTIONS, NB_EXTINCTIONS_THREADS);
             step.avg_seq = SGHExtinctionSequence.averageExtinctionSequences(step.extinctions);
             step.robustness = SGHExtinctionSequence.averageRobustnessIndex(step.avg_seq);
         }

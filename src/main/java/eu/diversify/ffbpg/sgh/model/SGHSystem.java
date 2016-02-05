@@ -196,7 +196,7 @@ public class SGHSystem {
     }
     
     
-    public SGHExtinctionSequence[] computeRandomExtinctionSequence(int seq) {
+    private SGHExtinctionSequence[] computeRandomExtinctionSequence(int seq) {
         
         ArrayList<SGHServer> all_servers = (ArrayList<SGHServer>)servers.clone();
 
