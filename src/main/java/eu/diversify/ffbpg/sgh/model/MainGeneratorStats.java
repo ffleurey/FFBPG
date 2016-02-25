@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class MainGeneratorStats extends Thread {
     
     public static int NB_EXTINCTIONS = 100; // Number of random extinction sequences to calculate robustness at each steps
-    public static int NB_EXTINCTIONS_THREADS = 6;
+    public static int NB_EXTINCTIONS_THREADS = 5;
     
     public static void main(String[] args) {
     
@@ -45,6 +45,16 @@ public class MainGeneratorStats extends Thread {
         System.out.println("Output Folder: " + outdir.getAbsolutePath());
         
         SGHSystem graph = SGHSystem.generateSGHSystem(500,50);
+        /*
+        int links_removed = graph.removedSomeRedondancy();
+        System.out.println("Number of links removed in the generated graph:" + links_removed);
+        
+        links_removed = graph.removedSomeRedondancy();
+        System.out.println("Number of links removed in the generated graph:" + links_removed);
+        
+        links_removed = graph.removedSomeRedondancy();
+        System.out.println("Number of links removed in the generated graph:" + links_removed);
+        */
         FileUtils.writeTextFile(outdir, "InitialGraph.txt", graph.dumpData(true));
         graph.exportGraphStatistics(outdir);
         System.out.println(graph.dumpData(false));

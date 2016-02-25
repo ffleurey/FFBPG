@@ -242,6 +242,15 @@ public class SGHClientApp extends SGHNode {
         return remaining_reqs.isEmpty();
     }
      
+     public boolean is_droping_server_link_acceptable(SGHServer to_drop) {
+         
+        ArrayList<SGHRequest> remaining_reqs = getRequests();
+        for (SGHServer s : links) {
+            if (s != to_drop) remaining_reqs = s.filterRequestsWhichCanHandle(remaining_reqs);
+        }
+        return remaining_reqs.isEmpty();
+    }
+     
     private Population computeRequestsPopulation() {
         int[] p = new int[getRequests().size()];
         int i=0;

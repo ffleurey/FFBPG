@@ -133,6 +133,23 @@ public class SGHSystem {
         }
     }
     
+    public int removedSomeRedondancy() {
+        int result = 0;
+        for (SGHClientApp c : (ArrayList<SGHClientApp>)clients.clone()) {
+            // for each client try to remove one link if possible
+           
+            for (SGHServer candidate : (ArrayList<SGHServer>)c.getLinks().clone()) {
+               if (c.is_droping_server_link_acceptable(candidate)) {
+                   c.getLinks().remove(candidate);
+                   candidate.decreaseLoad();
+                   result++;
+                   break;
+               }
+           }
+       }
+        return result;
+    }
+    
     private void removedUnusedServers() {
         HashSet<SGHServer> srvs = new HashSet<SGHServer>();
         for (SGHClientApp c : clients) {
