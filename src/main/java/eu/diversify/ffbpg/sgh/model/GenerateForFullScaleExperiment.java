@@ -26,9 +26,19 @@ import java.util.logging.Logger;
  */
 public class GenerateForFullScaleExperiment extends Thread {
     
-    public static int NB_EXTINCTIONS = 100;
-    public static int NB_EXTINCTIONS_THREADS = 4;
-    
+    public static int NB_EXTINCTIONS = 120;
+    public static int NB_EXTINCTIONS_THREADS = 6;
+
+    public static void simulateExecution(SGHSystem graph) {
+        SGHExecSimulation s1 = new SGHExecSimulation(graph, 1, 1000); s1.execute();
+        SGHExecSimulation s2 = new SGHExecSimulation(graph, 2, 1000); s2.execute();
+        SGHExecSimulation s3 = new SGHExecSimulation(graph, 3, 1000); s3.execute();
+        SGHExecSimulation s4 = new SGHExecSimulation(graph, 4, 1000); s4.execute();
+        SGHExecSimulation s5 = new SGHExecSimulation(graph, 5, 1000); s5.execute();
+        SGHExecSimulation s10 = new SGHExecSimulation(graph, 10, 1000); s10.execute();
+        SGHExecSimulation s25 = new SGHExecSimulation(graph, 25, 1000); s25.execute();
+    }
+
     public static void main(String[] args) {
 
         if(NB_EXTINCTIONS % NB_EXTINCTIONS_THREADS != 0) {
@@ -51,7 +61,7 @@ public class GenerateForFullScaleExperiment extends Thread {
         graph.exportGraphStatistics(outdir);
         System.out.println(graph.dumpData(false));
         try {
-            graph.exportClientsToJSONFiles(outdir, "InitialGraph", new File("host_ip_list_wide"));
+           // graph.exportClientsToJSONFiles(outdir, "InitialGraph", new File("host_ip_list_wide"));
         } catch (Exception ex) {
             Logger.getLogger(GenerateForFullScaleExperiment.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -90,6 +100,7 @@ public class GenerateForFullScaleExperiment extends Thread {
             double robustness = SGHExtinctionSequence.averageRobustnessIndex(avg_seq);
             SGHExtinctionSequence.writeGNUPlotScriptForAll(eseqs, outdir, "Extinctions_Initial");
             System.out.println("Robustness (SGH) = " + robustness);
+            simulateExecution(graph);
         }
         Long after_time = System.currentTimeMillis();
         System.out.println("Time for 100 extinctions on SGH: " + (after_time - before_time));
@@ -134,8 +145,9 @@ public class GenerateForFullScaleExperiment extends Thread {
             double robustness = SGHExtinctionSequence.averageRobustnessIndex(avg_seq);
             SGHExtinctionSequence.writeGNUPlotScriptForAll(eseqs, outdir, "Extinctions_Final");
             System.out.println("Robustness = " + robustness);
+            simulateExecution(graph);
             try {
-                graph.exportClientsToJSONFiles(outdir, "FinalGraph", new File("host_ip_list_wide"));
+               // graph.exportClientsToJSONFiles(outdir, "FinalGraph", new File("host_ip_list_wide"));
             } catch (Exception ex) {
                 Logger.getLogger(GenerateForFullScaleExperiment.class.getName()).log(Level.SEVERE, null, ex);
             }
