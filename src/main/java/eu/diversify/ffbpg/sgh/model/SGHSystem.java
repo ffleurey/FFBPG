@@ -308,12 +308,13 @@ public class SGHSystem {
         // Calculate some metrics on the network
         HashMap<String, ArrayList<SGHNode>> srv_pop = SGHNode.getPopulation(servers);
         Population srv_pop_stats = SGHNode.getPopulationStats(srv_pop);
-        b.append("   SERVER POPULATION : "); b.append(srv_pop_stats.toString());b.append("\n");
-        b.append("SERVER SPECIES COUNT : ");b.append(srv_pop_stats.getSpeciesCount());b.append("\n");
+        b.append("   SERVER POPULATION : "); b.append(srv_pop_stats.toString());b.append("\n"); 
         b.append("   SERVER POPULATION : ");b.append(servers.size());b.append("\n");
         b.append("  SERVER SHANNON DIV : ");b.append(srv_pop_stats.getShannonIndex());b.append("\n");
-        b.append(" SERVER EQUITABILITY : ");b.append(srv_pop_stats.getShannonEquitability());b.append("\n");
+        b.append("      SERVER VARIETY : ");b.append(srv_pop_stats.getSpeciesCount());b.append("\n");
+        b.append("      SERVER BALANCE : ");b.append(srv_pop_stats.getShannonEquitability());b.append("\n");
         b.append("    SERVER DISPARITY : ");b.append(SGHNode.disparityOfSpercies(srv_pop));b.append("\n");
+        b.append("    SERVER DIVERSITY : ");b.append(SGHNode.diversity(srv_pop));b.append("\n");
         
         
         return b.toString();

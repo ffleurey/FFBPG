@@ -31,16 +31,33 @@ public abstract class SGHNode {
         return result;
     }
     
-    public static int disparityOfSpercies(HashMap<String, ArrayList<SGHNode>> pop) {
+    public static double disparityOfSpercies(HashMap<String, ArrayList<SGHNode>> pop) {
         ArrayList<SGHNode> species = new ArrayList<SGHNode>();
         for (ArrayList<SGHNode> ind : pop.values()) {
             species.add(ind.get(0));
         }
-        int result = 0;
+        double result = 0;
         for (SGHNode s1 : species) {
             for (SGHNode s2 : species) {
                 if (s2 == s1) break;
                 result += s1.distance(s2);
+            }
+        }
+        return result;
+    }
+    
+    public static double diversity(HashMap<String, ArrayList<SGHNode>> pop) {
+        ArrayList<SGHNode> species = new ArrayList<SGHNode>();
+        HashMap<SGHNode, Integer> popsize = new HashMap<SGHNode, Integer>();
+        for (ArrayList<SGHNode> ind : pop.values()) {
+            species.add(ind.get(0));
+            popsize.put(ind.get(0), ind.size());
+        }
+        double result = 0;
+        for (SGHNode s1 : species) {
+            for (SGHNode s2 : species) {
+                if (s2 == s1) break;
+                result += popsize.get(s1) * popsize.get(s2) * s1.distance(s2);
             }
         }
         return result;
@@ -100,16 +117,24 @@ public abstract class SGHNode {
         return b.toString();
     }
     
-    public int distance(SGHNode other) {
-        int result = 0;
+    public double distance(SGHNode other) {
+        double result = 0;
+        
+        double inter = 0;
+        double union = 0;
         
         for (SGHFeature f : featureSet) {
-            if (!other.featureSet.contains(f)) result++;
+            union++;
+            if (other.featureSet.contains(f)) {
+                inter++;
+            }
         }
         
         for (SGHFeature f : other.featureSet) {
-            if (!featureSet.contains(f)) result++;
+            if (!featureSet.contains(f)) union++;
         }
+        
+        result = 1.0f - inter/union; // Jaquard distance
         
         return result;
     }

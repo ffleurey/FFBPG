@@ -26,23 +26,19 @@ public class MainGeneratorStats extends Thread {
     
     public static int NB_EXTINCTIONS = 100; // Number of random extinction sequences to calculate robustness at each steps
     public static int NB_EXTINCTIONS_THREADS = 5;
-<<<<<<< HEAD
-    
-=======
 
-
-    public static void simulateExecution(SGHSystem graph) {
-        SGHExecSimulation s1 = new SGHExecSimulation(graph, 1, 1000); s1.execute();
-        SGHExecSimulation s2 = new SGHExecSimulation(graph, 2, 1000); s2.execute();
-        SGHExecSimulation s3 = new SGHExecSimulation(graph, 3, 1000); s3.execute();
-        SGHExecSimulation s4 = new SGHExecSimulation(graph, 4, 1000); s4.execute();
-        SGHExecSimulation s5 = new SGHExecSimulation(graph, 5, 1000); s5.execute();
-        SGHExecSimulation s10 = new SGHExecSimulation(graph, 10, 1000); s10.execute();
-        SGHExecSimulation s25 = new SGHExecSimulation(graph, 25, 1000); s25.execute();
+    public static ArrayList<SGHExecSimulation> simulateExecution(SGHSystem graph) {
+        ArrayList<SGHExecSimulation> result = new ArrayList<SGHExecSimulation>();
+        for(int i=0; i<graph.servers.size()/10+1; i++) {
+            SGHExecSimulation s = new SGHExecSimulation(graph, i, 1000); s.execute();
+            result.add(s);
+        }
+        { SGHExecSimulation s = new SGHExecSimulation(graph, graph.servers.size()/4, 1000); s.execute(); result.add(s); }
+        { SGHExecSimulation s = new SGHExecSimulation(graph, graph.servers.size()/2, 1000); s.execute(); result.add(s); }
+        
+       return result;
     }
 
-
->>>>>>> b63e3c530f4aff008d548b54bef3b5b7a7b1c76d
     public static void main(String[] args) {
     
         if(NB_EXTINCTIONS % NB_EXTINCTIONS_THREADS != 0) {
@@ -60,7 +56,7 @@ public class MainGeneratorStats extends Thread {
         outdir.mkdirs();
         System.out.println("Output Folder: " + outdir.getAbsolutePath());
         
-<<<<<<< HEAD
+
         SGHSystem graph = SGHSystem.generateSGHSystem(500,50);
         /*
         int links_removed = graph.removedSomeRedondancy();
@@ -72,9 +68,7 @@ public class MainGeneratorStats extends Thread {
         links_removed = graph.removedSomeRedondancy();
         System.out.println("Number of links removed in the generated graph:" + links_removed);
         */
-=======
-        SGHSystem graph = SGHSystem.generateSGHSystem(1500,100);
->>>>>>> b63e3c530f4aff008d548b54bef3b5b7a7b1c76d
+
         FileUtils.writeTextFile(outdir, "InitialGraph.txt", graph.dumpData(true));
         graph.exportGraphStatistics(outdir);
         System.out.println(graph.dumpData(false));
@@ -118,7 +112,7 @@ public class MainGeneratorStats extends Thread {
             double robustness = SGHExtinctionSequence.averageRobustnessIndex(avg_seq);
             SGHExtinctionSequence.writeGNUPlotScriptForAll(eseqs, outdir, "Extinctions_Initial");
             System.out.println("Robustness (SGH) = " + robustness);
-            simulateExecution(graph);
+            SGHExecSimulation.writeResults(outdir, simulateExecution(graph));
         }
         Long after_time = System.currentTimeMillis();
         System.out.println("Time for 100 extinctions on SGH: " + (after_time - before_time));
@@ -184,7 +178,8 @@ public class MainGeneratorStats extends Thread {
                 Logger.getLogger(MainGeneratorStats.class.getName()).log(Level.SEVERE, null, ex);
             }
             graph.exportGraphStatistics(outdir);
-            simulateExecution(graph);
+            System.out.println(graph.dumpData(false));
+            SGHExecSimulation.writeResults(outdir, simulateExecution(graph));
         }
     }
     

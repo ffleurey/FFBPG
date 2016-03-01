@@ -1,5 +1,7 @@
 package eu.diversify.ffbpg.sgh.model;
 
+import eu.diversify.ffbpg.utils.FileUtils;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,6 +48,21 @@ public class SGHExecSimulation {
 
         System.out.println("SIM " + failed_requests + " / " + total_request + " = " + failure_rate + "% (" + steps.size() + " steps with " + nb_failures + " failures)");
 
+    }
+    
+    public String toString() {
+         return "" + nb_failures + "\t" + system.servers.size() + "\t" + failure_rate + "\t" + failed_requests + "\t" + total_request;
+    }
+    
+    
+    public static void writeResults(File folder, ArrayList<SGHExecSimulation> sims) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("#srv_dead\t#srv\t%fail\t#fail\t#requests\n");
+        for (SGHExecSimulation s : sims) {
+            sb.append(s.toString());
+            sb.append("\n");
+        }
+        FileUtils.writeTextFile(folder, "ExecutionSim.txt", sb.toString());
     }
 
 }
