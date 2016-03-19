@@ -26,12 +26,12 @@ import java.util.logging.Logger;
  */
 public class GenerateForFullScaleExperiment extends Thread {
     
-    public static int NB_EXTINCTIONS = 120;
+    public static int NB_EXTINCTIONS = 60;
     public static int NB_EXTINCTIONS_THREADS = 6;
 
     public static ArrayList<SGHExecSimulation> simulateExecution(SGHSystem graph) {
         ArrayList<SGHExecSimulation> result = new ArrayList<SGHExecSimulation>();
-        for(int i=0; i<graph.servers.size()/10+1; i++) {
+        for(int i=0; i<graph.servers.size()/10+1; i+=5) {
             SGHExecSimulation s = new SGHExecSimulation(graph, i, 1000); s.execute();
             result.add(s);
         }
@@ -58,12 +58,12 @@ public class GenerateForFullScaleExperiment extends Thread {
         outdir.mkdirs();
         System.out.println("Output Folder: " + outdir.getAbsolutePath());
         
-        SGHSystem graph = SGHSystem.generateSGHSystem(3000,500);
+        SGHSystem graph = SGHSystem.generateSGHSystem(3400,850);
         FileUtils.writeTextFile(outdir, "InitialGraph.txt", graph.dumpData(true));
         graph.exportGraphStatistics(outdir);
         System.out.println(graph.dumpData(false));
         try {
-           // graph.exportClientsToJSONFiles(outdir, "InitialGraph", new File("host_ip_list_wide"));
+            graph.exportClientsToJSONFiles(outdir, "InitialGraph", new File("host_ip_list_wide.txt"));
         } catch (Exception ex) {
             Logger.getLogger(GenerateForFullScaleExperiment.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -149,7 +149,7 @@ public class GenerateForFullScaleExperiment extends Thread {
             System.out.println("Robustness = " + robustness);
             SGHExecSimulation.writeResults(outdir, simulateExecution(graph));
             try {
-               // graph.exportClientsToJSONFiles(outdir, "FinalGraph", new File("host_ip_list_wide"));
+                graph.exportClientsToJSONFiles(outdir, "FinalGraph", new File("host_ip_list_wide.txt"));
             } catch (Exception ex) {
                 Logger.getLogger(GenerateForFullScaleExperiment.class.getName()).log(Level.SEVERE, null, ex);
             }
