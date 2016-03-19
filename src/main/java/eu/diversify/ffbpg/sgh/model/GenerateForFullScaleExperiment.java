@@ -63,7 +63,7 @@ public class GenerateForFullScaleExperiment extends Thread {
         graph.exportGraphStatistics(outdir);
         System.out.println(graph.dumpData(false));
         try {
-            graph.exportClientsToJSONFiles(outdir, "InitialGraph", new File("host_ip_list_wide.txt"));
+            graph.exportClientsToJSONFiles(outdir, "InitialGraph", new File("host_ip_list_wide_ffbpg"));
         } catch (Exception ex) {
             Logger.getLogger(GenerateForFullScaleExperiment.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -149,7 +149,7 @@ public class GenerateForFullScaleExperiment extends Thread {
             System.out.println("Robustness = " + robustness);
             SGHExecSimulation.writeResults(outdir, simulateExecution(graph));
             try {
-                graph.exportClientsToJSONFiles(outdir, "FinalGraph", new File("host_ip_list_wide.txt"));
+                graph.exportClientsToJSONFiles(outdir, "FinalGraph", new File("host_ip_list_wide_ffbpg"));
             } catch (Exception ex) {
                 Logger.getLogger(GenerateForFullScaleExperiment.class.getName()).log(Level.SEVERE, null, ex);
             }
