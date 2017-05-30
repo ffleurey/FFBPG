@@ -33,7 +33,7 @@ public class SGHCombinationTest
     {
         return new TestSuite( SGHCombinationTest.class );
     }
-    
+    /*
     public void testSGHRequestsGenerator1()
     {
         SGHModel m = SGHModel.getInstance();
@@ -97,23 +97,8 @@ public class SGHCombinationTest
         features = new ArrayList<SGHFeature>();
         features.add(algo.getAlternative("Diksjtra"));
         selection.put(algo, features);
-        /*
-        SGHVariationPoint traffic = m.getVariationPoint("Traffic");
-        features = new ArrayList<SGHFeature>();
-        features.add(traffic.getAlternative("Waze"));
-        selection.put(traffic, features);
-        
-        SGHVariationPoint polution = m.getVariationPoint("Polution");
-        features = new ArrayList<SGHFeature>();
-        features.add(polution.getAlternative("Particules"));
-        features.add(polution.getAlternative("Noize_RT"));
-        selection.put(polution, features);
-        
-        SGHVariationPoint road = m.getVariationPoint("Road");
-        features = new ArrayList<SGHFeature>();
-        features.add(road.getAlternative("Cost"));
-        selection.put(road, features);
-        */
+     
+ 
         SGHClientApp cli = new SGHClientApp(selection);
         
         System.out.println(cli.getStringDump());
@@ -121,7 +106,7 @@ public class SGHCombinationTest
         assertEquals(7, cli.getRequests().size());
         
     }
-    
+    */
     public void testRandomGenerator1()
     {
         SGHModel m = SGHModel.getInstance();
@@ -129,5 +114,6 @@ public class SGHCombinationTest
         SGHClientApp c1 = m.createRandomClient();
         System.out.println(c1.getStringDump());
     }
+
    
 }

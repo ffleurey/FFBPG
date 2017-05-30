@@ -1,0 +1,66 @@
+{
+"id":"C440", 
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike", "foot"]}
+, {"name":"weighting","alternatives":["fastest", "least_congested", "least_polluted"]}
+]
+,
+"platforms":[
+{
+"id":"S3", 
+"host":"http://e003m01.istic.univ-rennes1.fr:1533/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike", "scooter", "foot", "car"]}
+, {"name":"weighting","alternatives":["default", "least_congested", "shortest", "fastest"]}
+]
+}
+, {
+"id":"S155", 
+"host":"http://e103m08.istic.univ-rennes1.fr:1534/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot", "bike", "scooter"]}
+, {"name":"weighting","alternatives":["shortest", "default", "fastest", "least_polluted", "least_noisy", "most_ozonic"]}
+]
+}
+, {
+"id":"S53", 
+"host":"http://e003m07.istic.univ-rennes1.fr:1533/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike", "car"]}
+, {"name":"weighting","alternatives":["fastest", "default", "shortest"]}
+]
+}
+, {
+"id":"S170", 
+"host":"http://e103m09.istic.univ-rennes1.fr:1538/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike", "foot", "motorcycle"]}
+, {"name":"weighting","alternatives":["fastest", "default", "shortest", "least_congested", "most_scenic", "least_polluted"]}
+]
+}
+, {
+"id":"S219", 
+"host":"http://e008m07.istic.univ-rennes1.fr:1537/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike", "foot", "motorcycle"]}
+, {"name":"weighting","alternatives":["fastest", "shortest", "most_ozonic", "least_polluted", "default", "most_scenic"]}
+]
+}
+, {
+"id":"S149", 
+"host":"http://e103m07.istic.univ-rennes1.fr:1538/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["foot"]}
+, {"name":"weighting","alternatives":["least_polluted", "least_congested"]}
+]
+}
+]
+}
+

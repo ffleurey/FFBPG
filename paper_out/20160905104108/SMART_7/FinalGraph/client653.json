@@ -1,0 +1,66 @@
+{
+"id":"C874", 
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike"]}
+, {"name":"weighting","alternatives":["least_polluted", "default"]}
+]
+,
+"platforms":[
+{
+"id":"S191", 
+"host":"http://e008m03.istic.univ-rennes1.fr:1539/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike"]}
+, {"name":"weighting","alternatives":["fastest", "default", "least_congested", "least_polluted"]}
+]
+}
+, {
+"id":"S204", 
+"host":"http://e008m06.istic.univ-rennes1.fr:1532/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot", "bike", "motorcycle"]}
+, {"name":"weighting","alternatives":["least_noisy", "fastest", "default", "least_congested", "least_polluted"]}
+]
+}
+, {
+"id":"S190", 
+"host":"http://e008m03.istic.univ-rennes1.fr:1538/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike", "foot", "car", "motorcycle"]}
+, {"name":"weighting","alternatives":["fastest", "shortest", "default", "least_polluted"]}
+]
+}
+, {
+"id":"S202", 
+"host":"http://e008m05.istic.univ-rennes1.fr:15310/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike", "foot", "motorcycle"]}
+, {"name":"weighting","alternatives":["least_congested", "least_polluted", "fastest", "default"]}
+]
+}
+, {
+"id":"S19", 
+"host":"http://e003m02.istic.univ-rennes1.fr:1539/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike", "motorcycle"]}
+, {"name":"weighting","alternatives":["fastest", "default", "shortest", "least_polluted", "least_noisy", "least_congested"]}
+]
+}
+, {
+"id":"S8", 
+"host":"http://e003m01.istic.univ-rennes1.fr:1538/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike"]}
+, {"name":"weighting","alternatives":["fastest", "default", "least_pollen", "least_polluted", "least_congested"]}
+]
+}
+]
+}
+

@@ -1,0 +1,66 @@
+{
+"id":"C300", 
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike"]}
+, {"name":"weighting","alternatives":["fastest", "default", "least_congested", "shortest"]}
+]
+,
+"platforms":[
+{
+"id":"S199", 
+"host":"http://e008m05.istic.univ-rennes1.fr:1537/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike", "foot", "scooter"]}
+, {"name":"weighting","alternatives":["fastest", "least_congested", "least_polluted", "least_pollen"]}
+]
+}
+, {
+"id":"S43", 
+"host":"http://e003m06.istic.univ-rennes1.fr:1533/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["foot", "car", "bike", "motorcycle"]}
+, {"name":"weighting","alternatives":["fastest", "least_congested", "least_polluted", "default", "shortest", "least_noisy"]}
+]
+}
+, {
+"id":"S157", 
+"host":"http://e103m08.istic.univ-rennes1.fr:1536/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["foot", "bike", "car", "motorcycle"]}
+, {"name":"weighting","alternatives":["default", "fastest", "least_noisy", "least_polluted", "shortest", "least_congested"]}
+]
+}
+, {
+"id":"S216", 
+"host":"http://e008m07.istic.univ-rennes1.fr:1534/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike", "car"]}
+, {"name":"weighting","alternatives":["shortest", "least_noisy"]}
+]
+}
+, {
+"id":"S238", 
+"host":"http://e008m09.istic.univ-rennes1.fr:1535/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike", "foot"]}
+, {"name":"weighting","alternatives":["shortest", "default", "fastest", "least_congested", "least_noisy", "least_polluted"]}
+]
+}
+, {
+"id":"S182", 
+"host":"http://e008m01.istic.univ-rennes1.fr:15310/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike", "motorcycle", "foot", "scooter"]}
+, {"name":"weighting","alternatives":["fastest", "default", "least_pollen", "least_polluted", "shortest", "least_congested", "most_ozonic"]}
+]
+}
+]
+}
+

@@ -1,0 +1,66 @@
+{
+"id":"C604", 
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car"]}
+, {"name":"weighting","alternatives":["least_congested", "default", "fastest", "least_polluted", "least_pollen"]}
+]
+,
+"platforms":[
+{
+"id":"S206", 
+"host":"http://e008m06.istic.univ-rennes1.fr:1534/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike", "motorcycle", "foot"]}
+, {"name":"weighting","alternatives":["fastest", "least_congested", "shortest", "default", "least_polluted", "least_pollen"]}
+]
+}
+, {
+"id":"S45", 
+"host":"http://e003m06.istic.univ-rennes1.fr:1535/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot", "bike", "motorcycle"]}
+, {"name":"weighting","alternatives":["fastest", "default", "least_congested", "shortest", "least_polluted", "least_pollen", "least_noisy", "most_scenic"]}
+]
+}
+, {
+"id":"S250", 
+"host":"http://e008m10.istic.univ-rennes1.fr:1537/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike", "foot"]}
+, {"name":"weighting","alternatives":["fastest", "least_congested", "shortest", "default", "least_polluted", "least_noisy"]}
+]
+}
+, {
+"id":"S52", 
+"host":"http://e003m07.istic.univ-rennes1.fr:1532/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "motorcycle"]}
+, {"name":"weighting","alternatives":["shortest", "least_pollen", "fastest", "least_noisy"]}
+]
+}
+, {
+"id":"S129", 
+"host":"http://e103m05.istic.univ-rennes1.fr:1538/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "motorcycle", "bike", "scooter"]}
+, {"name":"weighting","alternatives":["least_polluted", "shortest", "default"]}
+]
+}
+, {
+"id":"S156", 
+"host":"http://e103m08.istic.univ-rennes1.fr:1535/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike", "car", "foot", "motorcycle"]}
+, {"name":"weighting","alternatives":["default", "least_noisy", "shortest"]}
+]
+}
+]
+}
+

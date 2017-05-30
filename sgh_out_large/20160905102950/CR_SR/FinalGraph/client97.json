@@ -1,0 +1,57 @@
+{
+"id":"C101", 
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["foot"]}
+, {"name":"weighting","alternatives":["shortest", "fastest", "least_congested", "least_polluted"]}
+]
+,
+"platforms":[
+{
+"id":"S336", 
+"host":"http://e105m05.istic.univ-rennes1.fr:1531/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["foot"]}
+, {"name":"weighting","alternatives":["least_polluted"]}
+]
+}
+, {
+"id":"S850", 
+"host":"http://d122m02.istic.univ-rennes1.fr:1531/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot", "bike", "motorcycle"]}
+, {"name":"weighting","alternatives":["fastest", "default", "least_congested", "least_polluted", "least_pollen", "least_noisy", "shortest"]}
+]
+}
+, {
+"id":"S305", 
+"host":"http://e105m01.istic.univ-rennes1.fr:1540/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot", "scooter"]}
+, {"name":"weighting","alternatives":["fastest", "default", "shortest", "least_noisy", "least_congested"]}
+]
+}
+, {
+"id":"S787", 
+"host":"http://d028m04.istic.univ-rennes1.fr:1534/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot", "bike", "motorcycle"]}
+, {"name":"weighting","alternatives":["fastest", "shortest", "default", "least_congested"]}
+]
+}
+, {
+"id":"S254", 
+"host":"http://e008m06.istic.univ-rennes1.fr:1540/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["foot", "scooter", "motorcycle"]}
+, {"name":"weighting","alternatives":["least_polluted", "fastest", "least_noisy", "least_pollen"]}
+]
+}
+]
+}
+

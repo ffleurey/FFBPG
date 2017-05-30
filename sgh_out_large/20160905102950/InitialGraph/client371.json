@@ -1,0 +1,66 @@
+{
+"id":"C390", 
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "motorcycle", "foot"]}
+, {"name":"weighting","alternatives":["least_noisy", "shortest"]}
+]
+,
+"platforms":[
+{
+"id":"S296", 
+"host":"http://e105m01.istic.univ-rennes1.fr:1531/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car"]}
+, {"name":"weighting","alternatives":["least_polluted", "fastest", "default", "least_noisy"]}
+]
+}
+, {
+"id":"S499", 
+"host":"http://d020m02.istic.univ-rennes1.fr:1534/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car"]}
+, {"name":"weighting","alternatives":["fastest", "least_congested", "default", "least_noisy", "shortest", "least_polluted", "least_pollen"]}
+]
+}
+, {
+"id":"S805", 
+"host":"http://d028m06.istic.univ-rennes1.fr:1532/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["foot", "car"]}
+, {"name":"weighting","alternatives":["least_congested", "fastest", "default", "shortest", "least_polluted", "least_noisy", "most_ozonic", "least_pollen"]}
+]
+}
+, {
+"id":"S478", 
+"host":"http://e212m10.istic.univ-rennes1.fr:1533/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "motorcycle"]}
+, {"name":"weighting","alternatives":["least_polluted", "shortest", "fastest", "default", "least_congested"]}
+]
+}
+, {
+"id":"S699", 
+"host":"http://d026m02.istic.univ-rennes1.fr:1536/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["motorcycle", "car"]}
+, {"name":"weighting","alternatives":["default", "fastest", "least_congested", "shortest", "least_noisy", "least_pollen", "least_polluted"]}
+]
+}
+, {
+"id":"S119", 
+"host":"http://e103m02.istic.univ-rennes1.fr:1536/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot", "motorcycle"]}
+, {"name":"weighting","alternatives":["fastest", "least_polluted", "least_noisy", "shortest", "default"]}
+]
+}
+]
+}
+

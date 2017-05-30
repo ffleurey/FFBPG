@@ -1,0 +1,66 @@
+{
+"id":"C1030", 
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot", "bike"]}
+, {"name":"weighting","alternatives":["least_congested"]}
+]
+,
+"platforms":[
+{
+"id":"S416", 
+"host":"http://e212m04.istic.univ-rennes1.fr:1531/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car"]}
+, {"name":"weighting","alternatives":["fastest", "default", "least_congested", "most_scenic", "shortest"]}
+]
+}
+, {
+"id":"S156", 
+"host":"http://e103m06.istic.univ-rennes1.fr:1533/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike"]}
+, {"name":"weighting","alternatives":["least_pollen", "fastest", "shortest", "least_congested"]}
+]
+}
+, {
+"id":"S767", 
+"host":"http://d026m10.istic.univ-rennes1.fr:1539/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike"]}
+, {"name":"weighting","alternatives":["least_polluted", "least_congested", "default", "fastest"]}
+]
+}
+, {
+"id":"S710", 
+"host":"http://d026m03.istic.univ-rennes1.fr:1537/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["foot"]}
+, {"name":"weighting","alternatives":["fastest", "least_congested", "shortest", "least_polluted", "default", "most_ozonic", "least_noisy", "most_scenic"]}
+]
+}
+, {
+"id":"S795", 
+"host":"http://d028m05.istic.univ-rennes1.fr:1532/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot"]}
+, {"name":"weighting","alternatives":["fastest", "least_congested", "shortest", "least_polluted", "most_scenic", "least_noisy"]}
+]
+}
+, {
+"id":"S803", 
+"host":"http://d028m05.istic.univ-rennes1.fr:1540/",
+"services":[
+{"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "foot", "bike"]}
+, {"name":"weighting","alternatives":["fastest", "default", "least_pollen", "least_polluted", "least_congested", "shortest"]}
+]
+}
+]
+}
+

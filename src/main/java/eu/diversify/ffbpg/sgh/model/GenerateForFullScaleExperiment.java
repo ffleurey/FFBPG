@@ -59,6 +59,7 @@ public class GenerateForFullScaleExperiment extends Thread {
         System.out.println("Output Folder: " + outdir.getAbsolutePath());
         
         SGHSystem graph = SGHSystem.generateSGHSystem(3400,850);
+        
         FileUtils.writeTextFile(outdir, "InitialGraph.txt", graph.dumpData(true));
         graph.exportGraphStatistics(outdir);
         System.out.println(graph.dumpData(false));

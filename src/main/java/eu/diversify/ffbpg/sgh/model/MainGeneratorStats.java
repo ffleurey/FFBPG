@@ -5,9 +5,7 @@
  */
 package eu.diversify.ffbpg.sgh.model;
 
-import eu.diversify.ffbpg.BPGraph;
-import eu.diversify.ffbpg.ExtinctionSequence;
-import eu.diversify.ffbpg.gui.BPGraphFrame;
+
 import eu.diversify.ffbpg.utils.FileUtils;
 import java.io.File;
 import java.lang.management.ManagementFactory;
@@ -57,7 +55,7 @@ public class MainGeneratorStats extends Thread {
         System.out.println("Output Folder: " + outdir.getAbsolutePath());
         
 
-        SGHSystem graph = SGHSystem.generateSGHSystem(500,50);
+        SGHSystem graph = SGHSystem.generateSGHSystem(100,25);
         /*
         int links_removed = graph.removedSomeRedondancy();
         System.out.println("Number of links removed in the generated graph:" + links_removed);
@@ -121,8 +119,8 @@ public class MainGeneratorStats extends Thread {
         SGHSimulation sim_CR_SR = new SGHSimulation(graph, true, true, false, false, true);
         SGHSimulation sim_CS_SS = new SGHSimulation(graph, true, true, true, true, true);
         
-        SGHSimulation sim_CR_SS = new SGHSimulation(graph, true, true, true, false, true);
-        SGHSimulation sim_CS_SR = new SGHSimulation(graph, true, true, false, true, true);
+        //SGHSimulation sim_CR_SS = new SGHSimulation(graph, true, true, true, false, true);
+        //SGHSimulation sim_CS_SR = new SGHSimulation(graph, true, true, false, true, true);
         
         new MainGeneratorStats("CR_SR", sim_CR_SR, outdir).start();
         new MainGeneratorStats("CS_SS", sim_CS_SS, outdir).start();
@@ -130,11 +128,11 @@ public class MainGeneratorStats extends Thread {
         //new MainGeneratorStats("CR_SS", sim_CR_SS, outdir).start();
         //new MainGeneratorStats("CS_SR", sim_CS_SR, outdir).start();
         
-        SGHSimulation sim_CR_SN = new SGHSimulation(graph, false, true, false, false, true);
-        SGHSimulation sim_CN_SR = new SGHSimulation(graph, true, false, false, false, true);
+        //SGHSimulation sim_CR_SN = new SGHSimulation(graph, false, true, false, false, true);
+        //SGHSimulation sim_CN_SR = new SGHSimulation(graph, true, false, false, false, true);
         
-        SGHSimulation sim_CS_SN = new SGHSimulation(graph, false, true, true, true, true);
-        SGHSimulation sim_CN_SS = new SGHSimulation(graph, true, false, true, true, true);
+        //SGHSimulation sim_CS_SN = new SGHSimulation(graph, false, true, true, true, true);
+        //SGHSimulation sim_CN_SS = new SGHSimulation(graph, true, false, true, true, true);
         
         //new MainGeneratorStats("CR_SN", sim_CR_SN, outdir).start();
         //new MainGeneratorStats("CN_SR", sim_CN_SR, outdir).start();

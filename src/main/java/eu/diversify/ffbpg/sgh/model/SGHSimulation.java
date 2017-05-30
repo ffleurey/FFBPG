@@ -17,8 +17,8 @@ public class SGHSimulation {
     
     public final int NEIGHBORHOOD_SIZE = 15; // 15% of the servers are randomly visible to clients at each simulation step
     
-    public int NB_EXTINCTIONS = 100; // Number of random extinction sequences to calculate robustness at each steps
-    public int NB_EXTINCTIONS_THREADS = 4;
+    public int NB_EXTINCTIONS = 48; // Number of random extinction sequences to calculate robustness at each steps
+    public int NB_EXTINCTIONS_THREADS = 8;
     
     boolean compute_extinctions = false;
     
