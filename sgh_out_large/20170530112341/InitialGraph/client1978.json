@@ -1,0 +1,66 @@
+{
+"id":"C2478", 
+"services":[
+{"name":"weighting","alternatives":["least_pollen", "fastest", "least_noisy"]}
+, {"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike", "car"]}
+]
+,
+"platforms":[
+{
+"id":"S494", 
+"host":"http://d020m01.istic.univ-rennes1.fr:1540/",
+"services":[
+{"name":"weighting","alternatives":["default", "least_pollen", "fastest", "shortest", "least_congested", "most_scenic", "least_noisy", "least_polluted"]}
+, {"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car"]}
+]
+}
+, {
+"id":"S295", 
+"host":"http://e105m01.istic.univ-rennes1.fr:1534/",
+"services":[
+{"name":"weighting","alternatives":["least_polluted", "least_noisy", "fastest", "default"]}
+, {"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike"]}
+]
+}
+, {
+"id":"S543", 
+"host":"http://d020m09.istic.univ-rennes1.fr:1534/",
+"services":[
+{"name":"weighting","alternatives":["shortest", "least_polluted", "default", "least_pollen"]}
+, {"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike"]}
+]
+}
+, {
+"id":"S382", 
+"host":"http://e105m10.istic.univ-rennes1.fr:1539/",
+"services":[
+{"name":"weighting","alternatives":["least_noisy", "default", "fastest", "most_scenic", "least_congested", "least_polluted", "shortest", "most_ozonic", "least_pollen"]}
+, {"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["bike"]}
+]
+}
+, {
+"id":"S236", 
+"host":"http://e008m05.istic.univ-rennes1.fr:1536/",
+"services":[
+{"name":"weighting","alternatives":["least_polluted", "fastest", "default", "least_pollen"]}
+, {"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike"]}
+]
+}
+, {
+"id":"S144", 
+"host":"http://e103m05.istic.univ-rennes1.fr:1534/",
+"services":[
+{"name":"weighting","alternatives":["shortest", "default", "fastest", "least_congested", "least_noisy", "least_pollen"]}
+, {"name":"algorithm","alternatives":["dijkstra"]}
+, {"name":"vehicle","alternatives":["car", "bike"]}
+]
+}
+]
+}
+

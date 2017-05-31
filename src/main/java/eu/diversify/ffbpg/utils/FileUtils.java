@@ -1,18 +1,20 @@
 package eu.diversify.ffbpg.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 
 /**
  *
  * @author ffl
  */
 public class FileUtils {
-    
     
     public static void writeTextFile(File directory, String filename, String content) {
         PrintWriter out = null;
@@ -24,6 +26,28 @@ public class FileUtils {
         } finally {
             out.close();
         }
+    }
+    
+    
+    public static String readTextFile(File directory, String filename) {
+        
+        StringBuilder res = new StringBuilder();
+        BufferedReader br = null;
+        try {
+        File initgraph = new File(directory, filename);
+            br = new BufferedReader(new FileReader(initgraph));
+            while(br.ready()) res.append(br.readLine());
+            br.close();
+            } catch (Exception ex) {
+            Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MainStatsCollector.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return res.toString();
     }
     
     public static File createTempDirectory() {

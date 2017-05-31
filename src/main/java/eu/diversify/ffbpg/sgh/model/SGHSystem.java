@@ -66,6 +66,43 @@ public class SGHSystem {
         return result;
     }
     
+    
+    
+    public static SGHSystem generateRealisticManualSGHSystem(int max_clients, int max_servers) {
+        
+        SGHSystem result = new SGHSystem();
+        
+        SGHModel m = SGHModel.getInstance();
+        
+        result.clients = new ArrayList<SGHClientApp>();
+        int id=1;
+        for (int i=0; i<max_clients; i++) {
+            SGHClientApp c = m.createRandomClient();
+            c.setName("C" + id);
+            result.clients.add(c);
+            id++;
+        }
+        
+        result.servers = new ArrayList<SGHServer>();
+        id=1;
+        for (int i=0; i<max_servers; i++) {
+            SGHServer s = m.createRealisticManualServer();
+            
+            s.setName("S" + id);
+            result.servers.add(s);
+            id++;
+        }
+        
+        // Add some random links
+        result.createRandomLinks();
+        
+        // Cleanup the model
+        result.removedDeadClients();
+        result.removedUnusedServers();
+        
+        return result;
+    }
+    
     ArrayList<SGHClientApp> clients;
     ArrayList<SGHServer> servers;
     
@@ -253,11 +290,14 @@ public class SGHSystem {
         StringBuffer b = new StringBuffer();
         
         Hashtable<SGHServer, Integer> srvs = new Hashtable<SGHServer, Integer>();
-                
+        
+        int srv_features_count = 0;
+        int cli_link_count = 0;
         
         int alive = 0;
         int dead = 0;
         for (SGHClientApp c : clients) {
+            cli_link_count += c.links.size();
             if (c.isAlive()) {
                 if (details) b.append(c.getOneLineString());
                 if (details) b.append("\n");
@@ -289,6 +329,7 @@ public class SGHSystem {
         int s_dead = 0;
         
         for (SGHServer s : servers) {
+            srv_features_count += s.featureSet.size();
             if (srvs.containsKey(s)) {
                 if (details) { b.append("#"); b.append(srvs.get(s)); b.append("->"); b.append(s.getOneLineString());
                 b.append("\n"); }
@@ -315,6 +356,8 @@ public class SGHSystem {
         b.append("      SERVER BALANCE : ");b.append(srv_pop_stats.getShannonEquitability());b.append("\n");
         b.append("    SERVER DISPARITY : ");b.append(SGHNode.disparityOfSpercies(srv_pop));b.append("\n");
         b.append("    SERVER DIVERSITY : ");b.append(SGHNode.diversity(srv_pop));b.append("\n");
+        b.append("     CLIENT LINK CPT : ");b.append(cli_link_count);b.append("\n");
+        b.append(" SERVER FEATURES CPT : ");b.append(srv_features_count);b.append("\n");
         
         
         return b.toString();
@@ -351,7 +394,7 @@ public class SGHSystem {
     }
     
     public int[] distNbFeaturesPerClients() {
-        int[] result = new int[SGHModel.getInstance().totalNbFeatures()];
+        int[] result = new int[SGHModel.getInstance().totalNbFeatures()+1];
         for(SGHClientApp c : clients) {
             result[c.featureSet.size()]++;
         }
@@ -359,7 +402,7 @@ public class SGHSystem {
     }
     
     public int[] distNbFeaturesPerServers() {
-        int[] result = new int[SGHModel.getInstance().totalNbFeatures()];
+        int[] result = new int[SGHModel.getInstance().totalNbFeatures()+1];
         for(SGHServer s : servers) {
             result[s.featureSet.size()]++;
         }

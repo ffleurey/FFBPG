@@ -52,12 +52,12 @@ public class MainGeneratorPaper extends Thread {
          
          //System.exit(0);
         
-        File outdir = new File("./paper_out/" + new SimpleDateFormat("yyyyMMddhhmmss").format(new Date()));
+        File outdir = new File("./new_paper_out/" + new SimpleDateFormat("yyyyMMddhhmmss").format(new Date()));
         outdir.mkdirs();
         System.out.println("Output Folder: " + outdir.getAbsolutePath());
         
-
-        SGHSystem graph = SGHSystem.generateSGHSystem(1000,250);
+        SGHSystem graph = SGHSystem.generateSGHSystem(250,50);
+        //SGHSystem graph = SGHSystem.generateRealisticManualSGHSystem(250,50);
         /*
         int links_removed = graph.removedSomeRedondancy();
         System.out.println("Number of links removed in the generated graph:" + links_removed);
@@ -79,6 +79,8 @@ public class MainGeneratorPaper extends Thread {
         }
         
         System.out.println("Graph generated.");
+        
+       // System.exit(0);
         
         /*
         Long before_time = System.currentTimeMillis();
@@ -118,7 +120,7 @@ public class MainGeneratorPaper extends Thread {
         System.out.println("Time for 100 extinctions on SGH: " + (after_time - before_time));
 
         System.out.println("\nSimulating 10 random evolutions of the initial graph");
-        for (int i=0; i<10; i++) {
+        for (int i=0; i<5; i++) {
             SGHSimulation sim_CR_SR = new SGHSimulation(graph, true, true, false, false, true);
             System.out.println("Random Simulation " + i  + "/10...");
             MainGeneratorPaper t = new MainGeneratorPaper("RANDOM_" + i, sim_CR_SR, outdir);
@@ -131,7 +133,7 @@ public class MainGeneratorPaper extends Thread {
         }
         
         System.out.println("\nSimulating 10 SMART evolutions of the initial graph");
-        for (int i=0; i<10; i++) {
+        for (int i=0; i<5; i++) {
             SGHSimulation sim_CS_SS = new SGHSimulation(graph, true, true, true, true, true);
             System.out.println("SMART Simulation " + i  + "/10...");
             MainGeneratorPaper t = new MainGeneratorPaper("SMART_" + i, sim_CS_SS, outdir);
